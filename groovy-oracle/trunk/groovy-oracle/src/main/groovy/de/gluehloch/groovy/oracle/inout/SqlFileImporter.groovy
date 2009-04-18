@@ -49,6 +49,8 @@ class SqlFileImporter {
     	def tableMetaData = omdf.createOracleTable(sql, tableName as String)
     	sql.getConnection().setAutoCommit(false)
     
+    	def fileWriter = new GFileWriter('andre-winkler.sql')
+
         new File(fileName).eachLine { line ->
             def values = InOutUtils.split(line, columnSeperator)
             def insert = "INSERT INTO ${tableName}(${tableMetaData.toColumnList()}) VALUES("
@@ -66,10 +68,11 @@ class SqlFileImporter {
                 }
             }
             insert += ")"
-            println insert
+            fileWriter.writeln(insert)
             sql.executeInsert(insert.toString())
         }
     	sql.commit()
+    	fileWriter.close()
     }
 
 }
