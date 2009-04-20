@@ -152,7 +152,21 @@ public class InOutUtils {
 	}
 
 	/**
-	 * Convert a java.sql.Timestamp type into a string.
+	 * Convert a oracle.sql.DATE type into a string.
+	 *
+	 * @param _timestamp The TIMESTAMP to convert.
+	 * @return The converted string.
+	 */
+	public static String toString(final oracle.sql.DATE _timestamp) {
+		try {
+			return InOutUtils.toString(_timestamp.dateValue());
+		} catch (Exception ex) {
+			throw new RuntimeException(ex);
+		}
+	}
+
+	/**
+	 * Convert a oracle.sql.TIMESTAMP type into a string.
 	 *
 	 * @param _timestamp The TIMESTAMP to convert.
 	 * @return The converted string.

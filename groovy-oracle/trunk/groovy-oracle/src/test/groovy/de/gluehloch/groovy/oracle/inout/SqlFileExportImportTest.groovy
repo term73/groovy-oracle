@@ -46,9 +46,15 @@ class SqlFileExportImportTest extends TestDatabaseUtility {
          assert counter == 2
          assert sql.firstRow("SELECT v_numeric FROM XXX_TEST_RUN where id = 1").v_numeric == 123.456
          assert sql.firstRow("SELECT v_numeric FROM XXX_TEST_RUN where id = 2").v_numeric == 666.626
+         //def date = InOutUtils.toSqlDate('1971-03-24 17:05:05')
+         def dbDate = sql.firstRow("SELECT TO_CHAR(stichtag, ${InOutUtils.ORACLE_DATE_FORMAT}) as stichtag FROM XXX_TEST_RUN where id = 1").stichtag
+         //println "DB-Date: ${dbDate}"
+         assert dbDate == '1971-03-24 17:05:05'
 
-		 def ex = new SqlFileExporter(
-			 sql: sql, query: 'select * from XXX_TEST_RUN', fileName: 'XXX_TEST_RUN_2.dat')
+//		 def ex = new SqlFileExporter(
+//			 sql: sql, query: 'select * from XXX_TEST_RUN', fileName: 'XXX_TEST_RUN_2.dat')
+         def ex = new SqlFileExporter(
+             sql: sql, query: 'XXX_TEST_RUN', fileName: 'XXX_TEST_RUN_2.dat')
 	     ex.export()
 	 }
 
@@ -67,15 +73,11 @@ class SqlFileExportImportTest extends TestDatabaseUtility {
                           CONSTRAINT PK_XXX_TEST_RUN PRIMARY KEY (ID))""")
 
          def tableXXXTestRun = new OracleMetaDataFactory().createOracleTable(sql, 'XXX_TEST_RUN')
-//         def tableXXXTestRun_2 = tableXXXTestRun.copy()
-//         tableXXXTestRun_2.tableName = 'XXX_TEST_RUN_2'
-//         sql.execute(tableXXXTestRun_2.toScript().toString())
 	 }
 
 	 @After
 	 void tearDown() {
 	     sql.execute('DROP TABLE XXX_TEST_RUN')
-//	     sql.execute('DROP TABLE XXX_TEST_RUN_2')
 	 }
 
 }

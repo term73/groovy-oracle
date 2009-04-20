@@ -33,7 +33,10 @@ import de.gluehloch.groovy.oracle.*
 import de.gluehloch.groovy.oracle.meta.*
 
 /**
- * Exports the result set of a sql statement to the file system.
+ * Exports the result set of a sql statement to the file system. The property
+ * <code>query</code> allows two possibilities: A SQL query or a table name.
+ * If you specify only a table name, then the method <code>export()</code>
+ * will generate a SQL select statement for the full table.
  * 
  * @author  $Author: andre.winkler@web.de $
  * @version $Revision: 123 $ $Date: 2009-03-18 12:38:24 +0100 (Mi, 18 Mrz 2009) $
@@ -48,7 +51,25 @@ class SqlFileExporter {
 	def export() {
 		def fileWriter = new GFileWriter(fileName)
 
-		sql.eachRow(query) { row ->
+		def _query = ""
+		if (query.startsWith('select') || query.startsWith('SELECT')) {
+            _query = query
+		} else {
+            // Generate the query!
+            def columns = []
+			def omdf = new OracleMetaDataFactory()
+			def oracleTable = omdf.createOracleTable(sql, query)
+			oracleTable.columnMetaData.each { column ->
+			    if (column.isDate()) {
+			    	columns << "TO_CHAR(${column.columnName}, '${InOutUtils.ORACLE_DATE_FORMAT}') as ${column.columnName}"
+			    } else {
+			    	columns << column.columnName
+			    }
+            }
+            _query = "select ${columns.join(',')} from ${query}".toString()
+		}
+
+		sql.eachRow(_query) { row ->
 		    def string = ""
 		    for (i in 1 .. row.getMetaData().getColumnCount()) {
 		    	def columnName = row.getMetaData().getColumnName(i)
