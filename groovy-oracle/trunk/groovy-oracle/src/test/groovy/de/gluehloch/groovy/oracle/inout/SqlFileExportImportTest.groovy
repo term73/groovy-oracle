@@ -54,7 +54,7 @@ class SqlFileExportImportTest extends TestDatabaseUtility {
 
 //		 def ex = new SqlFileExporter(
 //			 sql: sql, query: 'select * from XXX_TEST_RUN', fileName: 'XXX_TEST_RUN_2.dat')
-         DBUnit.xmlExport(OraUtils.dataSource, ['XXX_TEST_RUN'] as String[], new File('dbunit.xml'))
+         DBUnit.xmlExport(OraUtils.dataSource, user, ['XXX_TEST_RUN'] as String[], new File('dbunit.xml'))
          def ex = new SqlFileExporter(
              sql: sql, query: 'XXX_TEST_RUN', fileName: 'XXX_TEST_RUN_2.dat')
 	     ex.export()

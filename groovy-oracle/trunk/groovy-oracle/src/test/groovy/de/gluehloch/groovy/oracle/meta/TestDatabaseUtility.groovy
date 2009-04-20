@@ -36,6 +36,7 @@ import org.junit.Test
 class TestDatabaseUtility extends GroovyTestCase {
 
     def sql
+    def user
 
     /**
      * Liefert ein Groovy SQL Objekt.
@@ -76,6 +77,7 @@ Check your maven .settings.xml or update your system properties:
 
     @BeforeClass
     void setUp() {
+    	user = System.getProperty('groovy.oracle.test.user')
     	sql = createConnection()
     	new PrepareUnitTestDatabase(sql: sql).setUp()
     }

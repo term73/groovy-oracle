@@ -25,8 +25,6 @@
 
 package de.gluehloch.groovy.oracle.inout;
 
-import groovy.sql.Sql;
-
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
@@ -34,7 +32,6 @@ import java.io.FileOutputStream;
 import javax.sql.DataSource;
 
 import org.dbunit.DataSourceDatabaseTester;
-import org.dbunit.JdbcDatabaseTester;
 import org.dbunit.database.DatabaseSequenceFilter;
 import org.dbunit.database.IDatabaseConnection;
 import org.dbunit.dataset.FilteredDataSet;
@@ -56,17 +53,18 @@ public class DBUnit {
 	/**
 	 * Exportiert die angegebenen Tabellen.
 	 * 
+	 * @param ds Eine Oracle {@link DataSource}.
+	 * @param schema Schema Name.
 	 * @param tableNames Die zu exportierenden Tabellen.
 	 * @param exportFile In diese Datei das Exportergebnis schreiben.
 	 * @throws Exception Da ging was schief.
 	 */
-	public static void xmlExport(final DataSource ds,
+	public static void xmlExport(final DataSource ds, final String schema,
 			final String[] tableNames, final File exportFile) throws Exception {
 
-		//		JdbcDatabaseTester t = new JdbcDatabaseTester(driver, url, user, password, schema);
 		DataSourceDatabaseTester jdbcDatabaseTester = new DataSourceDatabaseTester(
 			ds);
-		jdbcDatabaseTester.setSchema("TEST");
+		jdbcDatabaseTester.setSchema(schema);
 		IDatabaseConnection iDatabaseConnection = jdbcDatabaseTester
 			.getConnection();
 
@@ -91,14 +89,17 @@ public class DBUnit {
 	/**
 	 * Importiert die angegebenen XML-Datei.
 	 * 
+	 * @param ds Eine Oracle {@link DataSource}.
+	 * @param schema Schema Name.
 	 * @param importFile Aus dieser Datei die Importinformationen holen.
 	 * @throws Exception Da ging was schief.
 	 */
-	public static void xmlImport(final DataSource ds, final File importFile)
-		throws Exception {
+	public static void xmlImport(final DataSource ds, final String schema,
+			final File importFile) throws Exception {
 
 		DataSourceDatabaseTester jdbcDatabaseTester = new DataSourceDatabaseTester(
 			ds);
+		jdbcDatabaseTester.setSchema(schema);
 		IDatabaseConnection iDatabaseConnection = jdbcDatabaseTester
 			.getConnection();
 
