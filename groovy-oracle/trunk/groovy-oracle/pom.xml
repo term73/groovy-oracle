@@ -4,18 +4,18 @@
   <parent>
     <groupId>de.gluehloch</groupId>
     <artifactId>gluehloch-maven-parent</artifactId>
-    <version>8</version>
+    <version>9</version>
   </parent>
-  <groupId>de.gluehloch.sandbox</groupId>
+  <groupId>de.gluehloch.groovy.oracle</groupId>
   <artifactId>groovy-oracle</artifactId>
   <packaging>jar</packaging>
   <version>0.2.1-SNAPSHOT</version>
   <name>groovy-oracle</name>
   <description>Groovier Oracle Meta-Programming.</description>
   <scm>
-    <connection>scm:svn:https://groovy-swinger.googlecode.com/svn/trunk/groovy-oracle</connection>
-    <developerConnection>scm:svn:https://groovy-swinger.googlecode.com/svn/trunk/groovy-oracle</developerConnection>
-    <url>https://groovy-swinger.googlecode.com/svn/trunk/groovy-oracle</url>
+    <connection>scm:svn:https://groovy-oracle.googlecode.com/svn/groovy-oracle/trunk/groovy-oracle</connection>
+    <developerConnection>scm:svn:https://groovy-oracle.googlecode.com/svn/groovy-oracle/trunk/groovy-oracle</developerConnection>
+    <url>http://code.google.com/p/groovy-oracle/source/browse/</url>
   </scm>
   <licenses>
     <license>
@@ -105,12 +105,6 @@
       <groupId>org.codehaus.groovy.maven.runtime</groupId>
       <artifactId>gmaven-runtime-default</artifactId>
       <version>1.0-rc-3</version>
-    </dependency>
-    <dependency>
-      <groupId>junit</groupId>
-      <artifactId>junit</artifactId>
-      <version>4.5</version>
-      <scope>test</scope>
     </dependency>
     <dependency>
       <groupId>oracle.jdbc.driver</groupId>
