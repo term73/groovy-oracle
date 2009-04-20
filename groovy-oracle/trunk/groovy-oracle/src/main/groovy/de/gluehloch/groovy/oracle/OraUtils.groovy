@@ -36,19 +36,28 @@ import groovy.sql.Sql
  */
 class OraUtils {
 
+	static final DRIVER_NAME = 'oracle.jdbc.driver.OracleDriver'
+
+	static def dataSource
+
 	static def createSql(user, password, url, port, sid) {
 		return createSql(user, password, "${url}:${port}:${sid}")
 	}
 
+	static def getConnection(user, password, url) {
+		if (dataSource == null) {
+			dataSource = new oracle.jdbc.pool.OracleDataSource()
+			dataSource.setURL(url)
+		}		
+		return dataSource.getConnection(user, password)
+	}
+
     static def createSql(user, password, url) {
         def sql
-        println "Generate connection: jdbc:oracle:thin:${user}/${password}@${url}"
+        //println "Generate connection: jdbc:oracle:thin:${user}/${password}@${url}"
     	try {
-	        sql = Sql.newInstance(
-	                "jdbc:oracle:thin:${user}/${password}@${url}",
-	                user,
-	                password,
-	                "oracle.jdbc.driver.OracleDriver")
+    		sql = new Sql(getConnection(
+    			user, password, "jdbc:oracle:thin:${user}/${password}@${url}"))
     	} catch (SQLException ex) {
     	    println ex.getMessage()
     		throw ex

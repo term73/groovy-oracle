@@ -27,6 +27,7 @@ package de.gluehloch.groovy.oracle.inout
 
 import org.junit.Test
 import org.junit.Afterimport org.junit.Before
+import de.gluehloch.groovy.oracle.OraUtils
 import de.gluehloch.groovy.oracle.meta.*
 /**
  * Testet die Klassen SqlFileExporter und SqlFileImporter.
@@ -53,6 +54,7 @@ class SqlFileExportImportTest extends TestDatabaseUtility {
 
 //		 def ex = new SqlFileExporter(
 //			 sql: sql, query: 'select * from XXX_TEST_RUN', fileName: 'XXX_TEST_RUN_2.dat')
+         DBUnit.xmlExport(OraUtils.dataSource, ['XXX_TEST_RUN'] as String[], new File('dbunit.xml'))
          def ex = new SqlFileExporter(
              sql: sql, query: 'XXX_TEST_RUN', fileName: 'XXX_TEST_RUN_2.dat')
 	     ex.export()

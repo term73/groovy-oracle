@@ -8,7 +8,7 @@
     <release version="groovy-oracle-0.2.1" date="2009-04-30"
          description="Bugfix">
       <action dev="andrewinkler" type="fix" date="2009-04-13">
-        The property #referencedTableName of class ForeignKey wasn´t
+        The property #referencedTableName of class ForeignKey was not
         set properly by OracleColumnFinder#getConstraint().
       </action>
     </release>
