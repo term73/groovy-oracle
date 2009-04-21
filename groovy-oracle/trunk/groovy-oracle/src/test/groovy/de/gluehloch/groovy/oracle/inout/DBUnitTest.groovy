@@ -26,41 +26,29 @@
 package de.gluehloch.groovy.oracle.inout
 
 import org.junit.Test
-import org.junit.Afterimport org.junit.Before
+import org.junit.After
+import org.junit.Before
+
 import de.gluehloch.groovy.oracle.OraUtils
 import de.gluehloch.groovy.oracle.meta.*
-/**
- * Testet die Klassen SqlFileExporter und SqlFileImporter.
+
+/**
+ * Test for class DBUnit.
  * 
  * @author  $Author: andre.winkler@web.de $
- * @version $Revision: 140 $ $Date: 2009-04-17 17:44:57 +0200 (Fr, 17 Apr 2009) $
+ * @version $Revision: 104 $ $Date: 2009-03-04 15:17:30 +0100 (Mi, 04 Mrz 2009) $
  */
-class SqlFileExportImportTest extends TestDatabaseUtility {
-
-	 //def sql
+class DBUnitTest extends TestDatabaseUtility {
 
 	 @Test
-	 void testDatabaseExportImport() {
-		 new SqlFileImporter(sql: sql, tableName: 'XXX_TEST_RUN', fileName: 'XXX_TEST_RUN.dat').load()
-
-         def counter = sql.firstRow("SELECT COUNT(*) as counter FROM XXX_TEST_RUN").counter
-         assert counter == 6
-         assert sql.firstRow("SELECT v_numeric FROM XXX_TEST_RUN where id = 1").v_numeric == 123.456
-         assert sql.firstRow("SELECT v_numeric FROM XXX_TEST_RUN where id = 2").v_numeric == 666.626
-         def dbDate = sql.firstRow("SELECT TO_CHAR(stichtag, ${InOutUtils.ORACLE_DATE_FORMAT}) as stichtag FROM XXX_TEST_RUN where id = 1").stichtag
-         assert dbDate == '1971-03-24 17:05:05'
-
-//		 def ex = new SqlFileExporter(
-//			 sql: sql, query: 'select * from XXX_TEST_RUN', fileName: 'XXX_TEST_RUN_2.dat')
-         
-         def ex = new SqlFileExporter(
-             sql: sql, query: 'XXX_TEST_RUN', fileName: 'XXX_TEST_RUN_2.dat')
-	     ex.export()
+	 void testDBUnit() {
+		 DBUnit.xmlExport(OraUtils.dataSource, user,
+			 ['XXX_TEST_RUN'] as String[], new File('dbunit.xml'))		 
 	 }
 
-	 @Before
-	 void setUp() {
-		 sql = TestDatabaseUtility.createConnection()
+     @Before
+     void setUp() {
+         sql = TestDatabaseUtility.createConnection()
          sql.execute("""CREATE TABLE XXX_TEST_RUN (
                           ID NUMBER(38,0),
                           TRIGGER_TYPE CHAR(1 BYTE) NOT NULL ENABLE,
@@ -71,11 +59,13 @@ class SqlFileExportImportTest extends TestDatabaseUtility {
                           BL_RUN_ID NUMBER(38,0),
                           V_NUMERIC NUMBER(10,3),
                           CONSTRAINT PK_XXX_TEST_RUN PRIMARY KEY (ID))""")
-	 }
+         new SqlFileImporter(sql: sql, tableName: 'XXX_TEST_RUN',
+        	 fileName: 'XXX_TEST_RUN.dat').load()
+     }
 
-	 @After
-	 void tearDown() {
-	     sql.execute('DROP TABLE XXX_TEST_RUN')
-	 }
-
+     @After
+     void tearDown() {
+         sql.execute('DROP TABLE XXX_TEST_RUN')
+     }
+	
 }
