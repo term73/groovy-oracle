@@ -5,11 +5,15 @@
     <author email="andre.winkler@web.de">Andre Winkler</author>
   </properties>
   <body>
-    <release version="groovy-oracle-0.2.1" date="2009-04-30"
+    <release version="groovy-oracle-0.2.1" date="2009-04-21"
          description="Bugfix">
       <action dev="andrewinkler" type="fix" date="2009-04-13">
         The property #referencedTableName of class ForeignKey was not
         set properly by OracleColumnFinder#getConstraint().
+      </action>
+      <action dev="andrewinkler" type="add" date="2009-04-21">
+        Add DBUnit Support. This is only a prototype implementation and
+        may be change in further releases.
       </action>
     </release>
 
