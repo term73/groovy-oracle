@@ -43,29 +43,25 @@ class DBUnitTest extends TestDatabaseUtility {
 	 @Test
 	 void testDBUnit() {
 		 DBUnit.xmlExport(OraUtils.dataSource, user,
-			 ['XXX_TEST_RUN'] as String[], new File('dbunit.xml'))		 
+			 ['XXX_TEST_RUN_2'] as String[], new File('dbunit.xml'))
+	     sql.execute("DELETE FROM XXX_TEST_RUN_2")
+	     sql.commit()
+
+         DBUnit.xmlImport(OraUtils.dataSource, user, new File('dbunit.xml'))
+         def counter = sql.firstRow("SELECT COUNT(*) as counter FROM XXX_TEST_RUN_2").counter
+         assert counter == 6
 	 }
 
      @Before
      void setUp() {
          sql = TestDatabaseUtility.createConnection()
-         sql.execute("""CREATE TABLE XXX_TEST_RUN (
-                          ID NUMBER(38,0),
-                          TRIGGER_TYPE CHAR(1 BYTE) NOT NULL ENABLE,
-                          STICHTAG DATE NOT NULL ENABLE,
-                          DB_USER VARCHAR2(256 BYTE),
-                          DATUM_START TIMESTAMP (6) DEFAULT SYSTIMESTAMP,
-                          VKEY_BL VARCHAR2(10 BYTE),
-                          BL_RUN_ID NUMBER(38,0),
-                          V_NUMERIC NUMBER(10,3),
-                          CONSTRAINT PK_XXX_TEST_RUN PRIMARY KEY (ID))""")
-         new SqlFileImporter(sql: sql, tableName: 'XXX_TEST_RUN',
+         new SqlFileImporter(sql: sql, tableName: 'XXX_TEST_RUN_2',
         	 fileName: 'XXX_TEST_RUN.dat').load()
+         sql.commit()
      }
 
      @After
      void tearDown() {
-         sql.execute('DROP TABLE XXX_TEST_RUN')
      }
 	
 }

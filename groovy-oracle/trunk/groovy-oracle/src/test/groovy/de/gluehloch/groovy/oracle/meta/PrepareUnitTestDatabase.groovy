@@ -134,12 +134,23 @@ class PrepareUnitTestDatabase {
                            4712,
                            4713,
                            4714)""")
+         sql.execute("""CREATE TABLE XXX_TEST_RUN_2 (
+                          ID NUMBER(38,0),
+                          TRIGGER_TYPE CHAR(1 BYTE) NOT NULL ENABLE,
+                          STICHTAG DATE NOT NULL ENABLE,
+                          DB_USER VARCHAR2(256 BYTE),
+                          DATUM_START TIMESTAMP (6) DEFAULT SYSTIMESTAMP,
+                          VKEY_BL VARCHAR2(10 BYTE),
+                          BL_RUN_ID NUMBER(38,0),
+                          V_NUMERIC NUMBER(10,3),
+                          CONSTRAINT PK_XXX_TEST_RUN_2 PRIMARY KEY (ID))""")
     }
 
     void cleanUp() {
     	sql.execute("drop table XXX_KUNDE cascade constraints")
         sql.execute("drop table XXX_HIERARCHIE cascade constraints")
         sql.execute("drop table XXX_TEST_RUN cascade constraints")
+        sql.execute("drop table XXX_TEST_RUN_2 cascade constraints")
         OraUtils.purgeRecyclebin(sql)
     }
 

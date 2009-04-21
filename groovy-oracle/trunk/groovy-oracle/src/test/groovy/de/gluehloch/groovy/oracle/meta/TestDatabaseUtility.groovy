@@ -26,17 +26,17 @@
 package de.gluehloch.groovy.oracle.meta
 
 import de.gluehloch.groovy.oracle.OraUtils
-
+import org.junit.Ignore
 import groovy.sql.Sql
 
 import org.junit.AfterClass
 import org.junit.BeforeClass
 import org.junit.Test
 
-class TestDatabaseUtility extends GroovyTestCase {
+class TestDatabaseUtility { // extends GroovyTestCase {
 
-    def sql
-    def user
+    static def sql
+    static def user
 
     /**
      * Liefert ein Groovy SQL Objekt.
@@ -44,7 +44,7 @@ class TestDatabaseUtility extends GroovyTestCase {
      * @return Ein Groovy SQL Objekt.
      */
     static def createConnection() {
-        def user = System.getProperty('groovy.oracle.test.user')
+        user = System.getProperty('groovy.oracle.test.user')
         def pwd = System.getProperty('groovy.oracle.test.password')
         def url = System.getProperty('groovy.oracle.test.url')
 
@@ -70,20 +70,19 @@ Check your maven .settings.xml or update your system properties:
         OraUtils.createSql(user, pwd, url)
     }
 
-    @Test
-    void testSomething() {
-    	// empty test method
+    @Test @Ignore
+    void testIrgendwas() {
+    	// Der doofe Testrunner...
     }
-
+ 
     @BeforeClass
-    void setUp() {
-    	user = System.getProperty('groovy.oracle.test.user')
+    static void beforeClass() {
     	sql = createConnection()
     	new PrepareUnitTestDatabase(sql: sql).setUp()
     }
 
     @AfterClass
-    void tearDown() {
+    static void afterClass() {
     	new PrepareUnitTestDatabase(sql: sql).cleanUp()
         sql?.close()
     }

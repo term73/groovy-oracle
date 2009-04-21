@@ -34,21 +34,21 @@ class OracleColumnFinderTest extends TestDatabaseUtility {
         def ocf = new OracleColumnFinder()
         def oracleColumns = ocf.getColumns(sql, "XXX_TEST_RUN")
 
-        assertEquals "ID", oracleColumns[0].columnName
-        assertEquals "TRIGGER_TYPE", oracleColumns[1].columnName
-        assertEquals "STICHTAG", oracleColumns[2].columnName
-        assertEquals "DB_USER", oracleColumns[3].columnName
-        assertEquals "DATUM_START", oracleColumns[4].columnName
-        assertEquals "VKEY_BL", oracleColumns[5].columnName
-        assertEquals "BL_RUN_ID", oracleColumns[6].columnName
+        assert "ID" == oracleColumns[0].columnName
+        assert "TRIGGER_TYPE" == oracleColumns[1].columnName
+        assert "STICHTAG" == oracleColumns[2].columnName
+        assert "DB_USER" == oracleColumns[3].columnName
+        assert "DATUM_START" == oracleColumns[4].columnName
+        assert "VKEY_BL" == oracleColumns[5].columnName
+        assert "BL_RUN_ID" == oracleColumns[6].columnName
 
-        assertEquals "NUMBER", oracleColumns[0].dataType
-        assertEquals "CHAR", oracleColumns[1].dataType
-        assertEquals "DATE", oracleColumns[2].dataType
-        assertEquals "VARCHAR2", oracleColumns[3].dataType
-        assertEquals "TIMESTAMP(6)", oracleColumns[4].dataType
-        assertEquals "VARCHAR2", oracleColumns[5].dataType
-        assertEquals "NUMBER", oracleColumns[6].dataType
+        assert "NUMBER" == oracleColumns[0].dataType
+        assert "CHAR" == oracleColumns[1].dataType
+        assert "DATE" == oracleColumns[2].dataType
+        assert "VARCHAR2" == oracleColumns[3].dataType
+        assert "TIMESTAMP(6)" == oracleColumns[4].dataType
+        assert "VARCHAR2" == oracleColumns[5].dataType
+        assert "NUMBER" == oracleColumns[6].dataType
     }
 
     @Test
@@ -56,7 +56,7 @@ class OracleColumnFinderTest extends TestDatabaseUtility {
         def ocf = new OracleColumnFinder()
         def oracleColumns = ocf.getColumns(sql, "not_available")
 
-        assertEquals 0, oracleColumns.size()
+        assert 0 == oracleColumns.size()
     }
 
 	@Test

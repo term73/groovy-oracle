@@ -41,41 +41,21 @@ class SqlFileExportImportTest extends TestDatabaseUtility {
 
 	 @Test
 	 void testDatabaseExportImport() {
-		 new SqlFileImporter(sql: sql, tableName: 'XXX_TEST_RUN', fileName: 'XXX_TEST_RUN.dat').load()
+		 new SqlFileImporter(sql: sql, tableName: 'XXX_TEST_RUN_2', fileName: 'XXX_TEST_RUN.dat').load()
 
-         def counter = sql.firstRow("SELECT COUNT(*) as counter FROM XXX_TEST_RUN").counter
+         def counter = sql.firstRow("SELECT COUNT(*) as counter FROM XXX_TEST_RUN_2").counter
          assert counter == 6
-         assert sql.firstRow("SELECT v_numeric FROM XXX_TEST_RUN where id = 1").v_numeric == 123.456
-         assert sql.firstRow("SELECT v_numeric FROM XXX_TEST_RUN where id = 2").v_numeric == 666.626
-         def dbDate = sql.firstRow("SELECT TO_CHAR(stichtag, ${InOutUtils.ORACLE_DATE_FORMAT}) as stichtag FROM XXX_TEST_RUN where id = 1").stichtag
+         assert sql.firstRow("SELECT v_numeric FROM XXX_TEST_RUN_2 where id = 1").v_numeric == 123.456
+         assert sql.firstRow("SELECT v_numeric FROM XXX_TEST_RUN_2 where id = 2").v_numeric == 666.626
+         def dbDate = sql.firstRow("SELECT TO_CHAR(stichtag, ${InOutUtils.ORACLE_DATE_FORMAT}) as stichtag FROM XXX_TEST_RUN_2 where id = 1").stichtag
          assert dbDate == '1971-03-24 17:05:05'
 
 //		 def ex = new SqlFileExporter(
 //			 sql: sql, query: 'select * from XXX_TEST_RUN', fileName: 'XXX_TEST_RUN_2.dat')
          
          def ex = new SqlFileExporter(
-             sql: sql, query: 'XXX_TEST_RUN', fileName: 'XXX_TEST_RUN_2.dat')
+             sql: sql, query: 'XXX_TEST_RUN_2', fileName: 'XXX_TEST_RUN_2.dat')
 	     ex.export()
-	 }
-
-	 @Before
-	 void setUp() {
-		 sql = TestDatabaseUtility.createConnection()
-         sql.execute("""CREATE TABLE XXX_TEST_RUN (
-                          ID NUMBER(38,0),
-                          TRIGGER_TYPE CHAR(1 BYTE) NOT NULL ENABLE,
-                          STICHTAG DATE NOT NULL ENABLE,
-                          DB_USER VARCHAR2(256 BYTE),
-                          DATUM_START TIMESTAMP (6) DEFAULT SYSTIMESTAMP,
-                          VKEY_BL VARCHAR2(10 BYTE),
-                          BL_RUN_ID NUMBER(38,0),
-                          V_NUMERIC NUMBER(10,3),
-                          CONSTRAINT PK_XXX_TEST_RUN PRIMARY KEY (ID))""")
-	 }
-
-	 @After
-	 void tearDown() {
-	     sql.execute('DROP TABLE XXX_TEST_RUN')
 	 }
 
 }

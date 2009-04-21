@@ -55,24 +55,26 @@ class OracleMetaDataFactoryTest extends TestDatabaseUtility {
         assert oracleTable.find { it.tableName == 'XXX_KUNDE' }.tableName == 'XXX_KUNDE'
 
         oracleTable = omdf.createOracleTable(sql, "XXX_TEST_RUN")
-        assertEquals "XXX_TEST_RUN", oracleTable.tableName
-        assertEquals "PK_XXX_TEST_RUN", oracleTable.constraint.primaryKey.name
-        assertEquals 0, oracleTable.constraint.foreignKeys.size()
+        assert "XXX_TEST_RUN" == oracleTable.tableName
+        assert "PK_XXX_TEST_RUN" == oracleTable.constraint.primaryKey.name
+        assert 0 == oracleTable.constraint.foreignKeys.size()
 
         oracleTable = omdf.createOracleTable(sql, "XXX_HIERARCHIE")
-        assertEquals "XXX_HIERARCHIE", oracleTable.tableName
-        assertEquals "PK_XXX_HIERARCHIE", oracleTable.constraint.primaryKey.name
-        assertEquals 1, oracleTable.constraint.foreignKeys.size()
+        assert "XXX_HIERARCHIE" == oracleTable.tableName
+        assert "PK_XXX_HIERARCHIE" == oracleTable.constraint.primaryKey.name
+        assert 1 == oracleTable.constraint.foreignKeys.size()
 
         oracleTable = omdf.createOracleTable(sql, "XXX_KUNDE")
-        assertEquals "XXX_KUNDE", oracleTable.tableName
-        assertEquals "PK_XXX_KUNDE", oracleTable.constraint.primaryKey.name
-        assertEquals 2, oracleTable.constraint.foreignKeys.size()
+        assert "XXX_KUNDE" == oracleTable.tableName
+        assert "PK_XXX_KUNDE" == oracleTable.constraint.primaryKey.name
+        assert 2 == oracleTable.constraint.foreignKeys.size()
 
-        assert oracleTable.constraint.foreignKeys.find { it.name == 'FK_XXX_KUNDE_HIERARCHIE' } != null
-        // assertEquals "FK_XXX_KUNDE_HIERARCHIE", oracleTable.constraint.foreignKeys[0].name
-        assert oracleTable.constraint.foreignKeys.find { it.name == 'FK_XXX_KUNDE' } != null
-        // assertEquals "FK_XXX_KUNDE", oracleTable.constraint.foreignKeys[1].name
+        def foreignKey = oracleTable.constraint.foreignKeys.find { it.name == 'FK_XXX_KUNDE_HIERARCHIE' }        
+        assert 'FK_XXX_KUNDE_HIERARCHIE' == foreignKey.name
+        assert 'XXX_HIERARCHIE' == foreignKey.referencedTableName
+        foreignKey = oracleTable.constraint.foreignKeys.find { it.name == 'FK_XXX_KUNDE' }
+        assert 'FK_XXX_KUNDE' == foreignKey.name
+        assert 'XXX_TEST_RUN' == foreignKey.referencedTableName
     }
 
     @Test
