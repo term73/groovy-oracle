@@ -32,6 +32,7 @@ import java.io.FileOutputStream;
 import javax.sql.DataSource;
 
 import org.dbunit.DataSourceDatabaseTester;
+import org.dbunit.database.DatabaseConfig;
 import org.dbunit.database.DatabaseSequenceFilter;
 import org.dbunit.database.IDatabaseConnection;
 import org.dbunit.dataset.FilteredDataSet;
@@ -40,6 +41,7 @@ import org.dbunit.dataset.filter.ITableFilter;
 import org.dbunit.dataset.xml.FlatDtdDataSet;
 import org.dbunit.dataset.xml.FlatXmlDataSet;
 import org.dbunit.dataset.xml.FlatXmlWriter;
+import org.dbunit.ext.oracle.OracleDataTypeFactory;
 import org.dbunit.operation.DatabaseOperation;
 
 /**
@@ -67,6 +69,8 @@ public class DBUnit {
 		jdbcDatabaseTester.setSchema(schema);
 		IDatabaseConnection iDatabaseConnection = jdbcDatabaseTester
 			.getConnection();
+		DatabaseConfig config = iDatabaseConnection.getConfig();
+		config.setProperty(DatabaseConfig.PROPERTY_DATATYPE_FACTORY, new OracleDataTypeFactory());
 
 		try {
 			ITableFilter databaseSequenceFilter = new DatabaseSequenceFilter(
@@ -102,6 +106,11 @@ public class DBUnit {
 		jdbcDatabaseTester.setSchema(schema);
 		IDatabaseConnection iDatabaseConnection = jdbcDatabaseTester
 			.getConnection();
+		DatabaseConfig config = iDatabaseConnection.getConfig();
+		config.setProperty(DatabaseConfig.PROPERTY_DATATYPE_FACTORY, new OracleDataTypeFactory());
+
+//		IDatabaseConnection connection = new DatabaseConnection(iDatabaseConnection.getConnection(), schema);
+//		DatabaseConfig config = connection.getConfig();
 
 		try {
 			File dtdFile = new File(importFile.getAbsoluteFile() + ".dtd");
