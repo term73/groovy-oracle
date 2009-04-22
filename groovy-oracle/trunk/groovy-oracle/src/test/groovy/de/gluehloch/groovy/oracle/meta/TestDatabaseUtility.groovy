@@ -63,6 +63,13 @@ Check your maven .settings.xml or update your system properties:
       </properties>
     </profile>
   </profiles>
+
+or define the following VM arguments:
+
+-Dgroovy.oracle.test.user=user 
+-Dgroovy.oracle.test.password=password
+-Dgroovy.oracle.test.url=host:port:sid
+-Dgroovy.oracle.purge_recyclebin=false
 """
             throw new IllegalStateException()
         }

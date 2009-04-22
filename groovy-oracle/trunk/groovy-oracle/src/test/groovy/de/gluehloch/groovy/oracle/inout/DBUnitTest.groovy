@@ -47,7 +47,7 @@ class DBUnitTest extends TestDatabaseUtility {
 	     sql.execute("DELETE FROM XXX_TEST_RUN_2")
 	     sql.commit()
 
-         DBUnit.xmlImport(OraUtils.dataSource, user, new File('dbunit.xml'))
+         DBUnit.xmlImportInsert(OraUtils.dataSource, user, new File('dbunit.xml'))
          def counter = sql.firstRow("SELECT COUNT(*) as counter FROM XXX_TEST_RUN_2").counter
          assert counter == 6
 	 }

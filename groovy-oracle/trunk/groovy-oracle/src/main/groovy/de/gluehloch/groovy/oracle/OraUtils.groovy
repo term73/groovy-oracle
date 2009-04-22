@@ -40,10 +40,6 @@ class OraUtils {
 
 	static def dataSource
 
-	static def createSql(user, password, url, port, sid) {
-		return createSql(user, password, "${url}:${port}:${sid}")
-	}
-
 	static def getConnection(user, password, url) {
 		if (dataSource == null) {
 			dataSource = new oracle.jdbc.pool.OracleDataSource()
@@ -52,9 +48,13 @@ class OraUtils {
 		return dataSource.getConnection(user, password)
 	}
 
+
+    static def createSql(user, password, url, port, sid) {
+        return createSql(user, password, "${url}:${port}:${sid}")
+    }
+
     static def createSql(user, password, url) {
         def sql
-        //println "Generate connection: jdbc:oracle:thin:${user}/${password}@${url}"
     	try {
     		sql = new Sql(getConnection(
     			user, password, "jdbc:oracle:thin:${user}/${password}@${url}"))

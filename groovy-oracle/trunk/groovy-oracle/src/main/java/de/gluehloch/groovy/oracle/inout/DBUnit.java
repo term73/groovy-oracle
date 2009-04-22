@@ -28,6 +28,7 @@ package de.gluehloch.groovy.oracle.inout;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
+import java.io.InputStream;
 
 import javax.sql.DataSource;
 
@@ -52,6 +53,22 @@ import org.dbunit.operation.DatabaseOperation;
  */
 public class DBUnit {
 
+	public enum DBUnitOperation {
+		INSERT(DatabaseOperation.INSERT), CLEAN_INSERT(
+				DatabaseOperation.CLEAN_INSERT), UPDATE(
+				DatabaseOperation.UPDATE);
+
+		private final DatabaseOperation operation;
+
+		private DBUnitOperation(DatabaseOperation _operation) {
+			operation = _operation;
+		}
+
+		DatabaseOperation getDatabaseOperation() {
+			return operation;
+		}
+	};
+
 	/**
 	 * Exportiert die angegebenen Tabellen.
 	 * 
@@ -70,7 +87,8 @@ public class DBUnit {
 		IDatabaseConnection iDatabaseConnection = jdbcDatabaseTester
 			.getConnection();
 		DatabaseConfig config = iDatabaseConnection.getConfig();
-		config.setProperty(DatabaseConfig.PROPERTY_DATATYPE_FACTORY, new OracleDataTypeFactory());
+		config.setProperty(DatabaseConfig.PROPERTY_DATATYPE_FACTORY,
+			new OracleDataTypeFactory());
 
 		try {
 			ITableFilter databaseSequenceFilter = new DatabaseSequenceFilter(
@@ -91,15 +109,52 @@ public class DBUnit {
 	}
 
 	/**
-	 * Importiert die angegebenen XML-Datei.
+	 * Import of xml data. No data will be deleted!
 	 * 
-	 * @param ds Eine Oracle {@link DataSource}.
-	 * @param schema Schema Name.
-	 * @param importFile Aus dieser Datei die Importinformationen holen.
-	 * @throws Exception Da ging was schief.
+	 * @param ds An Oracle {@link DataSource}.
+	 * @param schema Schema name.
+	 * @param importFile import file.
+	 * @param operation database operation
+	 * @throws Exception something is not OK.
+	 */
+	public static void xmlImportInsert(final DataSource ds,
+			final String schema, final File importFile,
+			final DBUnitOperation operation) throws Exception {
+
+		xmlImport(ds, schema, importFile, operation);
+	}
+
+	/**
+	 * Import of xml data.
+	 * 
+	 * @param ds An Oracle {@link DataSource}.
+	 * @param schema Schema name.
+	 * @param importFile import file.
+	 * @param operation database operation
+	 * @throws Exception something is not OK.
 	 */
 	public static void xmlImport(final DataSource ds, final String schema,
-			final File importFile) throws Exception {
+			final File importFile, final DBUnitOperation operation)
+		throws Exception {
+
+		File dtdFile = new File(importFile.getAbsoluteFile() + ".dtd");
+		xmlImport(ds, schema, new FileInputStream(importFile),
+			new FileInputStream(dtdFile), operation);
+	}
+
+	/**
+	 * Import of xml data.
+	 * 
+	 * @param ds An Oracle {@link DataSource}.
+	 * @param schema Schema name.
+	 * @param xmlInputStream XML import stream.
+	 * @param dtdInputStream DTD for the xml stream.
+	 * @param operation database operation CLEAN_INSERT or INSERT
+	 * @throws Exception something is not OK.
+	 */
+	public static void xmlImport(final DataSource ds, final String schema,
+			final InputStream xmlInputStream, final InputStream dtdInputStream,
+			final DBUnitOperation operation) throws Exception {
 
 		DataSourceDatabaseTester jdbcDatabaseTester = new DataSourceDatabaseTester(
 			ds);
@@ -107,21 +162,18 @@ public class DBUnit {
 		IDatabaseConnection iDatabaseConnection = jdbcDatabaseTester
 			.getConnection();
 		DatabaseConfig config = iDatabaseConnection.getConfig();
-		config.setProperty(DatabaseConfig.PROPERTY_DATATYPE_FACTORY, new OracleDataTypeFactory());
-
-//		IDatabaseConnection connection = new DatabaseConnection(iDatabaseConnection.getConnection(), schema);
-//		DatabaseConfig config = connection.getConfig();
+		config.setProperty(DatabaseConfig.PROPERTY_DATATYPE_FACTORY,
+			new OracleDataTypeFactory());
 
 		try {
-			File dtdFile = new File(importFile.getAbsoluteFile() + ".dtd");
-			FlatXmlDataSet fxdt = new FlatXmlDataSet(new FileInputStream(
-				importFile), new FileInputStream(dtdFile));
+			FlatXmlDataSet fxdt = new FlatXmlDataSet(xmlInputStream,
+				dtdInputStream);
 
 			jdbcDatabaseTester.setDataSet(fxdt);
-			jdbcDatabaseTester
-				.setSetUpOperation(DatabaseOperation.CLEAN_INSERT);
+			jdbcDatabaseTester.setSetUpOperation(operation
+				.getDatabaseOperation());
 
-			DatabaseOperation.CLEAN_INSERT.execute(iDatabaseConnection, fxdt);
+			operation.getDatabaseOperation().execute(iDatabaseConnection, fxdt);
 		} finally {
 			jdbcDatabaseTester.closeConnection(iDatabaseConnection);
 		}
