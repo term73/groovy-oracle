@@ -48,7 +48,7 @@ class OraUtils {
 		if (dataSource == null) {
 			dataSource = new oracle.jdbc.pool.OracleDataSource()
 			dataSource.setURL(url)
-		}		
+		}
 		return dataSource.getConnection(user, password)
 	}
 
