@@ -1,0 +1,20 @@
+set serveroutput on;
+
+DECLARE
+  v_sql VARCHAR2(1000);
+  
+  CURSOR v_cursor IS
+    SELECT SID as sid, SERIAL# as serial, STATUS, SERVER
+    FROM V$SESSION
+    WHERE USERNAME = 'CB';
+BEGIN
+  FOR row IN v_cursor
+  LOOP
+  	DBMS_OUTPUT.PUT_LINE('SID: ' || row.sid || ', serial: ' || row.serial);
+  	v_sql := 'ALTER SYSTEM KILL SESSION '''
+	  || row.sid || ',' || row.serial || '''';
+	DBMS_OUTPUT.PUT_LINE(v_sql);
+	execute immediate v_sql;
+  END LOOP;
+END;
+/
