@@ -45,7 +45,9 @@ class OraUtils {
 			dataSource = new oracle.jdbc.pool.OracleDataSource()
 			dataSource.setURL(url)
 		}
-		return dataSource.getConnection(user, password)
+		def conn = dataSource.getConnection(user, password)
+		conn.setAutoCommit(false)
+		return conn
 	}
 
 
