@@ -67,7 +67,7 @@ class OraUtils {
     }
 
     static def dispose() {
-    	dataSource.close()
+    	dataSource?.close()
     	dataSource = null
     }
 
