@@ -62,7 +62,8 @@ class SqlFileImporter {
                 } else if (column.isDate()) {
                 	insert += "to_date('${values.getAt(index)}', '${InOutUtils.ORACLE_DATE_FORMAT}')"
                 } else {
-                	insert += "'${values.getAt(index)}'"
+                	def value = values.getAt(index)?.replaceAll("'", "''")
+                	insert += "'${value}'"
                 }
                 if (index + 1 < columns) {
                 	insert += ", "
@@ -71,7 +72,7 @@ class SqlFileImporter {
             insert += ")"
             fileWriter.writeln(insert)
             if (!logOnly) {
-            	sql.executeInsert(insert.toString())
+            	sql.executeInsert(insert.toString() + ";")
             }
         }
     	sql.commit()
