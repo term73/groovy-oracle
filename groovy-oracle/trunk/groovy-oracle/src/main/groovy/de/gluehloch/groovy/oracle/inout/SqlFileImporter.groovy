@@ -70,9 +70,9 @@ class SqlFileImporter {
                 }
             }
             insert += ")"
-            fileWriter.writeln(insert)
+            fileWriter.writeln(insert + ";")
             if (!logOnly) {
-            	sql.executeInsert(insert.toString() + ";")
+            	sql.executeInsert(insert.toString())
             }
         }
     	sql.commit()
