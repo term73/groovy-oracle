@@ -66,6 +66,11 @@ class OraUtils {
     	return sql
     }
 
+    static def dispose() {
+    	dataSource.close()
+    	dataSource = null
+    }
+
     static void purgeRecyclebin(sql) {
     	if (System.getProperty('groovy.oracle.purge_recyclebin') == 'true') {
     		sql.execute "purge recyclebin"
