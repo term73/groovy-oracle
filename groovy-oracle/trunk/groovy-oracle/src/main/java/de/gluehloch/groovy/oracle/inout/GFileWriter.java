@@ -59,9 +59,14 @@ public class GFileWriter {
 	public GFileWriter writeln(final String _text) throws IOException {
 		fileWriter.write(_text);
 		fileWriter.write(lineSeperator);
+		fileWriter.flush();
 		return this;
 	}
 
+    public void flush() throws IOException {
+    	fileWriter.flush();
+    }
+ 
 	public void close() throws IOException {
 		fileWriter.close();
 	}

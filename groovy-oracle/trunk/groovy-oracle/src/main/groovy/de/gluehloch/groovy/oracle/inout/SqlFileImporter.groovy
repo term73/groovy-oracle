@@ -57,7 +57,9 @@ class SqlFileImporter {
             def insert = "INSERT INTO ${tableName}(${tableMetaData.toColumnList()}) VALUES("
             def columns = tableMetaData.columnMetaData.size()
             tableMetaData.columnMetaData.eachWithIndex { column, index ->
-                if (column.isNumber()) {
+                if (!values.getAt(index)) {
+                	insert += "NULL"
+                } else if (column.isNumber()) {
                 	insert += "${values.getAt(index)}"
                 } else if (column.isDate()) {
                 	insert += "to_date('${values.getAt(index)}', '${InOutUtils.ORACLE_DATE_FORMAT}')"
@@ -70,7 +72,7 @@ class SqlFileImporter {
                 }
             }
             insert += ")"
-            fileWriter.writeln(insert + ";")
+            fileWriter.writeln("${insert};")
             if (!logOnly) {
             	sql.executeInsert(insert.toString())
             }
