@@ -50,7 +50,6 @@ class OraUtils {
 		return conn
 	}
 
-
     static def createSql(user, password, url, port, sid) {
         return createSql(user, password, "${url}:${port}:${sid}")
     }

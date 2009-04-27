@@ -4,9 +4,9 @@ DECLARE
   v_sql VARCHAR2(1000);
   
   CURSOR v_cursor IS
-    SELECT SID as sid, SERIAL# as serial, STATUS, SERVER
+    SELECT SID as sid, SERIAL# as serial, STATUS, SERVER, OSUSER
     FROM V$SESSION
-    WHERE USERNAME = 'CB';
+    WHERE OSUSER = 'ta2tfsbuild';
 BEGIN
   FOR row IN v_cursor
   LOOP
@@ -14,7 +14,7 @@ BEGIN
   	v_sql := 'ALTER SYSTEM KILL SESSION '''
 	  || row.sid || ',' || row.serial || '''';
 	DBMS_OUTPUT.PUT_LINE(v_sql);
-	execute immediate v_sql;
+	--execute immediate v_sql;
   END LOOP;
 END;
 /

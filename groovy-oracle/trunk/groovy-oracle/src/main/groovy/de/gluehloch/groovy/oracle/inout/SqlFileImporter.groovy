@@ -42,7 +42,8 @@ class SqlFileImporter {
     def sql
     def tableName
 	def fileName
-	def columnSeperator = '|'	
+	def columnSeperator = '|'
+	def logOnly = false
 
 	def load() {
     	def omdf = new OracleMetaDataFactory()
@@ -69,7 +70,9 @@ class SqlFileImporter {
             }
             insert += ")"
             fileWriter.writeln(insert)
-            sql.executeInsert(insert.toString())
+            if (!logOnly) {
+            	sql.executeInsert(insert.toString())
+            }
         }
     	sql.commit()
     	fileWriter.close()
