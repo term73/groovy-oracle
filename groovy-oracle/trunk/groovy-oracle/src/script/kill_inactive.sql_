@@ -6,14 +6,15 @@ DECLARE
   CURSOR v_cursor IS
     SELECT SID as sid, SERIAL# as serial, STATUS, SERVER, OSUSER
     FROM V$SESSION
-    WHERE OSUSER = 'ta2tfsbuild';
+    WHERE OSUSER NOT IN ('ehwwdre', 'EHWWDRE');
+   --'ta2tfsbuild';
 BEGIN
   FOR row IN v_cursor
   LOOP
-  	DBMS_OUTPUT.PUT_LINE('SID: ' || row.sid || ', serial: ' || row.serial);
+  	DBMS_OUTPUT.PUT_LINE('SID: ' || row.sid || ', serial: ' || row.serial || ', os_user: ' || row.osuser);
   	v_sql := 'ALTER SYSTEM KILL SESSION '''
 	  || row.sid || ',' || row.serial || '''';
-	DBMS_OUTPUT.PUT_LINE(v_sql);
+	--DBMS_OUTPUT.PUT_LINE(v_sql);
 	--execute immediate v_sql;
   END LOOP;
 END;
