@@ -2,7 +2,7 @@
 
 = Java/Oracle Date/Time transformation =
 
-This example shows the transformation of a Java Date object to an Oracle Timestamp data type:
+This example shows the transformation gaps of a Java Date object to an Oracle Timestamp data type:
 
 {{{
 import oracle.sql.*
