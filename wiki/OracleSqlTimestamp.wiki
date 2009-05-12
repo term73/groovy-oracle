@@ -32,12 +32,4 @@ def oracleSqlTimestamp = new oracle.sql.TIMESTAMP(timestamp)
 result = "${oracleSqlTimestamp.getClass().getName()} ${oracleSqlTimestamp.stringValue()}"
 assert result == oracle.sql.TIMESTAMP 1971-3-24 17.5.10.0
 // As expected!
-
 }}}
-
-= Details =
-
-Add your content here.  Format your content with:
-  * Text in *bold* or _italic_
-  * Headings, paragraphs, and lists
-  * Automatic links to other wiki pages
