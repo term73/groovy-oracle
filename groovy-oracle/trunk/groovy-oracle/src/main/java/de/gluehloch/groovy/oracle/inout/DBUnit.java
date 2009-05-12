@@ -70,13 +70,13 @@ public class DBUnit {
 	};
 
 	/**
-	 * Exportiert die angegebenen Tabellen.
+	 * Exports a given table.
 	 * 
-	 * @param ds Eine Oracle {@link DataSource}.
-	 * @param schema Schema Name.
-	 * @param tableNames Die zu exportierenden Tabellen.
-	 * @param exportFile In diese Datei das Exportergebnis schreiben.
-	 * @throws Exception Da ging was schief.
+	 * @param ds Oracle DB {@link DataSource}.
+	 * @param schema schema name.
+	 * @param tableNames Table for export.
+	 * @param exportFile Write export data to this file.
+	 * @throws Exception Some problems.
 	 */
 	public static void xmlExport(final DataSource ds, final String schema,
 			final String[] tableNames, final File exportFile) throws Exception {

@@ -39,6 +39,8 @@ class OraUtils {
 	static final DRIVER_NAME = 'oracle.jdbc.driver.OracleDriver'
 
 	static def dataSource
+//	private static def user
+//	private static def url
 
 	static def getConnection(user, password, url) {
 		if (dataSource == null) {
@@ -50,15 +52,15 @@ class OraUtils {
 		return conn
 	}
 
-    static def createSql(user, password, url, port, sid) {
-        return createSql(user, password, "${url}:${port}:${sid}")
+    static def createSql(_user, _password, _url, _port, _sid) {
+        return createSql(_user, _password, "${_url}:${_port}:${_sid}")
     }
 
-    static def createSql(user, password, url) {
+    static def createSql(_user, _password, _url) {
         def sql
     	try {
     		sql = new Sql(getConnection(
-    			user, password, "jdbc:oracle:thin:${user}/${password}@${url}"))
+    			_user, _password, "jdbc:oracle:thin:${_user}/${_password}@${_url}"))
     	} catch (SQLException ex) {
     	    println ex.getMessage()
     		throw ex
