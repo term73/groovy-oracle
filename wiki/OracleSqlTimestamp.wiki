@@ -1,0 +1,43 @@
+#summary Describes the date conversion from java.lang.Date to oracle.sql.TIMESTAMP
+
+= Java/Oracle Date/Time transformation =
+
+This example shows the transformation of a Java Date object to an Oracle Timestamp data type:
+
+{{{
+import oracle.sql.*
+
+def result
+def date = Date.parse('yyyy-MM-dd HH:mm:ss', '1971-03-24 17:05:10') 
+result = "${date.getClass().getName()} ${date}"
+assert "java.util.Date Wed Mar 24 17:05:10 CET 1971" == result
+// As expected!
+
+def timestamp = new java.sql.Timestamp(date.getTime())
+result = "${timestamp.getClass().getName()} ${timestamp}"
+assert "java.sql.Timestamp 1971-03-24 17:05:10.0" == result
+// As expected!
+
+def sqlDate = new java.sql.Date(date.getTime())
+result = "java.sql.Date ${sqlDate}"
+assert "java.sql.Date 1971-03-24" == result
+// The time (hour, minute, second) get lost!
+
+def oracleSqlDate = new oracle.sql.DATE(sqlDate)
+result = "${oracleSqlDate.getClass().getName()} ${oracleSqlDate.stringValue()}"
+assert oracle.sql.DATE 3/24/1971 0:0:0 == result
+// The time (hour, minute, second) get lost!
+
+def oracleSqlTimestamp = new oracle.sql.TIMESTAMP(timestamp)
+result = "${oracleSqlTimestamp.getClass().getName()} ${oracleSqlTimestamp.stringValue()}"
+assert result == oracle.sql.TIMESTAMP 1971-3-24 17.5.10.0
+// As expected!
+
+}}}
+
+= Details =
+
+Add your content here.  Format your content with:
+  * Text in *bold* or _italic_
+  * Headings, paragraphs, and lists
+  * Automatic links to other wiki pages
