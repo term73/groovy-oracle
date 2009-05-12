@@ -35,7 +35,16 @@ class Assertion {
 	 * exception if necessary.<br/>
 	 * Example:
 	 * <pre>
+	 * import de.gluehloch.groovy.oracle.inout.*
 	 * 
+	 * def sql = OraUtils.createSql(user, password, url)
+	 * def expectation = Data.createData('a_table',
+	 *     [
+	 *         [col1: 1, col2: 'ein_test_1', col3: 1971],
+	 *         [col1: 2, col2: 'ein_test_2', col3: 1972],
+	 *         [col1: 3, col2: 'ein_test_3', col3: 1973],
+	 *     ])
+	 * assertRowEquals(sql, expectation, 'select col1, col2, col3 from a_table order by id')
 	 * </pre>
 	 *
 	 * @param sql A Groovy sql object.

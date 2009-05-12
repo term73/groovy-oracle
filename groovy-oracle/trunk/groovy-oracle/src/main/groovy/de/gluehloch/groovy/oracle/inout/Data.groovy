@@ -44,7 +44,7 @@ class Data {
      * Create a new Data object:
      * <pre>
      * // Define a data set...
-     * def dataset = data('tableName', {
+     * def dataset = createData('tableName', {
      *   [
      *     [col_1: 'value_1', col_2: 'value_2'],
      *     [col_1: 'value_3', col_2: 'value_4'],
