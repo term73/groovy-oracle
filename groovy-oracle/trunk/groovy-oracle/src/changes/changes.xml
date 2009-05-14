@@ -5,7 +5,7 @@
     <author email="andre.winkler@web.de">Andre Winkler</author>
   </properties>
   <body>
-    <release version="groovy-oracle-0.2.1" date="2009-04-21"
+    <release version="groovy-oracle-0.2.1" date="2009-05-xx"
          description="Bugfix">
       <action dev="andrewinkler" type="fix" date="2009-04-13">
         The property #referencedTableName of class ForeignKey was not
@@ -14,6 +14,12 @@
       <action dev="andrewinkler" type="add" date="2009-04-21">
         Add DBUnit Support. This is only a prototype implementation and
         may be change in further releases.
+      </action>
+      <action dev="andrewinkler" type="add" date="2009-05-14">
+        The Loader class in combination with the Data class supports DATE types. 
+      </action>
+      <action dev="andrewinkler" type="fix" date="2009-05-14">
+        The Loader class has some problems with 0 and NULL. 
       </action>
     </release>
 

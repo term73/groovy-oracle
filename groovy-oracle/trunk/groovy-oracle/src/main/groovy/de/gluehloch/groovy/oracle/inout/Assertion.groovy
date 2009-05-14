@@ -55,7 +55,23 @@ class Assertion {
 	    def index = 0
 	    sql.eachRow(query) { row ->
 	        expectation.rows[index++].each() {
-	            assert it.value == row[it.key]
+	        	def colValue = row[it.key]
+	        	//
+	        	// TODO That looks strange!
+	        	//
+	        	if (it.value != null && colValue != null) {
+	        		assert it.value == colValue
+	        	} else if (it.value == null && colValue != null) {
+	        		assert false
+	            } else if (it.value != null && colValue == null) {
+	            	if (it.value == '') {
+	            		assert true
+	            	} else {
+	            		assert false
+	            	}
+	            } else {
+	            	assert true
+	            }
 	        }
 	    }
 	}

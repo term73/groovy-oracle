@@ -27,6 +27,10 @@ package de.gluehloch.groovy.oracle.inout
 
 import groovy.sql.Sql
 
+import de.gluehloch.groovy.oracle.*
+
+import de.gluehloch.groovy.oracle.meta.*
+
 /**
  * Uploads data to the database.
  *
@@ -35,20 +39,66 @@ import groovy.sql.Sql
  */
 class Loader {
 
-    /**
-	 * table = [
-	 *     new Data(tableName: 'tablename', rows: [
-	 *         [col_1: 'value_1', col_2: 'value_2'],
-	 *         [col_1: 'value_3', col_2: 'value_4'],
-	 *         [col_1: 'value_5', col_2: 'value_6']
-	 *     ])
-	 * ]
-	 */
-	def load(sql, data) {
-	    def dataSet = sql.dataSet(data.tableName)
-	    data.rows.each { row ->
-	        dataSet.add(row)
-	    }
-	}
+    def sql
+    def logEnabled = false
+    def log
 
+    /**
+     * Oracle stores the meta data in upper case. So it is a good idea to
+     * define all table/column names in upper case.
+     *
+     * table = [
+     *     new Data(tableName: 'TABLENAME', rows: [
+     *         [COL_1: 'value_1', COL_2: 'value_2'],
+     *         [COL_1: 'value_3', COL_2: 'value_4'],
+     *         [COL_1: 'value_5', COL_2: 'value_6']
+     *     ])
+     * ]
+     */
+    def load(data) {
+    	if (logEnabled) log = ""
+
+        def omdf = new OracleMetaDataFactory()
+        def tableMetaData = omdf.createOracleTable(sql, data.tableName.toUpperCase())
+        sql.getConnection().setAutoCommit(false)
+
+        data.rows.each { row ->
+            def insert = "INSERT INTO ${data.tableName}(${tableMetaData.toColumnList()}) VALUES("
+            def columns = tableMetaData.columnMetaData.size()
+            tableMetaData.columnMetaData.eachWithIndex { column, index ->
+                def value = row[column.columnName]
+
+                if (column.isNumber()) {
+                	if (value == null) {
+                		insert += 'NULL'
+                	} else {
+                        insert += "${value}"
+                	}
+                } else if (column.isDate()) {
+                	if (value == null) {
+                		insert += 'NULL'
+                	} else {
+                        insert += "to_date('${value}', '${InOutUtils.ORACLE_DATE_FORMAT}')"
+                	}
+                } else {
+                	if (value == null) {
+                		insert += 'NULL'
+                	} else {
+                        def insertValue = value?.replaceAll("'", "''")
+                        insert += "'${value}'"
+                	}
+                }
+                if (index + 1 < columns) {
+                    insert += ", "
+                }
+            }
+            insert += ")"
+            if (logEnabled) {
+            	log += insert
+            	log += data.lineSeperator
+            }
+            sql.executeInsert(insert.toString())
+        }
+    }
+   
 }
