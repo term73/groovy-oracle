@@ -21,6 +21,10 @@
       <action dev="andrewinkler" type="fix" date="2009-05-14">
         The Loader class has some problems with 0 and NULL. 
       </action>
+      <action dev="andrewinkler" type="add" date="2009-05-15">
+        The Data object rows must not match all columns of a table. It is
+        possible to define a Data object with a subset of defined table columns. 
+      </action>
     </release>
 
     <release version="groovy-oracle-0.2.0" date="2009-03-23"

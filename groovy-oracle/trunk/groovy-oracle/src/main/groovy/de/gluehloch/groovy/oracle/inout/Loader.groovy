@@ -25,6 +25,8 @@
 
 package de.gluehloch.groovy.oracle.inout
 
+import java.sql.*
+
 import groovy.sql.Sql
 
 import de.gluehloch.groovy.oracle.*
@@ -63,41 +65,54 @@ class Loader {
         sql.getConnection().setAutoCommit(false)
 
         data.rows.each { row ->
-            def insert = "INSERT INTO ${data.tableName}(${tableMetaData.toColumnList()}) VALUES("
-            def columns = tableMetaData.columnMetaData.size()
-            tableMetaData.columnMetaData.eachWithIndex { column, index ->
-                def value = row[column.columnName]
+            def columnNames = row.keySet().join(', ') 
+            def insert = "INSERT INTO ${data.tableName}(${columnNames}) VALUES("
+            def index = 0
+            row.each { key, value ->
+            	def column = tableMetaData.columnMetaData.find { it.columnName == key.toUpperCase()}
+            	def columns = row.size()
+            	if (!column) {
+            		throw new IllegalArgumentException("Column ${key} does not exist for table ${data.tableName}")
+            	}
 
                 if (column.isNumber()) {
-                	if (value == null) {
-                		insert += 'NULL'
-                	} else {
+                    if (value == null) {
+                        insert += 'NULL'
+                    } else {
                         insert += "${value}"
-                	}
+                    }
                 } else if (column.isDate()) {
-                	if (value == null) {
-                		insert += 'NULL'
-                	} else {
+                    if (value == null) {
+                        insert += 'NULL'
+                    } else {
                         insert += "to_date('${value}', '${InOutUtils.ORACLE_DATE_FORMAT}')"
-                	}
+                    }
                 } else {
-                	if (value == null) {
-                		insert += 'NULL'
-                	} else {
+                    if (value == null) {
+                        insert += 'NULL'
+                    } else {
                         def insertValue = value?.replaceAll("'", "''")
                         insert += "'${value}'"
-                	}
+                    }
                 }
                 if (index + 1 < columns) {
                     insert += ", "
                 }
+                index++
             }
+
             insert += ")"
             if (logEnabled) {
             	log += insert
             	log += data.lineSeperator
             }
-            sql.executeInsert(insert.toString())
+            
+            try {
+                sql.executeInsert(insert.toString())
+            } catch (SQLException ex) {
+            	println "Caused by ${insert}"
+            	throw ex
+            }
         }
     }
    
