@@ -61,7 +61,7 @@ class Data {
      * </pre>
      *
      * @param tableName The name of the database table.
-     * @param dataset The data set.
+     * @param dataset A closure which creates and returns a list of maps.
      */
     static def createData(tableName, dataset) {
         new Data(tableName: tableName, rows: dataset())
