@@ -26,48 +26,34 @@
 package de.gluehloch.groovy.oracle
 
 /**
- * Wrapper for calling Oracle´s SQL*Plus command line tool.
+ * TODO
  * 
  * @author  $Author: andre.winkler@web.de $
  * @version $Revision: 104 $ $Date: 2009-03-04 15:17:30 +0100 (Mi, 04 Mrz 2009) $
  */
-class SqlPlus {
+public class SqlPlusCmd extends SqlPlus {
 
-	static final def LINE_SEPARATOR = System.getProperty('line.separator');
+	/** A SQL*Plus command or SQL statement terminated by a ';' */
+	def command = ["set serveroutput on size unlimited;"]
 
-	def sqlplusExecutable = 'sqlplus'
-	def user
-	def password
-	def script
-	def tnsName
-	def dir
+    /**
+     * Executes a sql script with SQL*Plus.
+     * 
+     * @return Returns 0, if everything was fine. 
+     */
+	def start() {
+		script = File.createTempFile('tmp_rms', '.sql')
+		command?.each { script << (it + LINE_SEPARATOR) }
 
-	/** Output StringBuffer. */
-	def sout
+		dir = script.getParent()
+		script = script.toString()
 
-	/** Error-Output as StringBuffer. */
-	def serr
+		super.start()
+	}
 
-	/**
-	 * Executes a sql script with SQL*Plus.
-	 * 
-	 * @return Returns 0, if everything was fine. 
-	 */
-    def start() {
-		def ant = new AntBuilder()
-		ant.exec(outputproperty: "cmdOut",
-			errorproperty: "cmdErr",
-		    resultproperty:"cmdExit",
-		    failonerror: "true",
-		    dir: "${dir}",
-		    executable: "${sqlplusExecutable}") {
-		        arg(line: "${user}/${password}@${tnsName} @${script}")
-		    }
-
-		serr = ant.project.properties.cmdErr
-		sout = ant.project.properties.cmdOut
-
-		return ant.project.properties.cmdExit
-    }
+	def leftShift(sqlCmd) {
+		command << " exec dbms_output.put_line('${sqlCmd}');"
+		command << sqlCmd
+	}
 
 }

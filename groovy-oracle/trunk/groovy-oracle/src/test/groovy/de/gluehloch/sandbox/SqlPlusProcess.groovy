@@ -23,51 +23,55 @@
  *
  */
 
-package de.gluehloch.groovy.oracle
+package de.gluehloch.sandbox
 
 /**
- * Wrapper for calling Oracle´s SQL*Plus command line tool.
+ * Wrapper for calling Oracle´s SQL*Plus command line tool. This one makes
+ * currently some problems.
+ *
+ * TODO: Do i need this class?
  * 
  * @author  $Author: andre.winkler@web.de $
  * @version $Revision: 104 $ $Date: 2009-03-04 15:17:30 +0100 (Mi, 04 Mrz 2009) $
  */
-class SqlPlus {
+class SqlPlusProcess {
 
-	static final def LINE_SEPARATOR = System.getProperty('line.separator');
+    def sqlplusExecutable = 'sqlplus'
+    def user
+    def password
+    def script
+    def tnsName
+    def dir
 
-	def sqlplusExecutable = 'sqlplus'
-	def user
-	def password
-	def script
-	def tnsName
-	def dir
+    /** Output StringBuffer. */
+    def sout
 
-	/** Output StringBuffer. */
-	def sout
+    /** Error-Output as StringBuffer. */
+    def serr
 
-	/** Error-Output as StringBuffer. */
-	def serr
-
-	/**
-	 * Executes a sql script with SQL*Plus.
-	 * 
-	 * @return Returns 0, if everything was fine. 
-	 */
+    /**
+     * Executes a sql script with SQL*Plus.
+     * 
+     * @return Returns 0, if everything was fine. 
+     */
     def start() {
-		def ant = new AntBuilder()
-		ant.exec(outputproperty: "cmdOut",
-			errorproperty: "cmdErr",
-		    resultproperty:"cmdExit",
-		    failonerror: "true",
-		    dir: "${dir}",
-		    executable: "${sqlplusExecutable}") {
-		        arg(line: "${user}/${password}@${tnsName} @${script}")
-		    }
+        sout = new StringBuffer()
+        serr = new StringBuffer()
 
-		serr = ant.project.properties.cmdErr
-		sout = ant.project.properties.cmdOut
-
-		return ant.project.properties.cmdExit
+        try {
+            Process p = "${sqlplusExecutable} ${user}/${password}@${tnsName}".execute()
+            p.consumeProcessOutput(sout, serr)
+            p.withWriter { writer ->
+                writer << "select * from cptasklist;"
+                writer << 'exit;'
+            }
+            p.waitFor()
+            return 0
+        } catch (IOException ex) {
+            println 'Executable of sqlplus not found!'
+            return -1
+        }
+        println sout
     }
 
 }
