@@ -79,4 +79,30 @@ class OraUtils {
     	}
     }
 
+    static def checkValidPackages(sql) {
+    	def invalidPackages = []
+    	sql.eachRow("""
+                select object_name
+                from user_objects
+                where status = 'INVALID'
+                    and object_type IN ('PACKAGE', 'PACKAGE BODY')
+    	    """) {
+    		invalidPackages << it.object_name
+    	}
+    	return invalidPackages
+    }
+
+    static def checkValidProcedures(sql) {
+        def invalidProcedures = []
+        sql.eachRow("""
+                select object_name
+                from user_objects
+                where status = 'INVALID'
+                    and object_type = 'PROCEDURE'
+            """) {
+        	invalidProcedures << it.object_name
+        }
+        return invalidProcedures
+    }
+
 }

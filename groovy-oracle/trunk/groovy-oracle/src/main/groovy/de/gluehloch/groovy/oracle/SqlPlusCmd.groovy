@@ -26,7 +26,10 @@
 package de.gluehloch.groovy.oracle
 
 /**
- * TODO
+ * Wrapper for calling Oracle´s SQL*Plus command line tool. This is a
+ * convenience class and a wrapper of class SqlPlus. The user specifies his
+ * sql commands with the list property <code>command</code>. Additionally some
+ * logs are generated for every statement.
  * 
  * @author  $Author: andre.winkler@web.de $
  * @version $Revision: 104 $ $Date: 2009-03-04 15:17:30 +0100 (Mi, 04 Mrz 2009) $

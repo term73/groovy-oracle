@@ -25,6 +25,10 @@
         The Data object rows must not match all columns of a table. It is
         possible to define a Data object with a subset of defined table columns. 
       </action>
+      <action dev="andrewinkler" type="add" date="2009-05-27">
+        Two new methods: OraUtils#checkValidPackages(...) and
+        OraUtils#checkValidProcedures(...). 
+      </action>
     </release>
 
     <release version="groovy-oracle-0.2.0" date="2009-03-23"

@@ -26,18 +26,19 @@
 package de.gluehloch.groovy.oracle
 
 import org.junit.Test
+import org.junit.Before
 
 /**
  * Testet die Klasse OraUtils.
  */
 class OraUtilsTest {
 
-	@Test
-	void testOraUtils() {
-		def user = System.getProperty('groovy.oracle.test.user')
-		def pwd = System.getProperty('groovy.oracle.test.password')
-		def url = System.getProperty('groovy.oracle.test.url')
+	def user
+	def pwd
+	def url
 
+	@Test
+	void testOraUtilsCreateSql() {
 		if (!user || !pwd || !url) {
 			println """Check your .settings.xml:
   <profiles>
@@ -58,6 +59,24 @@ class OraUtilsTest {
 	
 		def sql = OraUtils.createSql(user, pwd, url);
 		assert sql != null
+	}
+
+	@Test
+	void testOraUtilsInvalidPackages() {
+		def sql = OraUtils.createSql(user, pwd, url);
+
+		def invalidPackages = OraUtils.checkValidPackages(sql)
+		assert invalidPackages != null
+
+		def invalidProcedures = OraUtils.checkValidProcedures(sql)
+		assert invalidProcedures != null
+	}
+
+	@Before
+	void setUp() {
+        user = System.getProperty('groovy.oracle.test.user')
+        pwd = System.getProperty('groovy.oracle.test.password')
+        url = System.getProperty('groovy.oracle.test.url')		
 	}
 
 }
