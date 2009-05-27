@@ -1,0 +1,59 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<document>
+  <properties>
+    <title>Change Notes</title>
+    <author email="andre.winkler@web.de">Andre Winkler</author>
+  </properties>
+  <body>
+    <release version="groovy-oracle-0.2.1" date="2009-05-27"
+         description="Bugfix">
+      <action dev="andrewinkler" type="fix" date="2009-04-13">
+        The property #referencedTableName of class ForeignKey was not
+        set properly by OracleColumnFinder#getConstraint().
+      </action>
+      <action dev="andrewinkler" type="add" date="2009-04-21">
+        Add DBUnit Support. This is only a prototype implementation and
+        may be change in further releases.
+      </action>
+      <action dev="andrewinkler" type="add" date="2009-05-14">
+        The Loader class in combination with the Data class supports DATE types. 
+      </action>
+      <action dev="andrewinkler" type="fix" date="2009-05-14">
+        The Loader class has some problems with 0 and NULL. 
+      </action>
+      <action dev="andrewinkler" type="add" date="2009-05-15">
+        The Data object rows must not match all columns of a table. It is
+        possible to define a Data object with a subset of defined table columns. 
+      </action>
+      <action dev="andrewinkler" type="add" date="2009-05-27">
+        Two new methods: OraUtils#checkValidPackages(...) and
+        OraUtils#checkValidProcedures(...). 
+      </action>
+    </release>
+
+    <release version="groovy-oracle-0.2.0" date="2009-03-23"
+         description="Evolution">
+      <action dev="andrewinkler" type="add" date="2009-03-12">
+        TableColumn with new methods: #isNumber() and #isDate()
+      </action>
+      <action dev="andrewinkler" type="add" date="2009-03-23">
+        Loader and Data scripts for holding/importing table data.
+      </action>
+      <action dev="andrewinkler" type="add" date="2009-03-23">
+        Added a SQL*plus Wrapper.
+      </action>
+    </release>
+
+    <release version="groovy-oracle-0.1.0" date="2008-??-??"
+         description="???">
+      <action dev="andrewinkler" type="add" date="2008-??-??">
+        First ideas collected and released.
+      </action>
+    </release>
+  </body>
+  <footer>
+    <legal>
+      Copyright (c) @year@ The 'groovy-oracle' Project All rights reserved.
+    </legal>
+  </footer>
+</document>
