@@ -49,6 +49,10 @@ class SqlFileExporter {
 	def columnSeperator = '|'
 
 	def export() {
+		if (!query) {
+			throw new IllegalArgumentException("Property 'query' must be set!")
+		}
+
 		def fileWriter = new GFileWriter(fileName)
 
 		def _query = ""
@@ -69,6 +73,7 @@ class SqlFileExporter {
             _query = "select ${columns.join(',')} from ${query}".toString()
 		}
 
+		def tmp
 		sql.eachRow(_query) { row ->
 		    def string = ""
 		    for (i in 1 .. row.getMetaData().getColumnCount()) {
@@ -77,13 +82,22 @@ class SqlFileExporter {
 		    	switch (columnType)
 		    	{
 		    	case java.sql.Types.DATE:
-		    		string += InOutUtils.toString(row."${columnName}")
+		    		tmp = InOutUtils.toString(row."${columnName}")
+		    		if (tmp != null) {
+		    			string += tmp
+		    		}
 		    		break
                 case java.sql.Types.TIMESTAMP:
-                    string += InOutUtils.toString(row."${columnName}")
+                    tmp = InOutUtils.toString(row."${columnName}")
+                    if (tmp != null) {
+                        string += tmp
+                    }
                     break
                 default:
-                	string += row."${columnName}"
+                	tmp = row."${columnName}"
+                    if (tmp != null) {
+                        string += tmp
+                    }
 		    	}
 		    	
 		    	if (i < row.getMetaData().getColumnCount()) {
