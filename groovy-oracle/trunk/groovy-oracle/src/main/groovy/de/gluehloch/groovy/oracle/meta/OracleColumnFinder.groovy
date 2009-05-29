@@ -115,4 +115,15 @@ WHERE constraint_name = ${foreignKey.rConstraintName} AND constraint_type = 'P'
         return constraint;
     }
 
+    /*
+     * May be better for foreign key detection...
+     * 
+SELECT b.position, a.constraint_name, a.constraint_type, a.table_name, a.search_condition, a.r_constraint_name, b.column_name, c.constraint_name as REF_CONSTRAINT, c.table_name as REF_TABLE
+FROM user_constraints a, user_cons_columns b, user_constraints c
+WHERE a.constraint_name = b.constraint_name
+  AND a.table_name = ${tableName}
+  AND c.constraint_name = a.r_constraint_name
+  AND a.constraint_type = 'R'
+order by a.constraint_type, b.position;
+     */
 }
