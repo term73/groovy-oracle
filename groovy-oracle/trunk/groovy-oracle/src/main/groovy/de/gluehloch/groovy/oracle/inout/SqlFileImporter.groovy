@@ -44,6 +44,8 @@ class SqlFileImporter {
 	def fileName
 	def columnSeperator = '|'
 	def logOnly = false
+	def commitLimit = 1000
+	def insertCounter = 0
 
 	def load() {
     	def omdf = new OracleMetaDataFactory()
@@ -73,8 +75,15 @@ class SqlFileImporter {
             }
             insert += ")"
             fileWriter.writeln("${insert};")
+
             if (!logOnly) {
+            	insertCounter++
             	sql.executeInsert(insert.toString())
+            }
+
+            if (insertCounter > commitLimit) {
+            	insertCounter = 0
+            	sql.commit()            	
             }
         }
     	sql.commit()

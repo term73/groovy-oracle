@@ -5,11 +5,15 @@
     <author email="andre.winkler@web.de">Andre Winkler</author>
   </properties>
   <body>
-    <release version="groovy-oracle-0.3.0-dev1" date="2009-05-28"
+    <release version="groovy-oracle-0.3.0-dev1" date="2009-??-??"
          description="New features and fixes">
-      <action dev="andrewinkler" type="fix" date="2009-04-13">
+      <action dev="andrewinkler" type="fix" date="2009-05-28">
         The class SqlFileExporter ignore NULL values a print out an empty
         string instead of 'null'.
+      </action>
+      <action dev="andrewinkler" type="update" date="2009-05-28">
+        The class SqlFileImporter uses a commit limit counter. If the limit
+        is reached, a commit will be executed to the database.
       </action>
     </release>
     <release version="groovy-oracle-0.2.1" date="2009-05-27"
