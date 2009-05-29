@@ -36,27 +36,27 @@ package de.gluehloch.groovy.oracle
  */
 public class SqlPlusCmd extends SqlPlus {
 
-	/** A SQL*Plus command or SQL statement terminated by a ';' */
-	def command = ["set serveroutput on size unlimited;"]
+    /** A SQL*Plus command or SQL statement terminated by a ';' */
+    def command = ["set serveroutput on size unlimited;"]
 
     /**
      * Executes a sql script with SQL*Plus.
      * 
      * @return Returns 0, if everything was fine. 
      */
-	def start() {
-		script = File.createTempFile('tmp_rms', '.sql')
-		command?.each { script << (it + LINE_SEPARATOR) }
+    def start() {
+        script = File.createTempFile('tmp_rms', '.sql')
+        command?.each { script << (it + LINE_SEPARATOR) }
 
-		dir = script.getParent()
-		script = script.toString()
+        dir = script.getParent()
+        script = script.toString()
 
-		super.start()
+        super.start()
 	}
 
-	def leftShift(sqlCmd) {
-		command << " exec dbms_output.put_line('${sqlCmd}');"
-		command << sqlCmd
-	}
+    def leftShift(sqlCmd) {
+    	command << "exec dbms_output.put_line('${sqlCmd}');"
+        command << sqlCmd
+    }
 
 }
