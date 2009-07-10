@@ -25,6 +25,8 @@
 
 package de.gluehloch.groovy.oracle.inout
 
+import java.sql.SQLException
+
 /**
  * Compares expectations and database reality.
  */
@@ -55,7 +57,13 @@ class Assertion {
 	    def index = 0
 	    sql.eachRow(query) { row ->
 	        expectation.rows[index++].each() {
-	        	def colValue = row[it.key]
+	        	def colValue = null
+	        	try {
+	        	    colValue = row[it.key]
+	        	} catch (SQLException ex) {
+	        		throw new RuntimeException("The row ${it.key} is not defined by query ${query}")
+	        	}
+
 	        	//
 	        	// TODO That looks strange!
 	        	//
