@@ -61,7 +61,7 @@ class Assertion {
 	        	try {
 	        	    colValue = row[it.key]
 	        	} catch (SQLException ex) {
-	        		throw new RuntimeException("The row ${it.key} is not defined by query ${query}")
+	        		throw new SQLException("The row ${it.key} is not defined by query ${query}")
 	        	}
 
 	        	//
