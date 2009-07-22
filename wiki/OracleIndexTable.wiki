@@ -1,7 +1,7 @@
 #summary Explains the usage of Oracle´s PL/SQL index table types with JDBC.
 
 = Introduction =
-TODO: My explanation.
+TODO: My explanation. IS there a Groovy way to acces PL/SQL index table types?
 
 At first, some links to the topic:
 
