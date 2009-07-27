@@ -1,0 +1,67 @@
+#summary Present some helpful SQL scripts for Oracle.
+
+= Helpful Scripts =
+
+== Database locks ==
+This script shows all database locks, the associated db/os users and other informations.
+{{{
+ttitle "Lock Listing"
+set linesize 150
+set echo off
+col oruser format a16 heading "Oracle Username"
+col osuser format a13 heading "O/S Username"
+col obj format a20 heading "Locked Object"
+col ss heading "SID/Ser#" format a12
+col time heading "Logon Date/Time" format a19
+col rs heading "RBS|Name" format a4
+col unix heading "O/S|Process" format a9
+col computer heading "Machine name|of Locker" format a20
+set linesize 120
+select     owner||'.'||object_name obj
+   ,oracle_username||' ('||s.status||')' oruser
+   ,os_user_name osuser
+   ,machine computer
+   ,l.process unix
+   ,''''||s.sid||','||s.serial#||'''' ss
+   ,r.name rs
+   ,to_char(s.logon_time,'yyyy/mm/dd hh24:mi:ss') time
+from       v$locked_object l
+   ,dba_objects o
+   ,v$session s
+   ,v$transaction t
+   ,v$rollname r
+where l.object_id = o.object_id
+  and s.sid=l.session_id
+  and s.taddr=t.addr
+  and t.xidusn=r.usn
+order by osuser, ss, obj
+/
+ttitle off
+set linesize 132
+}}}
+
+== Session killer ==
+The following script kills all database session. You should modify the filter for a more selective behavior.
+{{{
+set serveroutput on;
+
+DECLARE
+  v_sql VARCHAR2(1000);
+  
+  CURSOR v_cursor IS
+    SELECT SID as sid, SERIAL# as serial, STATUS, SERVER, OSUSER
+    FROM V$SESSION
+    WHERE OSUSER NOT IN ('USER_1', 'USER_2');
+   --'ta2tfsbuild';
+BEGIN
+  FOR row IN v_cursor
+  LOOP
+  	DBMS_OUTPUT.PUT_LINE('SID: ' || row.sid || ', serial: ' || row.serial || ', os_user: ' || row.osuser);
+  	v_sql := 'ALTER SYSTEM KILL SESSION '''
+	  || row.sid || ',' || row.serial || '''';
+	--DBMS_OUTPUT.PUT_LINE(v_sql);
+	--execute immediate v_sql;
+  END LOOP;
+END;
+/
+}}}
