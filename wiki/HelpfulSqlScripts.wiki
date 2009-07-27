@@ -41,7 +41,7 @@ set linesize 132
 }}}
 
 == Session killer ==
-The following script kills all database session. You should modify the filter for a more selective behavior.
+The following script kills all database session. You should modify the filter for a more selective behavior. Don´t forget to uncomment one of the lines.
 {{{
 set serveroutput on;
 
