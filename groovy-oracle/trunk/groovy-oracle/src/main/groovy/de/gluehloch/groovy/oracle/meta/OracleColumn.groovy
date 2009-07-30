@@ -111,6 +111,10 @@ class OracleColumn {
     	return (dataType == 'DATE' || dataType == 'TIMESTAMP')
     }
 
+    def isString() {
+    	return (dataType == 'VARCHAR2' || dataType == 'CHAR')
+    }
+
     /**
      * Liefert die Beschreibung der Datenbankspalte. Diese Beschreibung kann
      * in einem 'CREATE TABLE' Befehl eingesetzt werden.
