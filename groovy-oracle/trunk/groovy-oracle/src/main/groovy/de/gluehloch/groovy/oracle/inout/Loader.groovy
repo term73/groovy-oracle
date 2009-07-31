@@ -90,6 +90,8 @@ class Loader {
                 } else {
                     if (value == null) {
                         insert += 'NULL'
+                    } else if (value instanceof Number) {
+                    	insert += "'${value}'"
                     } else {
                         def insertValue = value?.replaceAll("'", "''")
                         insert += "'${value}'"

@@ -7,6 +7,10 @@
   <body>
     <release version="groovy-oracle-0.3.0-dev1" date="2009-??-??"
          description="New features and fixes">
+      <action dev="andrewinkler" type="fix" date="2009-07-31">
+        The Loader is able to identify java.lang.Number objects which are
+        the source of a VARCHAR/CHAR column.
+      </action>
       <action dev="andrewinkler" type="fix" date="2009-07-30">
         A new method #isString() for class OracleColumn.
       </action>
