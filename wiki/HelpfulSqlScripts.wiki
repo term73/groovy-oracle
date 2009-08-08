@@ -2,6 +2,18 @@
 
 = Helpful Scripts =
 
+== Drop all user tables ==
+The following script drops all user tables. So be careful!
+{{{
+DECLARE
+BEGIN
+  FOR i IN (SELECT table_name FROM user_tables)
+  LOOP
+    EXECUTE IMMEDIATE 'DROP TABLE ' || i.table_name || ' CASCADE CONSTRAINTS';
+  END LOOP;
+END;
+}}}
+
 == Database locks ==
 This script shows all database locks, the associated db/os users and other informations.
 {{{
