@@ -15,7 +15,7 @@
         A new method #isString() for class OracleColumn.
       </action>
       <action dev="andrewinkler" type="fix" date="2009-05-28">
-        The class SqlFileExporter ignore NULL values a print out an empty
+        The class SqlFileExporter ignore NULL values and print out an empty
         string instead of 'null'.
       </action>
       <action dev="andrewinkler" type="update" date="2009-05-28">
