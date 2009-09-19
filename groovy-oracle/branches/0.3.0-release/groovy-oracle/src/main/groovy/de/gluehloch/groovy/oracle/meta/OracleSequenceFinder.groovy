@@ -22,22 +22,38 @@
  *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
  *
  */
- 
+
 package de.gluehloch.groovy.oracle.meta
 
 /**
- * Verwaltet das Schema eines Oracle Users. 
+ * Liefert die Namen der Oracle Sequenzen.
+ * 
+ * @author  $Author: andre.winkler@web.de $
+ * @version $Revision: 104 $ $Date: 2009-03-04 15:17:30 +0100 (Mi, 04 Mrz 2009) $
  */
-public class OracleSchema {
-
-    /**
-     * Oracle table informations.
-     */
-	def tables = [:]
-
-    /**
-     * Oracle sequences.
-     */
-    def sequences = []
-
+class OracleSequenceFinder {
+	
+	/**
+	 * Liefert eine Liste aller Sequenzen.
+	 *
+	 * @param sql Ein Groovy SQL
+	 * @return Eine Liste von Sequenz-Namen.
+	 */
+	def getSequences(def sql) {
+		def sequences = []
+		sql.eachRow("""
+            select
+                object_name as name
+            from
+                user_objects
+            where
+                object_type = 'SEQUENCE'
+            order by
+                object_name
+        """) {
+			sequences << it.name
+		}
+		return sequences
+	}
+	
 }

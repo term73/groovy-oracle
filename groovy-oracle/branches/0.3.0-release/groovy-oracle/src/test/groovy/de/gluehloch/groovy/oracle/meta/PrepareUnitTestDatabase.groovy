@@ -55,6 +55,12 @@ class PrepareUnitTestDatabase {
     }
 
     void setUp() {
+    	sql.execute("""CREATE SEQUENCE "XXX_SQ" 
+                           START WITH 1 
+                           CACHE 20
+                           MINVALUE 1
+                           MAXVALUE 99999999999
+                           CYCLE""")
         sql.execute("""CREATE TABLE XXX_TEST_RUN (
                            ID NUMBER(38,0),
                            TRIGGER_TYPE CHAR(1 BYTE) NOT NULL ENABLE,
@@ -151,6 +157,7 @@ class PrepareUnitTestDatabase {
         sql.execute("drop table XXX_HIERARCHIE cascade constraints")
         sql.execute("drop table XXX_TEST_RUN cascade constraints")
         sql.execute("drop table XXX_TEST_RUN_2 cascade constraints")
+        sql.execute("drop sequence XXX_SQ")
         OraUtils.purgeRecyclebin(sql)
     }
 

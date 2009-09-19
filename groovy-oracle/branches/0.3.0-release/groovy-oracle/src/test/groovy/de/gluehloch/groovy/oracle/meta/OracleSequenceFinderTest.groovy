@@ -1,8 +1,8 @@
 /*
- * $Id: OracleSchema.groovy 118 2009-03-17 14:46:40Z andre.winkler@web.de $
+ * $Id: OracleColumnTest.groovy 87 2009-02-10 19:57:53Z andre.winkler@web.de $
  * ============================================================================
  * Project groovy-oracle
- * Copyright (c) 2008-2009 by Andre Winkler. All rights reserved.
+ * Copyright (c) 2008-2010 by Andre Winkler. All rights reserved.
  * ============================================================================
  *          GNU LESSER GENERAL PUBLIC LICENSE
  *  TERMS AND CONDITIONS FOR COPYING, DISTRIBUTION AND MODIFICATION
@@ -22,22 +22,22 @@
  *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
  *
  */
- 
+
 package de.gluehloch.groovy.oracle.meta
 
-/**
- * Verwaltet das Schema eines Oracle Users. 
+import org.junit.Test/**
+ * Test für die Klasse OracleSequenceFinder.
+ * 
+ * @author  $Author: andre.winkler@web.de $
+ * @version $Revision: 104 $ $Date: 2009-03-04 15:17:30 +0100 (Mi, 04 Mrz 2009) $
  */
-public class OracleSchema {
+class OracleSequenceFinderTest extends TestDatabaseUtility{
 
-    /**
-     * Oracle table informations.
-     */
-	def tables = [:]
-
-    /**
-     * Oracle sequences.
-     */
-    def sequences = []
+    @Test
+    void testOracleSequenceFinder() {
+    	def oracleSequenceFinder = new OracleSequenceFinder()
+    	def sequences = oracleSequenceFinder.getSequences(sql)
+    	assert sequences.contains('XXX_SQ')
+    }
 
 }
