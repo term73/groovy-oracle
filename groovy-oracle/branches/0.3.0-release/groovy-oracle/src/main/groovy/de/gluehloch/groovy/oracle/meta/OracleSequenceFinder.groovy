@@ -1,5 +1,5 @@
 /*
- * $Id: OracleSchema.groovy 118 2009-03-17 14:46:40Z andre.winkler@web.de $
+ * $Id$
  * ============================================================================
  * Project groovy-oracle
  * Copyright (c) 2008-2009 by Andre Winkler. All rights reserved.
@@ -28,8 +28,8 @@ package de.gluehloch.groovy.oracle.meta
 /**
  * Liefert die Namen der Oracle Sequenzen.
  * 
- * @author  $Author: andre.winkler@web.de $
- * @version $Revision: 104 $ $Date: 2009-03-04 15:17:30 +0100 (Mi, 04 Mrz 2009) $
+ * @author  $Author$
+ * @version $Revision$ $Date$
  */
 class OracleSequenceFinder {
 	
