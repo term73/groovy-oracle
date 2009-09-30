@@ -68,14 +68,14 @@ class Assertion {
 	        	// TODO That looks strange!
 	        	//
 	        	if (it.value != null && colValue != null) {
-	        		assert it.value == colValue
+	        		assert it.value == colValue, "At line ${index} at column ${it.key} expected '${it.value}' but was '${colValue}'."
 	        	} else if (it.value == null && colValue != null) {
-	        		assert false
+	        		assert false, "At line ${index} at column ${it.key} expected '${it.value}' but was '${colValue}'."
 	            } else if (it.value != null && colValue == null) {
 	            	if (it.value == '') {
 	            		assert true
 	            	} else {
-	            		assert false
+	            		assert false, "At line ${index} at column ${it.key} expected '${it.value}' but was '${colValue}'."
 	            	}
 	            } else {
 	            	assert true

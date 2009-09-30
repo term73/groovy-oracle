@@ -7,6 +7,9 @@
   <body>
     <release version="groovy-oracle-0.3.0-dev2" date="2009-??-??"
          description="New features and fixes">
+      <action dev="andrewinkler" type="update" date="2009-09-29">
+        Update Assertion class to throw a more detailed assertion exception.
+      </action>
       <action dev="andrewinkler" type="add" date="2009-09-19">
         Add a method to find all user sequences (class OracleSequenceFinder).
       </action>
