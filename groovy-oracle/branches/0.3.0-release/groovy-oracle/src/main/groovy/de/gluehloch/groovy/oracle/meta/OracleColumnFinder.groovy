@@ -2,7 +2,7 @@
  * $Id: OracleColumnFinder.groovy 135 2009-04-14 18:02:37Z andre.winkler@web.de $
  * ============================================================================
  * Project groovy-oracle
- * Copyright (c) 2008 by Andre Winkler. All rights reserved.
+ * Copyright (c) 2008-2009 by Andre Winkler. All rights reserved.
  * ============================================================================
  *          GNU LESSER GENERAL PUBLIC LICENSE
  *  TERMS AND CONDITIONS FOR COPYING, DISTRIBUTION AND MODIFICATION
@@ -60,9 +60,24 @@ class OracleColumnFinder {
      * @return Eine Liste von OracleConstraint (Primary- und Foreign Keys).
      */
     def getConstraint(def sql, def tableName) {
-        def query = """SELECT a.constraint_name, a.constraint_type, a.table_name, b.column_name, a.search_condition, a.r_constraint_name
-FROM user_constraints a, user_cons_columns b
-WHERE  a.constraint_name = b.constraint_name AND a.table_name = ${tableName} order by constraint_type, position""";
+        def query = """
+            SELECT
+                a.constraint_name, a.constraint_type, a.table_name, a.search_condition, a.r_constraint_name,
+                b.position, b.column_name,
+                c.constraint_name as ref_constraint, c.table_name as ref_table
+            FROM
+                user_cons_columns b,
+                user_constraints a
+                LEFT OUTER JOIN user_constraints c ON (c.constraint_name = a.r_constraint_name)
+            WHERE
+                a.constraint_name = b.constraint_name
+                AND a.table_name = ${tableName}
+                AND a.constraint_type IN ('R', 'P')
+            ORDER BY
+                a.constraint_type,
+                a.constraint_name,
+                b.position
+        """
 
         OracleConstraint constraint = new OracleConstraint(tableName : tableName);
 
