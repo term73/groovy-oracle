@@ -84,6 +84,8 @@ class OracleColumnFinderTest extends TestDatabaseUtility {
 
         def fk = oracleConstraints.foreignKeys.find { it.name == 'FK_XXX_KUNDE_HIERARCHIE' }
         assert fk.name == 'FK_XXX_KUNDE_HIERARCHIE'
+        assert fk.tableName == 'XXX_KUNDE'
+        assert fk.referencedTableName == 'XXX_HIERARCHIE'
         assert fk.columnNames == ['VEKNKDNR', 'TEST_ID']
         assert fk.referencedColumnNames == ['VEKNKDNR', 'TEST_ID']
 

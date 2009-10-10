@@ -95,6 +95,7 @@ class OracleColumnFinder {
 
                 if (!foreignKey) {
                     foreignKey = new ForeignKey(name: it.constraint_name,
+                    		tableName: it.table_name,
                             rConstraintName: it.r_constraint_name,
                             referencedTableName: it.ref_table);
                     constraint.foreignKeys.add(foreignKey);

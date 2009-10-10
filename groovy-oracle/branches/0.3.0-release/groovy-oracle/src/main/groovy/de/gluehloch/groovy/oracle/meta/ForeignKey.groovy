@@ -33,6 +33,7 @@ class ForeignKey {
     String name
     String rConstraintName
     def columnNames = []
+    String tableName
     String referencedTableName
     def referencedColumnNames = []
 
@@ -67,6 +68,7 @@ class ForeignKey {
         def result = true
         result = result && (name == object.name)
         result = result && (rConstraintName == object.rConstraintName)
+        result = result && (tableName == object.tableName)
         result = result && (referencedTableName == object.referencedTableName)
         result = result && (columnNames == object.columnNames) 
         result = result && (referencedColumnNames == object.referencedColumnNames)
