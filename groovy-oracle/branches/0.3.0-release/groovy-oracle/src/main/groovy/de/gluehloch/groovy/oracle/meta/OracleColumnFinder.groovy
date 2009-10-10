@@ -62,7 +62,8 @@ class OracleColumnFinder {
     def getConstraint(def sql, def tableName) {
         def query = """
             SELECT
-                a.constraint_name, a.constraint_type, a.table_name, a.search_condition, a.r_constraint_name,
+                a.constraint_name, a.constraint_type, a.table_name,
+                a.search_condition, a.r_constraint_name,
                 b.position, b.column_name,
                 c.constraint_name as ref_constraint, c.table_name as ref_table
             FROM
@@ -89,19 +90,13 @@ class OracleColumnFinder {
                 constraint.primaryKey.columnNames.add(it.column_name);
 
             } else if (it.constraint_type == "R") {
-                ForeignKey foreignKey = null;
-
-                // Besitzen wir bereits einen ForeignKey unter dieser Bezeichnung?
                 def constraintName = it.constraint_name;
-                constraint.foreignKeys.each { fk ->
-                    if (fk.name.equals(constraintName)) {
-                        foreignKey = fk;
-                    }
-                }
-                if (foreignKey == null) {
+                ForeignKey foreignKey = constraint.foreignKeys.find { fk -> fk.name == constraintName }
+
+                if (!foreignKey) {
                     foreignKey = new ForeignKey(name: it.constraint_name,
                             rConstraintName: it.r_constraint_name,
-                            referencedTableName: null);
+                            referencedTableName: it.ref_table);
                     constraint.foreignKeys.add(foreignKey);
                 }
 
@@ -111,34 +106,23 @@ class OracleColumnFinder {
 
         constraint.foreignKeys.each { foreignKey ->
             // Die referenzierten Spalten identifizieren.
-            def pkQuery = """SELECT a.constraint_name, a.constraint_type, a.table_name, b.column_name, a.search_condition, a.r_constraint_name
-FROM user_constraints a, user_cons_columns b
-WHERE  a.constraint_name = b.constraint_name AND b.constraint_name = ${foreignKey.rConstraintName} order by position""";
+            def pkQuery = """
+                SELECT
+                    a.constraint_name, a.constraint_type, a.table_name,
+                    b.column_name, a.search_condition, a.r_constraint_name
+                FROM
+                    user_constraints a, user_cons_columns b
+                WHERE
+                      a.constraint_name = b.constraint_name 
+                  AND b.constraint_name = ${foreignKey.rConstraintName}
+                ORDER BY position
+            """
             sql.eachRow(pkQuery) { row ->
                 foreignKey.referencedColumnNames.add(row.column_name);
             }
         }
-
-        constraint.foreignKeys.each { foreignKey ->
-            def findReferencedTableQuery = """SELECT table_name FROM user_constraints
-WHERE constraint_name = ${foreignKey.rConstraintName} AND constraint_type = 'P'
-"""
-            def referencedTableName = sql.firstRow(findReferencedTableQuery)?.table_name
-            foreignKey.referencedTableName = referencedTableName 
-        }
-        
+       
         return constraint;
     }
 
-    /*
-     * May be better for foreign key detection...
-     * 
-SELECT b.position, a.constraint_name, a.constraint_type, a.table_name, a.search_condition, a.r_constraint_name, b.column_name, c.constraint_name as REF_CONSTRAINT, c.table_name as REF_TABLE
-FROM user_constraints a, user_cons_columns b, user_constraints c
-WHERE a.constraint_name = b.constraint_name
-  AND a.table_name = ${tableName}
-  AND c.constraint_name = a.r_constraint_name
-  AND a.constraint_type = 'R'
-order by a.constraint_type, b.position;
-     */
 }

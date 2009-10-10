@@ -15,7 +15,10 @@
       </action>
       <action dev="andrewinkler" type="add" date="2009-08-09">
         Use Oracle JDBC driver version 11.1.
-      </action>      
+      </action>
+      <action dev="andrewinkler" type="add" date="2009-08-09">
+        Update of ForeignKey finder method.
+      </action>
     </release>
     <release version="groovy-oracle-0.3.0-dev1" date="2009-08-08"
          description="New features and fixes">
