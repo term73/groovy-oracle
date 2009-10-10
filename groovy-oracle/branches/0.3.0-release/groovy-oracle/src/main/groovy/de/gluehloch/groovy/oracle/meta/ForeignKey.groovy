@@ -46,6 +46,7 @@ class ForeignKey {
     def copy() {
         def foreignKey = new ForeignKey(name: name,
                 rConstraintName: rConstraintName,
+                tableName: tableName,
                 referencedTableName: referencedTableName)
 
         def columnNames2 = []
@@ -58,6 +59,10 @@ class ForeignKey {
         foreignKey.referencedColumnNames = referencedColumnNames2
 
         return foreignKey
+    }
+
+    String toString() {
+    	return "${tableName}#${name}" 
     }
 
     boolean equals(def object) {
