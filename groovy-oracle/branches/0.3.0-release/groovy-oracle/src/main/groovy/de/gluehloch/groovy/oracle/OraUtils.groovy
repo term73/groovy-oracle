@@ -83,7 +83,7 @@ class OraUtils {
     	def invalidPackages = []
     	sql.eachRow("""
                 SELECT object_name
-                FROMuser_objects
+                FROM user_objects
                 WHERE status = 'INVALID'
                     AND object_type IN ('PACKAGE', 'PACKAGE BODY')
     	    """) {
