@@ -41,7 +41,15 @@ class OracleColumnFinder {
      */
     def getColumns(def sql, def tableName) {
         def columns = []
-        sql.eachRow("select * from user_tab_columns where table_name = ${tableName} order by column_id") {
+        sql.eachRow("""
+            SELECT *
+    		FROM
+                user_tab_columns
+            WHERE
+                table_name = ${tableName}
+            ORDER BY
+                column_id
+        """) {
             def oc = new OracleColumn(columnName: it.column_name,
                     dataType: it.data_type, dataLength: it.data_length,
                     dataPrecision: it.data_precision, dataScale: it.data_scale,
