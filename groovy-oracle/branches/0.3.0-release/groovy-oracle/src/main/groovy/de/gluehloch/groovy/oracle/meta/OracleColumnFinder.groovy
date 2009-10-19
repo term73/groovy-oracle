@@ -55,7 +55,7 @@ class OracleColumnFinder {
                     dataPrecision: it.data_precision, dataScale: it.data_scale,
                     nullable: it.nullable, columnId: it.column_id,
                     dataDefault: it.data_default);
-            columns.add(oc);
+            columns << oc;
         }
         return columns
     }
