@@ -1,5 +1,5 @@
 /*
- * $Id: LoaderTest.groovy 122 2009-03-18 10:11:13Z andre.winkler@web.de $
+ * $Id$
  * ============================================================================
  * Project groovy-oracle
  * Copyright (c) 2008-2009 by Andre Winkler. All rights reserved.
@@ -28,8 +28,8 @@ package de.gluehloch.groovy.oracle
 /**
  * Wrapper for calling Oracle´s SQL*Plus command line tool.
  * 
- * @author  $Author: andre.winkler@web.de $
- * @version $Revision: 104 $ $Date: 2009-03-04 15:17:30 +0100 (Mi, 04 Mrz 2009) $
+ * @author  $Author$
+ * @version $Revision$ $Date$
  */
 class SqlPlus {
 

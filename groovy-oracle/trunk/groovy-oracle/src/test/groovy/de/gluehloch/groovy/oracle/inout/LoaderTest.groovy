@@ -1,5 +1,5 @@
 /*
- * $Id: LoaderTest.groovy 124 2009-03-18 16:25:56Z andre.winkler@web.de $
+ * $Id$
  * ============================================================================
  * Project groovy-oracle
  * Copyright (c) 2008-2009 by Andre Winkler. All rights reserved.

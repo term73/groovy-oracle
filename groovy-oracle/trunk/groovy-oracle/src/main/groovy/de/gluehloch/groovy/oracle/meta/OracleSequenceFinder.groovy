@@ -23,46 +23,37 @@
  *
  */
 
-package de.gluehloch.groovy.oracle.inout
-
-import org.junit.Test
-import org.junit.After
-import org.junit.Before
-
-import de.gluehloch.groovy.oracle.OraUtils
-import de.gluehloch.groovy.oracle.meta.*
+package de.gluehloch.groovy.oracle.meta
 
 /**
- * Test for class DBUnit.
+ * Liefert die Namen der Oracle Sequenzen.
  * 
  * @author  $Author$
  * @version $Revision$ $Date$
  */
-class DBUnitTest extends TestDatabaseUtility {
-
-	 @Test
-	 void testDBUnit() {
-		 DBUnit.xmlExport(OraUtils.dataSource, user,
-			 ['XXX_TEST_RUN_2'] as String[], new File('dbunit.xml'))
-	     sql.execute("DELETE FROM XXX_TEST_RUN_2")
-	     sql.commit()
-
-         DBUnit.xmlImport(OraUtils.dataSource, user, new File('dbunit.xml'),
-        	 DBUnit.DBUnitOperation.INSERT)
-         def counter = sql.firstRow("SELECT COUNT(*) as counter FROM XXX_TEST_RUN_2").counter
-         assert counter == 6
-	 }
-
-     @Before
-     void setUp() {
-         sql = TestDatabaseUtility.createConnection()
-         new SqlFileImporter(sql: sql, tableName: 'XXX_TEST_RUN_2',
-        	 fileName: 'XXX_TEST_RUN.dat').load()
-         sql.commit()
-     }
-
-     @After
-     void tearDown() {
-     }
+class OracleSequenceFinder {
+	
+	/**
+	 * Liefert eine Liste aller Sequenzen.
+	 *
+	 * @param sql Ein Groovy SQL
+	 * @return Eine Liste von Sequenz-Namen.
+	 */
+	def getSequences(def sql) {
+		def sequences = []
+		sql.eachRow("""
+            select
+                object_name as name
+            from
+                user_objects
+            where
+                object_type = 'SEQUENCE'
+            order by
+                object_name
+        """) {
+			sequences << it.name
+		}
+		return sequences
+	}
 	
 }

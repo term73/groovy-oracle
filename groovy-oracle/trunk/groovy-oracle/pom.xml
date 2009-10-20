@@ -4,7 +4,7 @@
   <parent>
     <groupId>de.gluehloch</groupId>
     <artifactId>gluehloch-maven-parent</artifactId>
-    <version>9</version>
+    <version>10</version>
   </parent>
   <groupId>de.gluehloch.groovy.oracle</groupId>
   <artifactId>groovy-oracle</artifactId>
@@ -13,8 +13,9 @@
   <name>groovy-oracle</name>
   <description>Groovier Oracle Meta-Programming.</description>
   <scm>
-    <connection>scm:svn:https://groovy-oracle.googlecode.com/svn/groovy-oracle/trunk/groovy-oracle</connection>
-    <developerConnection>scm:svn:https://groovy-oracle.googlecode.com/svn/groovy-oracle/trunk/groovy-oracle</developerConnection>
+    <!-- The developer connection starts with https. -->
+    <connection>scm:svn:http://groovy-oracle.googlecode.com/svn/groovy-oracle/branches/0.3.0-release/groovy-oracle</connection>
+    <developerConnection>scm:svn:http://groovy-oracle.googlecode.com/svn/groovy-oracle/branches/0.3.0-release/groovy-oracle</developerConnection>
     <url>http://code.google.com/p/groovy-oracle/source/browse/</url>
   </scm>
   <licenses>
@@ -25,20 +26,58 @@
       <comments>A business-friendly OSS license</comments>
     </license>
   </licenses>
+  <dependencyManagement>
+    <dependencies>
+      <dependency>
+        <groupId>org.codehaus.groovy.maven.gmaven-mojo</groupId>
+        <artifactId>gmaven-mojo</artifactId>
+        <version>1.0</version>
+      </dependency>
+      <dependency>
+        <groupId>org.codehaus.groovy.maven.runtime</groupId>
+        <artifactId>gmaven-runtime-1.6</artifactId>
+        <version>1.0</version>
+      </dependency>
+    </dependencies>
+  </dependencyManagement>
   <build>
+    <pluginManagement>
+      <plugins>
+        <plugin>
+          <groupId>org.codehaus.groovy.maven</groupId>
+          <artifactId>gmaven-plugin</artifactId>
+          <version>1.0</version>
+        </plugin>
+      </plugins>
+    </pluginManagement>
     <plugins>
       <plugin>
         <groupId>org.codehaus.groovy.maven</groupId>
         <artifactId>gmaven-plugin</artifactId>
-        <version>1.0-rc-3</version>
+        <!-- <version>1.0</version>-->
         <executions>
           <execution>
+            <id>compile</id>
             <goals>
               <goal>generateStubs</goal>
               <goal>compile</goal>
               <goal>generateTestStubs</goal>
               <goal>testCompile</goal>
             </goals>
+          </execution>
+          <execution>
+            <id>install</id>
+            <phase>install</phase>
+            <goals>
+              <goal>execute</goal>
+            </goals>
+            <configuration>
+              <source> def dir = new
+                File(System.getProperty('user.home') + "/.groovy/lib")
+                ant.copy(todir: dir) { fileset(dir: new
+                File(project.basedir, "target")) { include(name:
+                '*.jar') } } </source>
+            </configuration>
           </execution>
         </executions>
       </plugin>
@@ -102,14 +141,15 @@
   </reporting>
   <dependencies>
     <dependency>
-      <groupId>org.codehaus.groovy.maven.runtime</groupId>
-      <artifactId>gmaven-runtime-default</artifactId>
-      <version>1.0-rc-3</version>
+      <groupId>org.codehaus.groovy</groupId>
+      <artifactId>groovy-all</artifactId>
+      <version>1.6.1</version>
+      <scope>compile</scope>
     </dependency>
     <dependency>
       <groupId>oracle.jdbc.driver</groupId>
-      <artifactId>ojdbc14</artifactId>
-      <version>10.0</version>
+      <artifactId>ojdbc6</artifactId>
+      <version>11.1</version>
       <scope>compile</scope>
     </dependency>
     <dependency>
@@ -136,13 +176,10 @@
       <scope>test</scope>
     </dependency>
     <!--
-    <dependency>
-      <groupId>org.slf4j</groupId>
-      <artifactId>slf4j-log4j12</artifactId>
-      <version>1.5.6</version>
-      <scope>test</scope>
-    </dependency>
-     -->
+      <dependency> <groupId>org.slf4j</groupId>
+      <artifactId>slf4j-log4j12</artifactId> <version>1.5.6</version>
+      <scope>test</scope> </dependency>
+    -->
     <dependency>
       <groupId>org.dbunit</groupId>
       <artifactId>dbunit</artifactId>

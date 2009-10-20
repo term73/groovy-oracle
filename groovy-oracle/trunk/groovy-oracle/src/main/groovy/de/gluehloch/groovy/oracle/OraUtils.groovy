@@ -1,8 +1,8 @@
 /*
- * $Id: OraUtils.groovy 87 2009-02-10 19:57:53Z andre.winkler@web.de $
+ * $Id$
  * ============================================================================
  * Project groovy-oracle
- * Copyright (c) 2008 by Andre Winkler. All rights reserved.
+ * Copyright (c) 2008-2009 by Andre Winkler. All rights reserved.
  * ============================================================================
  *          GNU LESSER GENERAL PUBLIC LICENSE
  *  TERMS AND CONDITIONS FOR COPYING, DISTRIBUTION AND MODIFICATION
@@ -39,8 +39,6 @@ class OraUtils {
 	static final DRIVER_NAME = 'oracle.jdbc.driver.OracleDriver'
 
 	static def dataSource
-//	private static def user
-//	private static def url
 
 	static def getConnection(user, password, url) {
 		if (dataSource == null) {
@@ -82,10 +80,10 @@ class OraUtils {
     static def checkValidPackages(sql) {
     	def invalidPackages = []
     	sql.eachRow("""
-                select object_name
-                from user_objects
-                where status = 'INVALID'
-                    and object_type IN ('PACKAGE', 'PACKAGE BODY')
+                SELECT object_name
+                FROM user_objects
+                WHERE status = 'INVALID'
+                    AND object_type IN ('PACKAGE', 'PACKAGE BODY')
     	    """) {
     		invalidPackages << it.object_name
     	}
@@ -95,10 +93,10 @@ class OraUtils {
     static def checkValidProcedures(sql) {
         def invalidProcedures = []
         sql.eachRow("""
-                select object_name
-                from user_objects
-                where status = 'INVALID'
-                    and object_type = 'PROCEDURE'
+                SELECT object_name
+                FROM user_objects
+                WHERE status = 'INVALID'
+                    AND object_type = 'PROCEDURE'
             """) {
         	invalidProcedures << it.object_name
         }

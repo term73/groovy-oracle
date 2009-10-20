@@ -1,8 +1,8 @@
 /*
- * $Id: OracleColumnFinder.groovy 135 2009-04-14 18:02:37Z andre.winkler@web.de $
+ * $Id$
  * ============================================================================
  * Project groovy-oracle
- * Copyright (c) 2008 by Andre Winkler. All rights reserved.
+ * Copyright (c) 2008-2009 by Andre Winkler. All rights reserved.
  * ============================================================================
  *          GNU LESSER GENERAL PUBLIC LICENSE
  *  TERMS AND CONDITIONS FOR COPYING, DISTRIBUTION AND MODIFICATION
@@ -41,13 +41,21 @@ class OracleColumnFinder {
      */
     def getColumns(def sql, def tableName) {
         def columns = []
-        sql.eachRow("select * from user_tab_columns where table_name = ${tableName} order by column_id") {
+        sql.eachRow("""
+            SELECT *
+    		FROM
+                user_tab_columns
+            WHERE
+                table_name = ${tableName}
+            ORDER BY
+                column_id
+        """) {
             def oc = new OracleColumn(columnName: it.column_name,
                     dataType: it.data_type, dataLength: it.data_length,
                     dataPrecision: it.data_precision, dataScale: it.data_scale,
                     nullable: it.nullable, columnId: it.column_id,
                     dataDefault: it.data_default);
-            columns.add(oc);
+            columns << oc;
         }
         return columns
     }
@@ -60,9 +68,25 @@ class OracleColumnFinder {
      * @return Eine Liste von OracleConstraint (Primary- und Foreign Keys).
      */
     def getConstraint(def sql, def tableName) {
-        def query = """SELECT a.constraint_name, a.constraint_type, a.table_name, b.column_name, a.search_condition, a.r_constraint_name
-FROM user_constraints a, user_cons_columns b
-WHERE  a.constraint_name = b.constraint_name AND a.table_name = ${tableName} order by constraint_type, position""";
+        def query = """
+            SELECT
+                a.constraint_name, a.constraint_type, a.table_name,
+                a.search_condition, a.r_constraint_name,
+                b.position, b.column_name,
+                c.constraint_name as ref_constraint, c.table_name as ref_table
+            FROM
+                user_cons_columns b,
+                user_constraints a
+                LEFT OUTER JOIN user_constraints c ON (c.constraint_name = a.r_constraint_name)
+            WHERE
+                a.constraint_name = b.constraint_name
+                AND a.table_name = ${tableName}
+                AND a.constraint_type IN ('R', 'P')
+            ORDER BY
+                a.constraint_type,
+                a.constraint_name,
+                b.position
+        """
 
         OracleConstraint constraint = new OracleConstraint(tableName : tableName);
 
@@ -74,19 +98,14 @@ WHERE  a.constraint_name = b.constraint_name AND a.table_name = ${tableName} ord
                 constraint.primaryKey.columnNames.add(it.column_name);
 
             } else if (it.constraint_type == "R") {
-                ForeignKey foreignKey = null;
-
-                // Besitzen wir bereits einen ForeignKey unter dieser Bezeichnung?
                 def constraintName = it.constraint_name;
-                constraint.foreignKeys.each { fk ->
-                    if (fk.name.equals(constraintName)) {
-                        foreignKey = fk;
-                    }
-                }
-                if (foreignKey == null) {
+                ForeignKey foreignKey = constraint.foreignKeys.find { fk -> fk.name == constraintName }
+
+                if (!foreignKey) {
                     foreignKey = new ForeignKey(name: it.constraint_name,
+                    		tableName: it.table_name,
                             rConstraintName: it.r_constraint_name,
-                            referencedTableName: null);
+                            referencedTableName: it.ref_table);
                     constraint.foreignKeys.add(foreignKey);
                 }
 
@@ -96,34 +115,23 @@ WHERE  a.constraint_name = b.constraint_name AND a.table_name = ${tableName} ord
 
         constraint.foreignKeys.each { foreignKey ->
             // Die referenzierten Spalten identifizieren.
-            def pkQuery = """SELECT a.constraint_name, a.constraint_type, a.table_name, b.column_name, a.search_condition, a.r_constraint_name
-FROM user_constraints a, user_cons_columns b
-WHERE  a.constraint_name = b.constraint_name AND b.constraint_name = ${foreignKey.rConstraintName} order by position""";
+            def pkQuery = """
+                SELECT
+                    a.constraint_name, a.constraint_type, a.table_name,
+                    b.column_name, a.search_condition, a.r_constraint_name
+                FROM
+                    user_constraints a, user_cons_columns b
+                WHERE
+                      a.constraint_name = b.constraint_name 
+                  AND b.constraint_name = ${foreignKey.rConstraintName}
+                ORDER BY position
+            """
             sql.eachRow(pkQuery) { row ->
                 foreignKey.referencedColumnNames.add(row.column_name);
             }
         }
-
-        constraint.foreignKeys.each { foreignKey ->
-            def findReferencedTableQuery = """SELECT table_name FROM user_constraints
-WHERE constraint_name = ${foreignKey.rConstraintName} AND constraint_type = 'P'
-"""
-            def referencedTableName = sql.firstRow(findReferencedTableQuery)?.table_name
-            foreignKey.referencedTableName = referencedTableName 
-        }
-        
+       
         return constraint;
     }
 
-    /*
-     * May be better for foreign key detection...
-     * 
-SELECT b.position, a.constraint_name, a.constraint_type, a.table_name, a.search_condition, a.r_constraint_name, b.column_name, c.constraint_name as REF_CONSTRAINT, c.table_name as REF_TABLE
-FROM user_constraints a, user_cons_columns b, user_constraints c
-WHERE a.constraint_name = b.constraint_name
-  AND a.table_name = ${tableName}
-  AND c.constraint_name = a.r_constraint_name
-  AND a.constraint_type = 'R'
-order by a.constraint_type, b.position;
-     */
 }

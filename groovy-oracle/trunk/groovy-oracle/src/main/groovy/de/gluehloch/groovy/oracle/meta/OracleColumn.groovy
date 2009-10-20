@@ -1,5 +1,5 @@
 /*
- * $Id: OracleColumn.groovy 120 2009-03-17 21:05:59Z andre.winkler@web.de $
+ * $Id$
  * ============================================================================
  * Project groovy-oracle
  * Copyright (c) 2008 by Andre Winkler. All rights reserved.

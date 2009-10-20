@@ -1,5 +1,5 @@
 /*
- * $Id: Data.groovy 101 2009-02-23 22:11:11Z andre.winkler@web.de $
+ * $Id$
  * ============================================================================
  * Project groovy-oracle
  * Copyright (c) 2008-2009 by Andre Winkler. All rights reserved.

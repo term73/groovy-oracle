@@ -1,5 +1,5 @@
 /*
- * $Id: DataTest.groovy 104 2009-03-04 14:17:30Z andre.winkler@web.de $
+ * $Id$
  * ============================================================================
  * Project groovy-oracle
  * Copyright (c) 2008-2009 by Andre Winkler. All rights reserved.
@@ -31,8 +31,8 @@ import org.junit.Test
 /**
  * Test of class TextFileExporter.
  * 
- * @author  $Author: andre.winkler@web.de $
- * @version $Revision: 104 $ $Date: 2009-03-04 15:17:30 +0100 (Mi, 04 Mrz 2009) $
+ * @author  $Author$
+ * @version $Revision$ $Date$
  */
 class DataTest {
 

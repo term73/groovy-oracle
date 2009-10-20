@@ -1,5 +1,5 @@
 /*
- * $Id: DatabaseBuilder.groovy 87 2009-02-10 19:57:53Z andre.winkler@web.de $
+ * $Id$
  * ============================================================================
  * Project groovy-oracle
  * Copyright (c) 2008 by Andre Winkler. All rights reserved.

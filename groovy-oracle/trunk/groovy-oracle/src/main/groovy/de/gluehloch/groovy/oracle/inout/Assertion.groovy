@@ -1,5 +1,5 @@
 /*
- * $Id: Assertion.groovy 122 2009-03-18 10:11:13Z andre.winkler@web.de $
+ * $Id$
  * ============================================================================
  * Project groovy-oracle
  * Copyright (c) 2008-2009 by Andre Winkler. All rights reserved.
@@ -68,14 +68,14 @@ class Assertion {
 	        	// TODO That looks strange!
 	        	//
 	        	if (it.value != null && colValue != null) {
-	        		assert it.value == colValue
+	        		assert it.value == colValue, "At row ${index} at column ${it.key} expected '${it.value}' but was '${colValue}'."
 	        	} else if (it.value == null && colValue != null) {
-	        		assert false
+	        		assert false, "At row ${index} at column ${it.key} expected '${it.value}' but was '${colValue}'."
 	            } else if (it.value != null && colValue == null) {
 	            	if (it.value == '') {
 	            		assert true
 	            	} else {
-	            		assert false
+	            		assert false, "At row ${index} at column ${it.key} expected '${it.value}' but was '${colValue}'."
 	            	}
 	            } else {
 	            	assert true

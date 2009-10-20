@@ -1,5 +1,5 @@
 /*
- * $Id: ForeignKey.groovy 87 2009-02-10 19:57:53Z andre.winkler@web.de $
+ * $Id$
  * ============================================================================
  * Project groovy-oracle
  * Copyright (c) 2008 by Andre Winkler. All rights reserved.
@@ -33,6 +33,7 @@ class ForeignKey {
     String name
     String rConstraintName
     def columnNames = []
+    String tableName
     String referencedTableName
     def referencedColumnNames = []
 
@@ -45,6 +46,7 @@ class ForeignKey {
     def copy() {
         def foreignKey = new ForeignKey(name: name,
                 rConstraintName: rConstraintName,
+                tableName: tableName,
                 referencedTableName: referencedTableName)
 
         def columnNames2 = []
@@ -59,6 +61,10 @@ class ForeignKey {
         return foreignKey
     }
 
+    String toString() {
+    	return "${tableName}#${name}" 
+    }
+
     boolean equals(def object) {
         if (!(object instanceof ForeignKey)) {
             return false
@@ -67,6 +73,7 @@ class ForeignKey {
         def result = true
         result = result && (name == object.name)
         result = result && (rConstraintName == object.rConstraintName)
+        result = result && (tableName == object.tableName)
         result = result && (referencedTableName == object.referencedTableName)
         result = result && (columnNames == object.columnNames) 
         result = result && (referencedColumnNames == object.referencedColumnNames)

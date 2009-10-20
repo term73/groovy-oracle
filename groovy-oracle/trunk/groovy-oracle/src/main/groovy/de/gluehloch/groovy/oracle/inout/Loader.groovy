@@ -1,5 +1,5 @@
 /*
- * $Id: Loader.groovy 90 2009-02-18 19:18:55Z andre.winkler@web.de $
+ * $Id$
  * ============================================================================
  * Project groovy-oracle
  * Copyright (c) 2008-2009 by Andre Winkler. All rights reserved.
@@ -36,8 +36,8 @@ import de.gluehloch.groovy.oracle.meta.*
 /**
  * Uploads data to the database.
  *
- * @author  $Author: andre.winkler@web.de $
- * @version $Revision: 90 $ $Date: 2009-02-18 20:18:55 +0100 (Mi, 18 Feb 2009) $
+ * @author  $Author$
+ * @version $Revision$ $Date$
  */
 class Loader {
 

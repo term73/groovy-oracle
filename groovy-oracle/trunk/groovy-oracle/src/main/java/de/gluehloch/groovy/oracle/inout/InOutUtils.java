@@ -1,5 +1,5 @@
 /*
- * $Id: InOutUtils.java 140 2009-04-17 15:44:57Z andre.winkler@web.de $
+ * $Id$
  * ============================================================================
  * Project groovy-oracle
  * Copyright (c) 2008-2009 by Andre Winkler. All rights reserved.
@@ -38,26 +38,27 @@ import org.apache.commons.lang.StringUtils;
 /**
  * Utility class for IO processing of database data.
  * 
- * @author $Author: andre.winkler@web.de $
- * @version $Revision: 140 $ $Date: 2009-04-17 17:44:57 +0200 (Fr, 17 Apr 2009) $
+ * @author $Author$
+ * @version $Revision$ $Date: 2009-04-17 17:44:57 +0200 (Fr, 17 Apr 2009)$
  */
 public class InOutUtils {
 
-	/**
+	/*
 	 * Konvertierungsformat Oracle-Date-Type -> String
 	 */
 	public static final String DATE_FORMAT = "yyyy-MM-dd HH:mm:ss";
 
-	/**
+	/*
 	 * Konvertierungsformat String -> Oracle-Date-Type
 	 */
 	public static final String ORACLE_DATE_FORMAT = "yyyy-MM-dd HH24:MI:ss";
 
-	/**
+	/*
 	 * Convert a string into a date type. Throws a runtime exception if string
 	 * is unparseable.
-	 *
+	 * 
 	 * @param _text The string to parse.
+	 * 
 	 * @return The date object.
 	 */
 	public static Date toDate(final String _text) {
@@ -69,70 +70,77 @@ public class InOutUtils {
 		}
 	}
 
-	/**
+	/*
 	 * Convert a date type into a <code>java.sql.Date</code>.
-	 *
+	 * 
 	 * @param _date The date to convert.
+	 * 
 	 * @return The java.sql.Date object.
 	 */
 	public static java.sql.Date toSqlDate(final Date _date) {
 		return new java.sql.Date(_date.getTime());
 	}
 
-	/**
+	/*
 	 * Convert a string into a <code>java.sql.Date</code>.
-	 *
+	 * 
 	 * @param _text The string to parse.
+	 * 
 	 * @return The java.sql.Date object.
 	 */
 	public static java.sql.Date toSqlDate(final String _text) {
 		return toSqlDate(toDate(_text));
 	}
 
-	/**
+	/*
 	 * Convert a date type into a <code>oracle.sql.DATE</code>.
-	 *
+	 * 
 	 * @param _date The date to convert.
+	 * 
 	 * @return The java.sql.Date object.
 	 */
 	public static oracle.sql.DATE toOracleDate(final Date _date) {
 		return new oracle.sql.DATE(toSqlDate(_date));
 	}
 
-	/**
+	/*
 	 * Convert a string into a <code>oracle.sql.DATE</code>.
-	 *
+	 * 
 	 * @param _text The string to parse.
+	 * 
 	 * @return The java.sql.Date object.
 	 */
 	public static oracle.sql.DATE toOracleDate(final String _text) {
 		return new oracle.sql.DATE(toSqlDate(_text));
 	}
 
-	/**
+	/*
 	 * Convert a date type into a <code>oracle.sql.TIMESTAMP</code>.
-	 *
+	 * 
 	 * @param _date The date type to convert.
+	 * 
 	 * @return A oracle.sql.TIMESTAMP object.
 	 */
 	public static oracle.sql.TIMESTAMP toOracleTimeStamp(final Date _date) {
 		return new oracle.sql.TIMESTAMP(toOracleDate(_date));
 	}
 
-	/**
+	/*
 	 * Convert a date type into a <code>oracle.sql.TIMESTAMP</code>.
-	 *
+	 * 
 	 * @param _text The string to parse.
+	 * 
 	 * @return A oracle.sql.TIMESTAMP object.
 	 */
 	public static oracle.sql.TIMESTAMP toOracleTimeStamp(final String _text) {
 		return new oracle.sql.TIMESTAMP(toOracleDate(_text));
 	}
 
-	/**
+	/*
 	 * Convert a date type into a string.
-	 *
+	 * 
 	 * @param _date The date to convert.
+	 * 
 	 * @return The converted string.
 	 */
 	public static String toString(final Date _date) {
@@ -140,10 +148,11 @@ public class InOutUtils {
 		return formatter.format(_date);
 	}
 
-	/**
+	/*
 	 * Convert a java.sql.Date type into a string.
-	 *
+	 * 
 	 * @param _date The date to convert.
+	 * 
 	 * @return The converted string.
 	 */
 	public static String toString(final java.sql.Date _date) {
@@ -151,10 +160,11 @@ public class InOutUtils {
 		return formatter.format(_date);
 	}
 
-	/**
+	/*
 	 * Convert a oracle.sql.DATE type into a string.
-	 *
+	 * 
 	 * @param _timestamp The TIMESTAMP to convert.
+	 * 
 	 * @return The converted string.
 	 */
 	public static String toString(final oracle.sql.DATE _timestamp) {
@@ -165,10 +175,11 @@ public class InOutUtils {
 		}
 	}
 
-	/**
+	/*
 	 * Convert a oracle.sql.TIMESTAMP type into a string.
-	 *
+	 * 
 	 * @param _timestamp The TIMESTAMP to convert.
+	 * 
 	 * @return The converted string.
 	 */
 	public static String toString(final oracle.sql.TIMESTAMP _timestamp) {
@@ -179,33 +190,33 @@ public class InOutUtils {
 		}
 	}
 
-	/**
+	/*
 	 * Splits a text String into pieces. Example:
 	 * 
-	 * <pre>
-	 * Groovy:
-	 * def expected = [&quot;&quot;, &quot;a&quot;, &quot;b&quot;, &quot;c&quot;, &quot;&quot;]
-	 * assert expected == InOutUtils.split(&quot;|a|b|c|&quot;, &quot;|&quot;)
-	 * </pre>
+	 * <pre> Groovy: def expected = [&quot;&quot;, &quot;a&quot;, &quot;b&quot;,
+	 * &quot;c&quot;, &quot;&quot;] assert expected ==
+	 * InOutUtils.split(&quot;|a|b|c|&quot;, &quot;|&quot;) </pre>
 	 * 
 	 * @param _text The text for splitting.
+	 * 
 	 * @param _seperator The seperator.
+	 * 
 	 * @return The splitted string.
 	 */
 	public static String[] split(final String _text, final String _seperator) {
 		return StringUtils.splitPreserveAllTokens(_text, _seperator);
 	}
 
-	/**
+	/*
 	 * Concatenats a string list into a single string. Example:
 	 * 
-	 * <pre>
-	 * Groovy:
-	 * assert &quot;a|b|c||&quot; == InOutUtils.toString(['a', 'b', 'c', ''])
-	 * </pre>
+	 * <pre> Groovy: assert &quot;a|b|c||&quot; == InOutUtils.toString(['a',
+	 * 'b', 'c', '']) </pre>
 	 * 
 	 * @param _strings The strings to concatenate.
+	 * 
 	 * @param _seperator The separator for concatenation.
+	 * 
 	 * @return The concatenated string.
 	 */
 	public static String toString(final List<String> _strings,
@@ -225,21 +236,20 @@ public class InOutUtils {
 		return sb.toString();
 	}
 
-	/**
+	/*
 	 * Transforms a text into a data map. Example:
 	 * 
-	 * <pre>
-	 * Groovy:
-	 * def text = &quot;v1|v2|v3&quot;
-	 * def columns = [&quot;col_a&quot;, &quot;col_b&quot;, &quot;col_c&quot;]
-	 * assert mapping(text, columns) == [c1: 'v1', c2: 'v2', c3: 'v3'];
-	 * </pre>
+	 * <pre> Groovy: def text = &quot;v1|v2|v3&quot; def columns =
+	 * [&quot;col_a&quot;, &quot;col_b&quot;, &quot;col_c&quot;] assert
+	 * mapping(text, columns) == [c1: 'v1', c2: 'v2', c3: 'v3']; </pre>
 	 * 
 	 * It is possible to return <code>null</code>, if the text parameters starts
 	 * as a comment line.
 	 * 
 	 * @param _text An input text.
+	 * 
 	 * @param _columns The column names as a key for the values.
+	 * 
 	 * @return A data map.
 	 */
 	public static Map<String, String> mapping(final String _text,
@@ -262,6 +272,102 @@ public class InOutUtils {
 		}
 
 		return keyValues;
+	}
+
+	public static String toString(final int _columnType, final Object _value) {
+		StringBuilder sb = new StringBuilder();
+		if (_value == null) {
+			sb.append("null");
+		} else if (_columnType == java.sql.Types.BIGINT) {
+			sb.append(_value);
+		} else if (_columnType == java.sql.Types.BINARY) {
+			throw new IllegalStateException(
+				"The type 'java.sql.Types.BINARY' is not supported!");
+		} else if (_columnType == java.sql.Types.BIT) {
+			sb.append(_value);
+		} else if (_columnType == java.sql.Types.BLOB) {
+			throw new IllegalStateException(
+				"The type 'java.sql.Types.BLOB' is not supported!");
+		} else if (_columnType == java.sql.Types.BOOLEAN) {
+			sb.append(_value);
+		} else if (_columnType == java.sql.Types.CHAR) {
+			sb.append("'").append(_value.toString()).append("'");
+		} else if (_columnType == java.sql.Types.CLOB) {
+			throw new IllegalStateException(
+				"The type 'java.sql.Types.CLOB' is not supported!");
+		} else if (_columnType == java.sql.Types.DATALINK) {
+			throw new IllegalStateException(
+				"The type 'java.sql.Types.DATALINK' is not supported!");
+		} else if (_columnType == java.sql.Types.DATE) {
+			sb.append(toString((java.sql.Date) _value));
+		} else if (_columnType == java.sql.Types.DECIMAL) {
+			sb.append(_value);
+		} else if (_columnType == java.sql.Types.DISTINCT) {
+			throw new IllegalStateException(
+				"The type 'java.sql.Types.DISTINCT' is not supported!");
+		} else if (_columnType == java.sql.Types.DOUBLE) {
+			sb.append(_value);
+		} else if (_columnType == java.sql.Types.FLOAT) {
+			sb.append(_value);
+		} else if (_columnType == java.sql.Types.INTEGER) {
+			sb.append(_value);
+		} else if (_columnType == java.sql.Types.JAVA_OBJECT) {
+			throw new IllegalStateException(
+				"The type 'java.sql.Types.JAVA_OBJECT' is not supported!");
+		} else if (_columnType == java.sql.Types.LONGNVARCHAR) {
+			sb.append("'").append(_value.toString()).append("'");
+		} else if (_columnType == java.sql.Types.LONGVARBINARY) {
+			throw new IllegalStateException(
+				"The type 'java.sql.Types.LONGVARBINARY' is not supported!");
+		} else if (_columnType == java.sql.Types.LONGVARCHAR) {
+			sb.append("'").append(_value.toString()).append("'");
+		} else if (_columnType == java.sql.Types.NCHAR) {
+			sb.append("'").append(_value.toString()).append("'");
+		} else if (_columnType == java.sql.Types.NCLOB) {
+			throw new IllegalStateException(
+				"The type 'java.sql.Types.NCLOB' is not supported!");
+		} else if (_columnType == java.sql.Types.NULL) {
+			sb.append("NULL");
+		} else if (_columnType == java.sql.Types.NUMERIC) {
+			sb.append(_value);
+		} else if (_columnType == java.sql.Types.NVARCHAR) {
+			sb.append("'").append(_value.toString()).append("'");
+		} else if (_columnType == java.sql.Types.OTHER) {
+			throw new IllegalStateException(
+				"The type 'java.sql.Types.OTHER' is not supported!");
+		} else if (_columnType == java.sql.Types.REAL) {
+			sb.append(_value);
+		} else if (_columnType == java.sql.Types.REF) {
+			throw new IllegalStateException(
+				"The type 'java.sql.Types.REF' is not supported!");
+		} else if (_columnType == java.sql.Types.ROWID) {
+			sb.append(_value);
+		} else if (_columnType == java.sql.Types.SMALLINT) {
+			sb.append(_value);
+		} else if (_columnType == java.sql.Types.SQLXML) {
+			throw new IllegalStateException(
+				"The type 'java.sql.Types.SQLXML' is not supported!");
+		} else if (_columnType == java.sql.Types.STRUCT) {
+			throw new IllegalStateException(
+				"The type 'java.sql.Types.STRUCT' is not supported!");
+		} else if (_columnType == java.sql.Types.TIME) {
+			sb.append("'").append(toString((java.sql.Time) _value)).append("'");
+		} else if (_columnType == java.sql.Types.TIMESTAMP) {
+			sb.append("'").append(toString((java.sql.Timestamp) _value))
+				.append("'");
+		} else if (_columnType == java.sql.Types.TINYINT) {
+			sb.append(_value);
+		} else if (_columnType == java.sql.Types.VARBINARY) {
+			throw new IllegalStateException(
+				"The type 'java.sql.Types.VARBINARY' is not supported!");
+		} else if (_columnType == java.sql.Types.VARCHAR) {
+			sb.append("'").append(_value.toString()).append("'");
+		} else {
+			throw new IllegalStateException("The type '" + _columnType
+					+ "' is not supported!");
+		}
+
+		return sb.toString();
 	}
 
 }

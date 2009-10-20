@@ -1,5 +1,5 @@
 /*
- * $Id: SqlFileExporter.groovy 123 2009-03-18 11:38:24Z andre.winkler@web.de $
+ * $Id$
  * ============================================================================
  * Project groovy-oracle
  * Copyright (c) 2008 by Andre Winkler. All rights reserved.
@@ -38,8 +38,8 @@ import de.gluehloch.groovy.oracle.meta.*
  * If you specify only a table name, then the method <code>export()</code>
  * will generate a SQL select statement for the full table.
  * 
- * @author  $Author: andre.winkler@web.de $
- * @version $Revision: 123 $ $Date: 2009-03-18 12:38:24 +0100 (Mi, 18 Mrz 2009) $
+ * @author  $Author$
+ * @version $Revision$ $Date$
  */
 class SqlFileExporter {
 

@@ -2,7 +2,7 @@
  * $Id$
  * ============================================================================
  * Project groovy-oracle
- * Copyright (c) 2008-2009 by Andre Winkler. All rights reserved.
+ * Copyright (c) 2008-2010 by Andre Winkler. All rights reserved.
  * ============================================================================
  *          GNU LESSER GENERAL PUBLIC LICENSE
  *  TERMS AND CONDITIONS FOR COPYING, DISTRIBUTION AND MODIFICATION
@@ -23,46 +23,21 @@
  *
  */
 
-package de.gluehloch.groovy.oracle.inout
+package de.gluehloch.groovy.oracle.meta
 
-import org.junit.Test
-import org.junit.After
-import org.junit.Before
-
-import de.gluehloch.groovy.oracle.OraUtils
-import de.gluehloch.groovy.oracle.meta.*
-
-/**
- * Test for class DBUnit.
+import org.junit.Test/**
+ * Test für die Klasse OracleSequenceFinder.
  * 
  * @author  $Author$
  * @version $Revision$ $Date$
  */
-class DBUnitTest extends TestDatabaseUtility {
+class OracleSequenceFinderTest extends TestDatabaseUtility{
 
-	 @Test
-	 void testDBUnit() {
-		 DBUnit.xmlExport(OraUtils.dataSource, user,
-			 ['XXX_TEST_RUN_2'] as String[], new File('dbunit.xml'))
-	     sql.execute("DELETE FROM XXX_TEST_RUN_2")
-	     sql.commit()
+    @Test
+    void testOracleSequenceFinder() {
+    	def oracleSequenceFinder = new OracleSequenceFinder()
+    	def sequences = oracleSequenceFinder.getSequences(sql)
+    	assert sequences.contains('XXX_SQ')
+    }
 
-         DBUnit.xmlImport(OraUtils.dataSource, user, new File('dbunit.xml'),
-        	 DBUnit.DBUnitOperation.INSERT)
-         def counter = sql.firstRow("SELECT COUNT(*) as counter FROM XXX_TEST_RUN_2").counter
-         assert counter == 6
-	 }
-
-     @Before
-     void setUp() {
-         sql = TestDatabaseUtility.createConnection()
-         new SqlFileImporter(sql: sql, tableName: 'XXX_TEST_RUN_2',
-        	 fileName: 'XXX_TEST_RUN.dat').load()
-         sql.commit()
-     }
-
-     @After
-     void tearDown() {
-     }
-	
 }
