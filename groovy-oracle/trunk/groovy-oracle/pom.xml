@@ -14,8 +14,8 @@
   <description>Groovier Oracle Meta-Programming.</description>
   <scm>
     <!-- The developer connection starts with https. -->
-    <connection>scm:svn:http://groovy-oracle.googlecode.com/svn/groovy-oracle/branches/0.3.0-release/groovy-oracle</connection>
-    <developerConnection>scm:svn:http://groovy-oracle.googlecode.com/svn/groovy-oracle/branches/0.3.0-release/groovy-oracle</developerConnection>
+    <connection>scm:svn:http://groovy-oracle.googlecode.com/svn/groovy-oracle/trunk/groovy-oracle</connection>
+    <developerConnection>scm:svn:http://groovy-oracle.googlecode.com/svn/groovy-oracle/trunk/groovy-oracle</developerConnection>
     <url>http://code.google.com/p/groovy-oracle/source/browse/</url>
   </scm>
   <licenses>
