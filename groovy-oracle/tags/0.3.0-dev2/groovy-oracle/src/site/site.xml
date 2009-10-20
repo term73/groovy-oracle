@@ -1,0 +1,40 @@
+<project name="Swinger">
+  <bannerLeft>
+    <name>groovy-oracle</name>
+    <!--
+    <href>http://www.gluehloch.de/</href>
+    -->
+  </bannerLeft>
+  <!--
+  <bannerRight>
+    <name>Proficio</name>
+    <src>http://maven.apache.org/images/apache-maven project.png</src>
+  </bannerRight>
+  -->
+  <skin>
+    <groupId>de.gluehloch.maven.skins</groupId>
+    <artifactId>gluehloch-maven-skin</artifactId>
+    <version>1.0</version>
+  </skin>
+
+  <publishDate format="dd MMM yyyy" />
+  <body>
+    <links>
+      <item name="Gluehloch" href="http://www.gluehloch.de"/>
+      <item name="LogoLars" href="http://www.logolars.de"/>
+      <item name="Maven" href="http://maven.apache.org/"/>
+    </links>
+    <head>
+      <meta name="project" content="groovy-oracle"/>
+    </head>
+    <menu name="groovy-oracle">
+      <item name="Index"  href="index.html"/>
+    </menu>
+    <!-- http://maven.apache.org/images/logos/maven-brewed.png -->
+    <menu ref="reports" />
+    <!--
+    <menu ref="parent" />
+    -->
+    <menu ref="modules" />
+  </body>
+</project>
