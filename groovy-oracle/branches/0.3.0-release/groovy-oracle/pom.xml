@@ -9,12 +9,13 @@
   <groupId>de.gluehloch.groovy.oracle</groupId>
   <artifactId>groovy-oracle</artifactId>
   <packaging>jar</packaging>
-  <version>0.3.0-dev2-SNAPSHOT</version>
+  <version>0.3.0-dev2</version>
   <name>groovy-oracle</name>
   <description>Groovier Oracle Meta-Programming.</description>
   <scm>
-    <connection>scm:svn:https://groovy-oracle.googlecode.com/svn/groovy-oracle/trunk/groovy-oracle</connection>
-    <developerConnection>scm:svn:https://groovy-oracle.googlecode.com/svn/groovy-oracle/trunk/groovy-oracle</developerConnection>
+    <!-- The developer connection starts with https. -->
+    <connection>scm:svn:http://groovy-oracle.googlecode.com/svn/groovy-oracle/branches/0.3.0-release/groovy-oracle</connection>
+    <developerConnection>scm:svn:http://groovy-oracle.googlecode.com/svn/groovy-oracle/branches/0.3.0-release/groovy-oracle</developerConnection>
     <url>http://code.google.com/p/groovy-oracle/source/browse/</url>
   </scm>
   <licenses>
