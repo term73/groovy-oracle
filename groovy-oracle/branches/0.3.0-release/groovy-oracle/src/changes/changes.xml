@@ -10,6 +10,9 @@
       <action dev="andrewinkler" type="update" date="2009-12-08">
         Update of groovy-all to version 1.6.6
       </action>
+      <action dev="andrewinkler" type="add" date="20xx-xx-xx">
+        ...
+      </action>
     </release>
 
     <release version="groovy-oracle-0.3.0-dev2" date="2009-09-20"
