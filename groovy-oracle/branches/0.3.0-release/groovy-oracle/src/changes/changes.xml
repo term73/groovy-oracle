@@ -7,8 +7,8 @@
   <body>
     <release version="groovy-oracle-0.3.0-dev3" date="2009-??-??"
          description="New features and fixes">
-      <action dev="andrewinkler" type="update" date="2009-11-16">
-        TODO...
+      <action dev="andrewinkler" type="update" date="2009-12-08">
+        Update of groovy-all to version 1.6.6
       </action>
     </release>
 
