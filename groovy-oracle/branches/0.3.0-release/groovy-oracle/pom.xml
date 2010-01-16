@@ -65,6 +65,7 @@
               <goal>testCompile</goal>
             </goals>
           </execution>
+          <!--
           <execution>
             <id>install</id>
             <phase>install</phase>
@@ -82,6 +83,7 @@
               </source>
             </configuration>
           </execution>
+          -->
         </executions>
       </plugin>
       <plugin>
@@ -146,7 +148,7 @@
     <dependency>
       <groupId>org.codehaus.groovy</groupId>
       <artifactId>groovy-all</artifactId>
-      <version>1.6.6</version>
+      <version>1.7.0</version>
       <scope>compile</scope>
     </dependency>
     <dependency>
