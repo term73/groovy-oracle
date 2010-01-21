@@ -102,5 +102,23 @@ class OraUtils {
         }
         return invalidProcedures
     }
+    
+    /**
+     * Returns a list of Strings with the format 'object_name:object_type'.
+     *
+     * @param sql A Groovy SQL object.
+     * @param A list of Strings. See procedure description.
+     */
+    static def findInvalidObjects(sql) {
+        def invalidObjects = []
+        sql.eachRow("""
+    	        SELECT object_name, object_type
+        		FROM user_objects
+        		WHERE status != 'VALID';
+            """) {
+            invalidObjects << "${it.object_name}:${it.object_type}" 
+        }
+        return invalidObjects
+    }   
 
 }

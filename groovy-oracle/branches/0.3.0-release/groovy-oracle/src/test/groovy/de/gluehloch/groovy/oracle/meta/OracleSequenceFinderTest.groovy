@@ -31,7 +31,7 @@ import org.junit.Test/**
  * @author  $Author: andre.winkler@web.de $
  * @version $Revision: 104 $ $Date: 2009-03-04 15:17:30 +0100 (Mi, 04 Mrz 2009) $
  */
-class OracleSequenceFinderTest extends TestDatabaseUtility{
+class OracleSequenceFinderTest extends TestDatabaseUtility {
 
     @Test
     void testOracleSequenceFinder() {
