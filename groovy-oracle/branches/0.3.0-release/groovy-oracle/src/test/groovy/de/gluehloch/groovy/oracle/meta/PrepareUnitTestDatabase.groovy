@@ -1,5 +1,5 @@
 /*
- * $Id: PrepareUnitTestDatabase.groovy 121 2009-03-18 10:04:36Z andre.winkler@web.de $
+ * $Id$
  * ============================================================================
  * Project groovy-oracle
  * Copyright (c) 2008 by Andre Winkler. All rights reserved.

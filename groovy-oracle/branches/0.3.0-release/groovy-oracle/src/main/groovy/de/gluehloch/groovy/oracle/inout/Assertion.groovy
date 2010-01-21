@@ -1,5 +1,5 @@
 /*
- * $Id: Assertion.groovy 122 2009-03-18 10:11:13Z andre.winkler@web.de $
+ * $Id$
  * ============================================================================
  * Project groovy-oracle
  * Copyright (c) 2008-2009 by Andre Winkler. All rights reserved.

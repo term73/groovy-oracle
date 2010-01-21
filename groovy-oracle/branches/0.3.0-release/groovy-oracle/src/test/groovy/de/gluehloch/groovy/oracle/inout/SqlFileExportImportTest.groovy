@@ -1,5 +1,5 @@
 /*
- * $Id: SqlFileExportImportTest.groovy 140 2009-04-17 15:44:57Z andre.winkler@web.de $
+ * $Id$
  * ============================================================================
  * Project groovy-oracle
  * Copyright (c) 2008-2009 by Andre Winkler. All rights reserved.
@@ -32,8 +32,8 @@ import de.gluehloch.groovy.oracle.meta.*
 /**
  * Testet die Klassen SqlFileExporter und SqlFileImporter.
  * 
- * @author  $Author: andre.winkler@web.de $
- * @version $Revision: 140 $ $Date: 2009-04-17 17:44:57 +0200 (Fr, 17 Apr 2009) $
+ * @author  $Author$
+ * @version $Revision$ $Date$
  */
 class SqlFileExportImportTest extends TestDatabaseUtility {
 

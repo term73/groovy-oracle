@@ -1,5 +1,5 @@
 /*
- * $Id: OracleColumnFinder.groovy 135 2009-04-14 18:02:37Z andre.winkler@web.de $
+ * $Id$
  * ============================================================================
  * Project groovy-oracle
  * Copyright (c) 2008-2009 by Andre Winkler. All rights reserved.

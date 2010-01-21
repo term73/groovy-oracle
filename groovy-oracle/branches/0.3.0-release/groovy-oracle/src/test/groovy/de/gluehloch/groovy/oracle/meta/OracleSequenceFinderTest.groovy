@@ -1,5 +1,5 @@
 /*
- * $Id: OracleColumnTest.groovy 87 2009-02-10 19:57:53Z andre.winkler@web.de $
+ * $Id$
  * ============================================================================
  * Project groovy-oracle
  * Copyright (c) 2008-2010 by Andre Winkler. All rights reserved.
@@ -28,8 +28,8 @@ package de.gluehloch.groovy.oracle.meta
 import org.junit.Test/**
  * Test für die Klasse OracleSequenceFinder.
  * 
- * @author  $Author: andre.winkler@web.de $
- * @version $Revision: 104 $ $Date: 2009-03-04 15:17:30 +0100 (Mi, 04 Mrz 2009) $
+ * @author  $Author$
+ * @version $Revision$ $Date$
  */
 class OracleSequenceFinderTest extends TestDatabaseUtility {
 
