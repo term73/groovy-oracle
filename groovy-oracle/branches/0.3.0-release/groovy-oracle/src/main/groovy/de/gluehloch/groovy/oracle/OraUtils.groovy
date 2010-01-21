@@ -33,6 +33,9 @@ import groovy.sql.Sql
  * Utilities für den Umgang mit Oracle. Die Methode <code>purgeRecyclebin</code>
  * wird nur ausgeführt, wenn die System-Eigenschaft
  * <code>groovy.oracle.purge_recyclebin</code> gesetzt ist.
+ *
+ * @author  $Author$
+ * @version $Revision$ $Date$
  */
 class OraUtils {
 
