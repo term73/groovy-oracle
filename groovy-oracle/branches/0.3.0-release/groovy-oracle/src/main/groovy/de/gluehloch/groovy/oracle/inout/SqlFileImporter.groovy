@@ -44,19 +44,34 @@ class SqlFileImporter {
 	def fileName
 	def columnSeperator = '|'
 	def logOnly = false
+    
+    /** After #commitLimit INSERTS, i will execute a commit. */
 	def commitLimit = 1000
+    
+    /** Counting the number of INSERTS. */
 	def insertCounter = 0
+    
+    /**
+     * Set this property if you want to get a SQL file with all generated
+     * INSERT statements. This property takes a file name.
+     */
+    def createInsertFile
 
 	def load() {
     	def omdf = new OracleMetaDataFactory()
     	def tableMetaData = omdf.createOracleTable(sql, tableName as String)
     	sql.getConnection().setAutoCommit(false)
-    
-    	def fileWriter = new GFileWriter('andre-winkler.sql')
+
+    	def fileWriter = null
+        if (createInsertFile) {
+            fileWriter = new GFileWriter(createInsertFile)
+        }
+        
+        final def insertConst = "INSERT INTO ${tableName}(${tableMetaData.toColumnList()}) VALUES("
 
         new File(fileName).eachLine { line ->
             def values = InOutUtils.split(line, columnSeperator)
-            def insert = "INSERT INTO ${tableName}(${tableMetaData.toColumnList()}) VALUES("
+            def insert = insertConst
             def columns = tableMetaData.columnMetaData.size()
             tableMetaData.columnMetaData.eachWithIndex { column, index ->
                 if (!values.getAt(index)) {
@@ -74,7 +89,10 @@ class SqlFileImporter {
                 }
             }
             insert += ")"
-            fileWriter.writeln("${insert};")
+
+            if (createInsertFile) {
+                fileWriter.writeln("${insert};")
+            }
 
             if (!logOnly) {
             	insertCounter++
@@ -87,7 +105,10 @@ class SqlFileImporter {
             }
         }
     	sql.commit()
-    	fileWriter.close()
+
+        if (createInsertFile) {
+    	    fileWriter.close()
+        }
     }
 
 }
