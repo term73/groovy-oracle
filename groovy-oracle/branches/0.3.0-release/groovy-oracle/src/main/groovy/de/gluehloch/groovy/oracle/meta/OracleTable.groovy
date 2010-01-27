@@ -2,7 +2,7 @@
  * $Id$
  * ============================================================================
  * Project groovy-oracle
- * Copyright (c) 2008 by Andre Winkler. All rights reserved.
+ * Copyright (c) 2008-2010 by Andre Winkler. All rights reserved.
  * ============================================================================
  *          GNU LESSER GENERAL PUBLIC LICENSE
  *  TERMS AND CONDITIONS FOR COPYING, DISTRIBUTION AND MODIFICATION
@@ -28,7 +28,10 @@ package de.gluehloch.groovy.oracle.meta
 import org.apache.commons.lang.StringUtils
 
 /**
- * Verwaltet die Daten einer Oracle Datenbanktabelle.
+ * Holds the meta informations of an Oracle database table.
+ *
+ * @author by Andre Winkler, $LastChangedBy$
+ * @version $LastChangedRevision$ $LastChangedDate$
  */
 class OracleTable {
 
@@ -41,7 +44,21 @@ class OracleTable {
 
     /** Ein OracleConstraint Objekt. */
     def constraint;
-
+    
+    /**
+     * A shortcut method to access <code>constraint.primaryKey</code>.
+     */
+    def primaryKey() {
+        constraint.primaryKey
+    }
+    
+    /**
+     * A shortcut method to access <code>constraint.foreignKeys</code>.
+     */
+    def foreignKeys() {
+        constraint.foreignKeys
+    }
+    
     /**
      * Kopiert die Eigenschaften von diesem Objekt in ein neu erstelltes
      * Objekt 'OracleTable'

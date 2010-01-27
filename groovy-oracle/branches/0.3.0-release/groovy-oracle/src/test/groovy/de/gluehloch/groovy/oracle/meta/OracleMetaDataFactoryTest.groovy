@@ -57,17 +57,23 @@ class OracleMetaDataFactoryTest extends TestDatabaseUtility {
         oracleTable = omdf.createOracleTable(sql, "XXX_TEST_RUN")
         assert "XXX_TEST_RUN" == oracleTable.tableName
         assert "PK_XXX_TEST_RUN" == oracleTable.constraint.primaryKey.name
+        assert oracleTable.constraint.primaryKey.name == oracleTable.primaryKey().name 
         assert 0 == oracleTable.constraint.foreignKeys.size()
+        assert 0 == oracleTable.foreignKeys().size()
 
         oracleTable = omdf.createOracleTable(sql, "XXX_HIERARCHIE")
         assert "XXX_HIERARCHIE" == oracleTable.tableName
         assert "PK_XXX_HIERARCHIE" == oracleTable.constraint.primaryKey.name
+        assert oracleTable.constraint.primaryKey.name == oracleTable.primaryKey().name
         assert 1 == oracleTable.constraint.foreignKeys.size()
+        assert 1 == oracleTable.foreignKeys().size()
 
         oracleTable = omdf.createOracleTable(sql, "XXX_KUNDE")
         assert "XXX_KUNDE" == oracleTable.tableName
         assert "PK_XXX_KUNDE" == oracleTable.constraint.primaryKey.name
+        assert oracleTable.constraint.primaryKey.name == oracleTable.primaryKey().name
         assert 2 == oracleTable.constraint.foreignKeys.size()
+        assert 2 == oracleTable.foreignKeys().size()
 
         def foreignKey = oracleTable.constraint.foreignKeys.find { it.name == 'FK_XXX_KUNDE_HIERARCHIE' }        
         assert 'FK_XXX_KUNDE_HIERARCHIE' == foreignKey.name
