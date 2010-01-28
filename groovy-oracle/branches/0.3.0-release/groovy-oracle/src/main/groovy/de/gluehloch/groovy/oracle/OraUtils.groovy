@@ -2,7 +2,7 @@
  * $Id$
  * ============================================================================
  * Project groovy-oracle
- * Copyright (c) 2008-2009 by Andre Winkler. All rights reserved.
+ * Copyright (c) 2008-2010 by Andre Winkler. All rights reserved.
  * ============================================================================
  *          GNU LESSER GENERAL PUBLIC LICENSE
  *  TERMS AND CONDITIONS FOR COPYING, DISTRIBUTION AND MODIFICATION
@@ -82,7 +82,8 @@ class OraUtils {
 
     static def checkValidPackages(sql) {
     	def invalidPackages = []
-    	sql.eachRow("""
+    	sql.eachRow(
+            """
                 SELECT object_name
                 FROM user_objects
                 WHERE status = 'INVALID'
@@ -95,7 +96,8 @@ class OraUtils {
 
     static def checkValidProcedures(sql) {
         def invalidProcedures = []
-        sql.eachRow("""
+        sql.eachRow(
+            """
                 SELECT object_name
                 FROM user_objects
                 WHERE status = 'INVALID'
@@ -114,7 +116,8 @@ class OraUtils {
      */
     static def findInvalidObjects(sql) {
         def invalidObjects = []
-        sql.eachRow("""
+        sql.eachRow(
+            """
     	        SELECT object_name, object_type
         		FROM user_objects
         		WHERE status != 'VALID';
@@ -122,6 +125,84 @@ class OraUtils {
             invalidObjects << "${it.object_name}:${it.object_type}" 
         }
         return invalidObjects
-    }   
+    }
+    
+    static def cleanUpSchema(sql) {
+        sql.call(
+            """
+                BEGIN
+	                FOR i IN (SELECT object_name FROM user_objects WHERE object_type = 'PACKAGE')
+	    		    LOOP
+	        		    BEGIN
+	                        EXECUTE IMMEDIATE 'DROP PACKAGE ' || i.object_name; 
+	        		    EXCEPTION
+	        		        WHEN OTHERS THEN
+	        		            NULL;
+	    	            END;
+	        	    END LOOP;
+
+	                FOR i IN (SELECT object_name FROM user_objects WHERE object_type = 'PROCEDURE')
+	    		    LOOP
+	        		    BEGIN
+	                        EXECUTE IMMEDIATE 'DROP PROCEDURE ' || i.object_name; 
+	        		    EXCEPTION
+	        		        WHEN OTHERS THEN
+	        		            NULL;
+	    	            END;
+	        	    END LOOP;
+
+	                FOR i IN (SELECT object_name FROM user_objects WHERE object_type = 'FUNCTION')
+	    		    LOOP
+	        		    BEGIN
+	                        EXECUTE IMMEDIATE 'DROP FUNCTION ' || i.object_name; 
+	        		    EXCEPTION
+	        		        WHEN OTHERS THEN
+	        		            NULL;
+	    	            END;
+	        	    END LOOP;
+
+	                FOR i IN (SELECT object_name FROM user_objects WHERE object_type = 'VIEW')
+        		    LOOP
+	        		    BEGIN
+	                        EXECUTE IMMEDIATE 'DROP VIEW ' || i.object_name || ' CASCADE CONSTRAINTS'; 
+	        		    EXCEPTION
+	        		        WHEN OTHERS THEN
+	        		            NULL;
+        	            END;
+	        	    END LOOP;
+
+	                FOR i IN (SELECT object_name FROM user_objects WHERE object_type = 'TABLE')
+        		    LOOP
+	        		    BEGIN
+	                        EXECUTE IMMEDIATE 'DROP TABLE ' || i.object_name || ' CASCADE CONSTRAINTS'; 
+	        		    EXCEPTION
+	        		        WHEN OTHERS THEN
+	        		            NULL;
+        	            END;
+	        	    END LOOP;
+
+	                FOR i IN (SELECT object_name FROM user_objects WHERE object_type = 'TYPE')
+	    		    LOOP
+	        		    BEGIN
+	                        EXECUTE IMMEDIATE 'DROP TYPE ' || i.object_name; 
+	        		    EXCEPTION
+	        		        WHEN OTHERS THEN
+	        		            NULL;
+	    	            END;
+	        	    END LOOP;
+
+	                FOR i IN (SELECT object_name FROM user_objects WHERE object_type = 'SEQUENCE')
+	    		    LOOP
+	        		    BEGIN
+	                        EXECUTE IMMEDIATE 'DROP SEQUENCE ' || i.object_name; 
+	        		    EXCEPTION
+	        		        WHEN OTHERS THEN
+	        		            NULL;
+	    	            END;
+	        	    END LOOP;
+	        	END;
+            """
+        )
+    }
 
 }

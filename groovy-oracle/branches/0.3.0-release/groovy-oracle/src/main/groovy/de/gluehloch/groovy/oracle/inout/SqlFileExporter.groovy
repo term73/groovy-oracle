@@ -2,7 +2,7 @@
  * $Id$
  * ============================================================================
  * Project groovy-oracle
- * Copyright (c) 2008 by Andre Winkler. All rights reserved.
+ * Copyright (c) 2008-2010 by Andre Winkler. All rights reserved.
  * ============================================================================
  *          GNU LESSER GENERAL PUBLIC LICENSE
  *  TERMS AND CONDITIONS FOR COPYING, DISTRIBUTION AND MODIFICATION
@@ -63,6 +63,7 @@ class SqlFileExporter {
             def columns = []
 			def omdf = new OracleMetaDataFactory()
 			def oracleTable = omdf.createOracleTable(sql, query)
+
 			oracleTable.columnMetaData.each { column ->
 			    if (column.isDate()) {
 			    	columns << "TO_CHAR(${column.columnName}, '${InOutUtils.ORACLE_DATE_FORMAT}') as ${column.columnName}"
@@ -70,6 +71,10 @@ class SqlFileExporter {
 			    	columns << column.columnName
 			    }
             }
+
+            fileWriter.writeln("### TAB ${query}")
+            fileWriter.writeln("### ${columns.join(columnSeperator)}")
+
             _query = "select ${columns.join(',')} from ${query}".toString()
 		}
 
