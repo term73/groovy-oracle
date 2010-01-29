@@ -7,8 +7,13 @@
   <body>
     <release version="groovy-oracle-0.3.0-dev3" date="2010-??-??"
          description="New features and fixes">
-      <action dev="andrewinkler" type="update" date="2010-01-28">
-        Extended support in SqlFileImport for multi table import files.
+      <action dev="andrewinkler" type="update" date="2010-01-29">
+        The SqlFileImporter supports 'old' export files. Example: A table
+        export was started and later, you added a new column to the table.
+        Now if you want to import the data, the SqlFileImporter fills the
+        missing columns of the export file with 'NULL'. The next feature
+        supports redundant row separator. The table definition is the master
+        of the import, so the SqlFileImporter ignores the redundant separators.
       </action>
       <action dev="andrewinkler" type="update" date="2010-01-28">
         A new method for OraUtils#cleanUpSchema() to clean up all user objects.

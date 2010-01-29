@@ -45,16 +45,59 @@ class SqlFileExportImportTest extends TestDatabaseUtility {
              fileName: 'XXX_TEST_RUN.dat',
              createInsertFile: 'tmp_insert.log').load()
 
-        def counter = sql.firstRow("SELECT COUNT(*) as counter FROM XXX_TEST_RUN_2").counter
-        assert counter == 6
-        assert sql.firstRow("SELECT v_numeric FROM XXX_TEST_RUN_2 where id = 1").v_numeric == 123.456
-        assert sql.firstRow("SELECT v_numeric FROM XXX_TEST_RUN_2 where id = 2").v_numeric == 666.626
-        def dbDate = sql.firstRow("SELECT TO_CHAR(stichtag, ${InOutUtils.ORACLE_DATE_FORMAT}) as stichtag FROM XXX_TEST_RUN_2 where id = 1").stichtag
-        assert dbDate == '1971-03-24 17:05:05'
+		assert 6 == sql.firstRow(
+                "SELECT COUNT(*) as counter FROM XXX_TEST_RUN_2").counter
+
+        assert 123.456 == sql.firstRow(
+		        "SELECT v_numeric FROM XXX_TEST_RUN_2 where id = 1").v_numeric
+
+        assert 666.626 == sql.firstRow(
+		        "SELECT v_numeric FROM XXX_TEST_RUN_2 where id = 2").v_numeric
+
+        assert '1971-03-24 17:05:05' == sql.firstRow(
+		        """
+        		SELECT
+        		    TO_CHAR(stichtag, ${InOutUtils.ORACLE_DATE_FORMAT}) as stichtag
+        		FROM
+        		    XXX_TEST_RUN_2
+        		WHERE
+        		    id = 1
+        		""").stichtag
 
         def ex = new SqlFileExporter(
              sql: sql, query: 'XXX_TEST_RUN_2', fileName: 'XXX_TEST_RUN_2.dat')
 	    ex.export()
     }
+	
+	@Test
+	void testDatabaseImportWithTableHasMoreColumnsThanFileRows() {
+		new SqlFileImporter(
+				sql: sql,
+				tableName: 'XXX_TEST_RUN_3',
+				fileName: 'XXX_TEST_RUN.dat',
+				createInsertFile: 'tmp_insert.log').load()
+		
+		assert 6 == sql.firstRow(
+		        "SELECT COUNT(*) as counter FROM XXX_TEST_RUN_3").counter
+	}
+	
+	@Test
+	void testDatabaseImportWithSeparatorAtEndOfLine() {
+		new SqlFileImporter(
+				sql: sql,
+				tableName: 'XXX_TEST_RUN_2',
+				fileName: 'XXX_TEST_RUN_SEPARATOR_AT_END.dat',
+				createInsertFile: 'tmp_insert.log').load()
+		
+		assert 6 == sql.firstRow(
+                "SELECT COUNT(*) as counter FROM XXX_TEST_RUN_2").counter
+
+	}
+
+	@Before
+	void setUp() {
+		sql.execute("DELETE FROM XXX_TEST_RUN_2")
+		sql.execute("DELETE FROM XXX_TEST_RUN_3")
+	}
 
 }

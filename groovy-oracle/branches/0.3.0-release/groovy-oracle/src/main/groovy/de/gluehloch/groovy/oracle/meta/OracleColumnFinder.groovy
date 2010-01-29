@@ -41,7 +41,8 @@ class OracleColumnFinder {
      */
     def getColumns(def sql, def tableName) {
         def columns = []
-        sql.eachRow("""
+        sql.eachRow(
+		"""
             SELECT *
     		FROM
                 user_tab_columns
@@ -68,7 +69,8 @@ class OracleColumnFinder {
      * @return Eine Liste von OracleConstraint (Primary- und Foreign Keys).
      */
     def getConstraint(def sql, def tableName) {
-        def query = """
+        def query =
+		"""
             SELECT
                 a.constraint_name, a.constraint_type, a.table_name,
                 a.search_condition, a.r_constraint_name,
@@ -115,7 +117,8 @@ class OracleColumnFinder {
 
         constraint.foreignKeys.each { foreignKey ->
             // Die referenzierten Spalten identifizieren.
-            def pkQuery = """
+            def pkQuery =
+			"""
                 SELECT
                     a.constraint_name, a.constraint_type, a.table_name,
                     b.column_name, a.search_condition, a.r_constraint_name

@@ -2,7 +2,7 @@
  * $Id$
  * ============================================================================
  * Project groovy-oracle
- * Copyright (c) 2008 by Andre Winkler. All rights reserved.
+ * Copyright (c) 2008-2010 by Andre Winkler. All rights reserved.
  * ============================================================================
  *          GNU LESSER GENERAL PUBLIC LICENSE
  *  TERMS AND CONDITIONS FOR COPYING, DISTRIBUTION AND MODIFICATION
@@ -74,19 +74,26 @@ class SqlFileImporter {
             def insert = insertConst
             def columns = tableMetaData.columnMetaData.size()
             tableMetaData.columnMetaData.eachWithIndex { column, index ->
-                if (!values.getAt(index)) {
-                	insert += "NULL"
-                } else if (column.isNumber()) {
-                	insert += "${values.getAt(index)}"
-                } else if (column.isDate()) {
-                	insert += "to_date('${values.getAt(index)}', '${InOutUtils.ORACLE_DATE_FORMAT}')"
-                } else {
-                	def value = values.getAt(index)?.replaceAll("'", "''")
-                	insert += "'${value}'"
-                }
-                if (index + 1 < columns) {
-                	insert += ", "
-                }
+				if (index < values.size()) {
+	                if (!values.getAt(index)) {
+	                	insert += "NULL"
+	                } else if (column.isNumber()) {
+	                	insert += "${values.getAt(index)}"
+	                } else if (column.isDate()) {
+	                	insert += "to_date('${values.getAt(index)}', '${InOutUtils.ORACLE_DATE_FORMAT}')"
+	                } else {
+	                	def value = values.getAt(index)?.replaceAll("'", "''")
+	                	insert += "'${value}'"
+	                }
+				} else {
+				    // The import table has more columns than the line rows, so
+				    // i fill up the gap with 'NULL'.
+					insert += "NULL"
+				}
+
+				if (index + 1 < columns) {
+					insert += ", "
+				}
             }
             insert += ")"
 

@@ -44,12 +44,26 @@ class OraUtils {
 	static def dataSource
 
 	static def getConnection(user, password, url) {
-		if (dataSource == null) {
-			dataSource = new oracle.jdbc.pool.OracleDataSource()
-			dataSource.setURL(url)
-		}
-		def conn = dataSource.getConnection(user, password)
-		conn.setAutoCommit(false)
+		def conn = null
+		try {
+			if (dataSource == null) {
+				dataSource = new oracle.jdbc.pool.OracleDataSource()
+				dataSource.setURL(url)
+			}
+			conn = dataSource.getConnection(user, password)
+			conn.setAutoCommit(false)
+		} catch (SQLException ex) {
+		    // I´m not able to establish a connection, so i reset them all.
+		    try {
+		        dataSource?.close()
+		    } catch (Exception closeException) {
+			    // ok
+		    }
+		    dataSource = null
+		    conn = null
+		
+		    throw ex
+      	}
 		return conn
 	}
 
