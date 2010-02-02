@@ -50,7 +50,10 @@ class SqlFileImporter {
     
     /** Counting the number of INSERTS. */
 	def insertCounter = 0
-    
+	
+	/** If you need a special data formatter, than set it here. */
+	def dateFormat = InOutUtils.ORACLE_DATE_FORMAT
+
     /**
      * Set this property if you want to get a SQL file with all generated
      * INSERT statements. This property takes a file name.
@@ -70,46 +73,48 @@ class SqlFileImporter {
         final def insertConst = "INSERT INTO ${tableName}(${tableMetaData.toColumnList()}) VALUES("
 
         new File(fileName).eachLine { line ->
-            def values = InOutUtils.split(line, columnSeperator)
-            def insert = insertConst
-            def columns = tableMetaData.columnMetaData.size()
-            tableMetaData.columnMetaData.eachWithIndex { column, index ->
-				if (index < values.size()) {
-	                if (!values.getAt(index)) {
-	                	insert += "NULL"
-	                } else if (column.isNumber()) {
-	                	insert += "${values.getAt(index)}"
-	                } else if (column.isDate()) {
-	                	insert += "to_date('${values.getAt(index)}', '${InOutUtils.ORACLE_DATE_FORMAT}')"
-	                } else {
-	                	def value = values.getAt(index)?.replaceAll("'", "''")
-	                	insert += "'${value}'"
-	                }
-				} else {
-				    // The import table has more columns than the line rows, so
-				    // i fill up the gap with 'NULL'.
-					insert += "NULL"
-				}
-
-				if (index + 1 < columns) {
-					insert += ", "
-				}
-            }
-            insert += ")"
-
-            if (createInsertFile) {
-                fileWriter.writeln("${insert};")
-            }
-
-            if (!logOnly) {
-            	insertCounter++
-            	sql.executeInsert(insert.toString())
-            }
-
-            if (insertCounter > commitLimit) {
-            	insertCounter = 0
-            	sql.commit()            	
-            }
+			if (!(line =~ /^#/)) {
+	            def values = InOutUtils.split(line, columnSeperator)
+	            def insert = insertConst
+	            def columns = tableMetaData.columnMetaData.size()
+	            tableMetaData.columnMetaData.eachWithIndex { column, index ->
+					if (index < values.size()) {
+		                if (!values.getAt(index)) {
+		                	insert += "NULL"
+		                } else if (column.isNumber()) {
+		                	insert += "${values.getAt(index)}".replace(",", ".")
+		                } else if (column.isDate()) {
+		                	insert += "to_date('${values.getAt(index)}', '${dateFormat}')"
+		                } else {
+		                	def value = values.getAt(index)?.replaceAll("'", "''")
+		                	insert += "'${value}'"
+		                }
+					} else {
+					    // The import table has more columns than the line rows, so
+					    // i fill up the gap with 'NULL'.
+						insert += "NULL"
+					}
+	
+					if (index + 1 < columns) {
+						insert += ", "
+					}
+	            }
+	            insert += ")"
+	
+	            if (createInsertFile) {
+	                fileWriter.writeln("${insert};")
+	            }
+	
+	            if (!logOnly) {
+	            	insertCounter++
+	            	sql.executeInsert(insert.toString())
+	            }
+	
+	            if (insertCounter > commitLimit) {
+	            	insertCounter = 0
+	            	sql.commit()            	
+	            }
+			}
         }
     	sql.commit()
 
