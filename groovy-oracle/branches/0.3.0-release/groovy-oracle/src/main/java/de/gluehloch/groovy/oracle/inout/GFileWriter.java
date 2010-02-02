@@ -25,6 +25,7 @@
 
 package de.gluehloch.groovy.oracle.inout;
 
+import java.io.File;
 import java.io.IOException;
 
 import org.apache.commons.io.output.FileWriterWithEncoding;
@@ -41,14 +42,24 @@ public class GFileWriter {
 
 	private final FileWriterWithEncoding fileWriter;
 
+	public GFileWriter(final File _file) throws IOException {
+		this(_file, System.getProperty("file.encoding"));
+	}
+
 	public GFileWriter(final String _fileName) throws IOException {
-		this(_fileName, System.getProperty("file.encoding"));
+		this(new File(_fileName), System.getProperty("file.encoding"));
 	}
 
 	public GFileWriter(final String _fileName, final String _encoding)
 			throws IOException {
 
-		fileWriter = new FileWriterWithEncoding(_fileName, _encoding);
+		this(new File(_fileName), _encoding);
+	}
+
+	public GFileWriter(final File _file, final String _encoding)
+			throws IOException {
+
+		fileWriter = new FileWriterWithEncoding(_file, _encoding);
 	}
 
 	public GFileWriter write(final String _text) throws IOException {
@@ -63,10 +74,10 @@ public class GFileWriter {
 		return this;
 	}
 
-    public void flush() throws IOException {
-    	fileWriter.flush();
-    }
- 
+	public void flush() throws IOException {
+		fileWriter.flush();
+	}
+
 	public void close() throws IOException {
 		fileWriter.close();
 	}

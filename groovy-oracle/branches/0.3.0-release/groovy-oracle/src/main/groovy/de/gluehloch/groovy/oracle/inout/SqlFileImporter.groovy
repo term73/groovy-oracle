@@ -71,6 +71,10 @@ class SqlFileImporter {
         }
         
         final def insertConst = "INSERT INTO ${tableName}(${tableMetaData.toColumnList()}) VALUES("
+        
+        if (fileName instanceof File) {
+            fileName = fileName.getAbsolutePath()
+        }
 
         new File(fileName).eachLine { line ->
 			if (!(line =~ /^#/)) {
