@@ -7,6 +7,11 @@
   <body>
     <release version="groovy-oracle-0.3.0-dev3" date="2010-??-??"
          description="New features and fixes">
+      <action dev="andrewinkler" type="update" date="2010-02-03">
+        The SqlFileImporter is able to read the first line of the data file
+        to find the table name for the import. Also there is a new property
+        to force a clean import. Old table data will be deleted.
+      </action>
       <action dev="andrewinkler" type="update" date="2010-01-29">
         The SqlFileImporter supports 'old' export files. Example: A table
         export was started and later, you added a new column to the table.

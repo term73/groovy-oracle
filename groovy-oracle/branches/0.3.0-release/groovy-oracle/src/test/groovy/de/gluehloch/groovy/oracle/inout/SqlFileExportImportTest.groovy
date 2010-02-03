@@ -93,6 +93,18 @@ class SqlFileExportImportTest extends TestDatabaseUtility {
                 "SELECT COUNT(*) as counter FROM XXX_TEST_RUN_2").counter
 
 	}
+    
+    @Test
+    void testDatabaseImportWithoutTableName() {
+        new SqlFileImporter(
+                sql: sql,
+                fileName: 'XXX_TEST_RUN_SEPARATOR_AT_END.dat',
+                createInsertFile: 'tmp_insert.log').load()
+        
+        assert 6 == sql.firstRow(
+        "SELECT COUNT(*) as counter FROM XXX_TEST_RUN_2").counter
+        
+    }
 
 	@Before
 	void setUp() {

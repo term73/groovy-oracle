@@ -40,7 +40,16 @@ import de.gluehloch.groovy.oracle.meta.*
 class SqlFileImporter {
 
     def sql
+    
+    /** The name of the database table to import for. */
     def tableName
+    
+    /**
+     * Set this property to true, if you want to delete the table before an
+     * import.
+     */ 
+    def deleteTableBefore
+
 	def fileName
 	def columnSeperator = '|'
 	def logOnly = false
@@ -59,24 +68,46 @@ class SqlFileImporter {
      * INSERT statements. This property takes a file name.
      */
     def createInsertFile
+    
+    /** Creates the meta data model of a database table. */
+    final def omdf = new OracleMetaDataFactory()
 
 	def load() {
-    	def omdf = new OracleMetaDataFactory()
-    	def tableMetaData = omdf.createOracleTable(sql, tableName as String)
-    	sql.getConnection().setAutoCommit(false)
+        sql.getConnection().setAutoCommit(false)
 
     	def fileWriter = null
         if (createInsertFile) {
             fileWriter = new GFileWriter(createInsertFile)
         }
-        
-        final def insertConst = "INSERT INTO ${tableName}(${tableMetaData.toColumnList()}) VALUES("
-        
+       
         if (fileName instanceof File) {
             fileName = fileName.getAbsolutePath()
         }
+        
+        def tableMetaData = null
+        def insertConst = null
 
         new File(fileName).eachLine { line ->
+            // This is only for the first line of the dbtab file!
+            if (!tableMetaData) {
+                if (!tableName) {
+                    def tokens = line.tokenize()
+                    tableName = tokens[tokens.findIndexOf { it == 'TAB' } + 1]
+                }
+                
+                if (deleteTableBefore) {
+                    sql.call('DELETE FROM ' + tableName)
+                    sql.commit()
+                    if (createInsertFile) {
+                        fileWriter.writeln "DELETE FROM ${tableName};"
+                        fileWriter.writeln "COMMIT;"
+                    }
+                }
+
+                tableMetaData = omdf.createOracleTable(sql, tableName as String)
+                insertConst = "INSERT INTO ${tableName}(${tableMetaData.toColumnList()}) VALUES("
+            }
+
 			if (!(line =~ /^#/)) {
 	            def values = InOutUtils.split(line, columnSeperator)
 	            def insert = insertConst
@@ -106,7 +137,7 @@ class SqlFileImporter {
 	            insert += ")"
 	
 	            if (createInsertFile) {
-	                fileWriter.writeln("${insert};")
+	                fileWriter.writeln "${insert};"
 	            }
 	
 	            if (!logOnly) {
