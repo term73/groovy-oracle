@@ -108,7 +108,7 @@ class SqlFileImporter {
                 insertConst = "INSERT INTO ${tableName}(${tableMetaData.toColumnList()}) VALUES("
             }
 
-			if (!(line =~ /^#/)) {
+			if (!(line =~ /^(\s)*#/)) { 
 	            def values = InOutUtils.split(line, columnSeperator)
 	            def insert = insertConst
 	            def columns = tableMetaData.columnMetaData.size()
