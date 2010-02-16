@@ -47,6 +47,9 @@ class SqlFileExporter {
 	def query
 	def fileName
 	def columnSeperator = '|'
+    
+	/** If you need a special data formatter, than set it here. */
+	def dateFormat = InOutUtils.ORACLE_DATE_FORMAT
 
 	def export() {
 		if (!query) {
@@ -66,7 +69,7 @@ class SqlFileExporter {
 
 			oracleTable.columnMetaData.each { column ->
 			    if (column.isDate()) {
-			    	columns << "TO_CHAR(${column.columnName}, '${InOutUtils.ORACLE_DATE_FORMAT}') as ${column.columnName}"
+			    	columns << "TO_CHAR(${column.columnName}, '${dateFormat}') as ${column.columnName}"
 			    } else {
 			    	columns << column.columnName
 			    }
