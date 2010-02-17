@@ -59,7 +59,7 @@ class SqlFileExporter {
 		def fileWriter = new GFileWriter(fileName)
 
 		def _query = ""
-		if (query.startsWith('select') || query.startsWith('SELECT')) {
+		if (query =~ /^(\s)*(?i)select/) {
             _query = query
 		} else {
             // Generate the query!
