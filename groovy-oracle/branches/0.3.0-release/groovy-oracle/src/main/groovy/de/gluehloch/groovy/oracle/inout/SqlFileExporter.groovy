@@ -42,79 +42,81 @@ import de.gluehloch.groovy.oracle.meta.*
  * @version $Revision$ $Date$
  */
 class SqlFileExporter {
-
-	def sql
-	def query
-	def fileName
-	def columnSeperator = '|'
     
-	/** If you need a special data formatter, than set it here. */
-	def dateFormat = InOutUtils.ORACLE_DATE_FORMAT
-
-	def export() {
-		if (!query) {
-			throw new IllegalArgumentException("Property 'query' must be set!")
-		}
-
-		def fileWriter = new GFileWriter(fileName)
-
-		def _query = ""
-		if (query =~ /^(\s)*(?i)select/) {
+    def sql
+    def query
+    def fileName
+    def columnSeperator = '|'
+    
+    /** If you need a special data formatter, than set it here. */
+    def dateFormat = InOutUtils.ORACLE_DATE_FORMAT
+    
+    def export() {
+        if (!query) {
+            throw new IllegalArgumentException("Property 'query' must be set!")
+        }
+        
+        def fileWriter = new GFileWriter(fileName)
+        
+        def _query = ""
+        if (query =~ /^(\s)*(?i)select/) {
             _query = query
-		} else {
+        } else {
             // Generate the query!
             def columns = []
-			def omdf = new OracleMetaDataFactory()
-			def oracleTable = omdf.createOracleTable(sql, query)
-
-			oracleTable.columnMetaData.each { column ->
-			    if (column.isDate()) {
-			    	columns << "TO_CHAR(${column.columnName}, '${dateFormat}') as ${column.columnName}"
-			    } else {
-			    	columns << column.columnName
-			    }
+            def omdf = new OracleMetaDataFactory()
+            def oracleTable = omdf.createOracleTable(sql, query)
+            
+            oracleTable.columnMetaData.each { column ->
+                if (column.isDate()) {
+                    columns << "TO_CHAR(${column.columnName}, '${dateFormat}') as ${column.columnName}"
+                } else {
+                    columns << column.columnName
+                }
             }
-
+            
             fileWriter.writeln("### TAB ${query}")
             fileWriter.writeln("### ${columns.join(columnSeperator)}")
-
+            
             _query = "select ${columns.join(',')} from ${query}".toString()
-		}
-
-		def tmp
-		sql.eachRow(_query) { row ->
-		    def string = ""
-		    for (i in 1 .. row.getMetaData().getColumnCount()) {
-		    	def columnName = row.getMetaData().getColumnName(i)
-		    	def columnType = row.getMetaData().getColumnType(i)
-		    	switch (columnType)
-		    	{
-		    	case java.sql.Types.DATE:
-		    		tmp = InOutUtils.toString(row."${columnName}")
-		    		if (tmp != null) {
-		    			string += tmp
-		    		}
-		    		break
-                case java.sql.Types.TIMESTAMP:
-                    tmp = InOutUtils.toString(row."${columnName}")
-                    if (tmp != null) {
-                        string += tmp
+        }
+        
+        def tmp
+        sql.eachRow(_query) { row ->
+            def string = ""
+            for (i in 1 .. row.getMetaData().getColumnCount()) {
+                def columnName = row.getMetaData().getColumnName(i)
+                def columnType = row.getMetaData().getColumnType(i)
+                tmp = row."${columnName}"
+                if (tmp) {
+                    switch (columnType) {
+                        case java.sql.Types.DATE:
+                            tmp = InOutUtils.toString(row."${columnName}")
+                            if (tmp != null) {
+                                string += tmp
+                            }
+                            break
+                        case java.sql.Types.TIMESTAMP:
+                            tmp = InOutUtils.toString(row."${columnName}")
+                            if (tmp != null) {
+                                string += tmp
+                            }
+                            break
+                        default:
+                            tmp = row."${columnName}"
+                            if (tmp != null) {
+                                string += tmp
+                            }
                     }
-                    break
-                default:
-                	tmp = row."${columnName}"
-                    if (tmp != null) {
-                        string += tmp
-                    }
-		    	}
-		    	
-		    	if (i < row.getMetaData().getColumnCount()) {
-		    		string += columnSeperator
-		    	}
-		    }
-		    fileWriter.writeln(string)
-		}
-		fileWriter.close()
-	}
-
+                }
+                
+                if (i < row.getMetaData().getColumnCount()) {
+                    string += columnSeperator
+                }
+            }
+            fileWriter.writeln(string)
+        }
+        fileWriter.close()
+    }
+    
 }
