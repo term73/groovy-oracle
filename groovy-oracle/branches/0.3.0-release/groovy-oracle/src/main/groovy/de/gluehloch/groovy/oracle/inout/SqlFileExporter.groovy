@@ -47,6 +47,7 @@ class SqlFileExporter {
     def query
     def fileName
     def columnSeperator = '|'
+    def where
     
     /** If you need a special data formatter, than set it here. */
     def dateFormat = InOutUtils.ORACLE_DATE_FORMAT
@@ -79,6 +80,9 @@ class SqlFileExporter {
             fileWriter.writeln("### ${columns.join(columnSeperator)}")
             
             _query = "select ${columns.join(',')} from ${query}".toString()
+            if (where) {
+                _query += " WHERE ${where}"
+            }
         }
         
         def tmp
@@ -88,26 +92,22 @@ class SqlFileExporter {
                 def columnName = row.getMetaData().getColumnName(i)
                 def columnType = row.getMetaData().getColumnType(i)
                 tmp = row."${columnName}"
-                if (tmp) {
-                    switch (columnType) {
-                        case java.sql.Types.DATE:
-                            tmp = InOutUtils.toString(row."${columnName}")
-                            if (tmp != null) {
-                                string += tmp
-                            }
-                            break
-                        case java.sql.Types.TIMESTAMP:
-                            tmp = InOutUtils.toString(row."${columnName}")
-                            if (tmp != null) {
-                                string += tmp
-                            }
-                            break
-                        default:
-                            tmp = row."${columnName}"
-                            if (tmp != null) {
-                                string += tmp
-                            }
-                    }
+                switch (columnType) {
+                    case java.sql.Types.DATE:
+                        if (tmp != null) {
+                            string += InOutUtils.toString(tmp)
+                        }
+                        break
+                    case java.sql.Types.TIMESTAMP:
+                        if (tmp != null) {
+                            string += InOutUtils.toString(tmp)
+                        }
+                        break
+                    default:
+                        tmp = tmp
+                        if (tmp != null) {
+                            string += tmp
+                        }
                 }
                 
                 if (i < row.getMetaData().getColumnCount()) {

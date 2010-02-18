@@ -7,6 +7,10 @@
   <body>
     <release version="groovy-oracle-0.3.0-dev3" date="2010-??-??"
          description="New features and fixes">
+      <action dev="andrewinkler" type="fix" date="2010-02-18">
+        A problem with SqlFileExporter and '0' values. A Groovy comparation
+        returns false if you test on 0 aka zero.  
+      </action>
       <action dev="andrewinkler" type="update" date="2010-02-03">
         The SqlFileImporter is able to read the first line of the data file
         to find the table name for the import. Also there is a new property
