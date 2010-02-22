@@ -93,25 +93,11 @@ class SqlFileImporter {
         }
 
         new File(fileName).eachLine { line ->
-            // This is only for the first line of the dbtab file!
-            //  =~ /^### TAB /
             if (line =~ /^### TAB /) {
                 def tokens = line.tokenize()
                 def findTableName = tokens[tokens.findIndexOf { it == 'TAB' } + 1]
                 
                 tableMetaData = init(findTableName, fileWriter)
-                /*
-                if (deleteTableBefore) {
-                    sql.call('DELETE FROM ' + findTableName)
-                    sql.commit()
-                    if (createInsertFile) {
-                        fileWriter.writeln "DELETE FROM ${findTableName};"
-                        fileWriter.writeln "COMMIT;"
-                    }
-                }
-
-                tableMetaData = omdf.createOracleTable(sql, findTableName as String)
-                */
                 insertConst = "INSERT INTO ${findTableName}(${tableMetaData.toColumnList()}) VALUES("
             }
 
