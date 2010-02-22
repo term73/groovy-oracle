@@ -12,7 +12,7 @@
         can import to many tables from one import file.  
       </action>
       <action dev="andrewinkler" type="fix" date="2010-02-18">
-        A problem with SqlFileExporter and '0' values. A Groovy comparation
+        A problem with SqlFileExporter and '0' values. A Groovy comparison
         returns false if you test on 0 aka zero.  
       </action>
       <action dev="andrewinkler" type="update" date="2010-02-03">
