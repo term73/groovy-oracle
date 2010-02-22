@@ -87,28 +87,38 @@ class SqlFileImporter {
         def tableMetaData = null
         def insertConst = null
 
+        if (tableName) {
+            tableMetaData = init(tableName, fileWriter)
+            insertConst = "INSERT INTO ${tableName}(${tableMetaData.toColumnList()}) VALUES("
+        }
+
         new File(fileName).eachLine { line ->
             // This is only for the first line of the dbtab file!
-            if (!tableMetaData) {
-                if (!tableName) {
-                    def tokens = line.tokenize()
-                    tableName = tokens[tokens.findIndexOf { it == 'TAB' } + 1]
-                }
+            //  =~ /^### TAB /
+            if (line =~ /^### TAB /) {
+                def tokens = line.tokenize()
+                def findTableName = tokens[tokens.findIndexOf { it == 'TAB' } + 1]
                 
+                tableMetaData = init(findTableName, fileWriter)
+                /*
                 if (deleteTableBefore) {
-                    sql.call('DELETE FROM ' + tableName)
+                    sql.call('DELETE FROM ' + findTableName)
                     sql.commit()
                     if (createInsertFile) {
-                        fileWriter.writeln "DELETE FROM ${tableName};"
+                        fileWriter.writeln "DELETE FROM ${findTableName};"
                         fileWriter.writeln "COMMIT;"
                     }
                 }
 
-                tableMetaData = omdf.createOracleTable(sql, tableName as String)
-                insertConst = "INSERT INTO ${tableName}(${tableMetaData.toColumnList()}) VALUES("
+                tableMetaData = omdf.createOracleTable(sql, findTableName as String)
+                */
+                insertConst = "INSERT INTO ${findTableName}(${tableMetaData.toColumnList()}) VALUES("
             }
 
-			if (!(line =~ /^(\s)*#/)) { 
+			if (tableMetaData 
+					&& !(line.trim().isEmpty())
+                    && !(line =~ /^(\s)*#/)) {
+
 	            def values = InOutUtils.split(line, columnSeperator)
 	            def insert = insertConst
 	            def columns = tableMetaData.columnMetaData.size()
@@ -156,6 +166,19 @@ class SqlFileImporter {
         if (createInsertFile) {
     	    fileWriter.close()
         }
+    }
+
+    private def init(table, fileWriter) {
+        if (deleteTableBefore) {
+            sql.call('DELETE FROM ' + table)
+            sql.commit()
+            if (createInsertFile) {
+                fileWriter.writeln "DELETE FROM ${table};"
+                fileWriter.writeln "COMMIT;"
+            }
+        }
+
+        omdf.createOracleTable(sql, table as String)
     }
 
 }

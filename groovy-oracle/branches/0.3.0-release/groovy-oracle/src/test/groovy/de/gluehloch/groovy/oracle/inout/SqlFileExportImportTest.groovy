@@ -43,7 +43,7 @@ class SqlFileExportImportTest extends TestDatabaseUtility {
              sql: sql,
              tableName: 'XXX_TEST_RUN_2',
              fileName: 'XXX_TEST_RUN.dat',
-             createInsertFile: 'tmp_insert.log').load()
+             createInsertFile: './target/tmp_insert.log').load()
 
 		assert 6 == sql.firstRow(
                 "SELECT COUNT(*) as counter FROM XXX_TEST_RUN_2").counter
@@ -75,7 +75,7 @@ class SqlFileExportImportTest extends TestDatabaseUtility {
 				sql: sql,
 				tableName: 'XXX_TEST_RUN_3',
 				fileName: 'XXX_TEST_RUN.dat',
-				createInsertFile: 'tmp_insert.log').load()
+				createInsertFile: './target/tmp_insert.log').load()
 		
 		assert 6 == sql.firstRow(
 		        "SELECT COUNT(*) as counter FROM XXX_TEST_RUN_3").counter
@@ -87,7 +87,7 @@ class SqlFileExportImportTest extends TestDatabaseUtility {
 				sql: sql,
 				tableName: 'XXX_TEST_RUN_2',
 				fileName: 'XXX_TEST_RUN_SEPARATOR_AT_END.dat',
-				createInsertFile: 'tmp_insert.log').load()
+				createInsertFile: './target/tmp_insert.log').load()
 		
 		assert 6 == sql.firstRow(
                 "SELECT COUNT(*) as counter FROM XXX_TEST_RUN_2").counter
@@ -99,10 +99,10 @@ class SqlFileExportImportTest extends TestDatabaseUtility {
         new SqlFileImporter(
                 sql: sql,
                 fileName: 'XXX_TEST_RUN_SEPARATOR_AT_END.dat',
-                createInsertFile: 'tmp_insert.log').load()
+                createInsertFile: './target/tmp_insert.log').load()
         
         assert 6 == sql.firstRow(
-        "SELECT COUNT(*) as counter FROM XXX_TEST_RUN_2").counter
+        		"SELECT COUNT(*) as counter FROM XXX_TEST_RUN_2").counter
         
     }
 
