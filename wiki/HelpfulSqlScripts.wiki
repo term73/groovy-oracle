@@ -79,6 +79,8 @@ END;
 }}}
 
 == SQL Loader ==
+
+===Solution 1===
 The following script generates a SQL*Loader configuration. The code snippet needs two input parameters: Table name and the potential Date format.
 {{{
 set echo off ver off feed off pages 0 
@@ -115,4 +117,64 @@ order  by column_id;
 select ')'  
 from dual;
 spool off
+}}}
+
+=== Solution 2 ===
+{{{
+set serveroutput on size unlimited;
+
+DECLARE
+  v_table_name VARCHAR2(30)  := 'CPTASKLIST';
+  v_dformat    VARCHAR2(16)  := 'YYYYMMDDHH24MMSS';
+  v_text       VARCHAR2(200);
+  
+  C_TOKEN      CONSTANT VARCHAR2(1) := '|';
+BEGIN
+  SELECT
+    'LOAD DATA'|| chr (10) ||
+    'INFILE ''' || lower (v_table_name) || '.dat''' || chr (10) ||
+    'INTO TABLE '|| V_TABLE_NAME || CHR (10)||
+    'FIELDS TERMINATED BY ''' || C_TOKEN || ''''|| chr (10)||
+    'TRAILING NULLCOLS' || chr (10) || '('
+  INTO
+    v_text
+  FROM 
+    user_tables
+  WHERE
+    table_name = upper (v_table_name);
+
+  dbms_output.put_line(v_text);
+
+  FOR v_column IN
+  (
+    select
+      (
+        DECODE(ROWNUM, 1, '   ', ' , ')
+          || RPAD(COLUMN_NAME, 33, ' ')
+          || DECODE(data_type,
+                 'VARCHAR2', 'CHAR NULLIF ('||COLUMN_NAME||'=BLANKS)', 
+                 'FLOAT',    'DECIMAL EXTERNAL NULLIF('||column_name||'=BLANKS)',
+                 'NUMBER',   decode(data_precision, 0, 
+                             'INTEGER EXTERNAL NULLIF ('||column_name||
+                             '=BLANKS)', decode (data_scale, 0,
+                             'INTEGER EXTERNAL NULLIF ('||
+                             column_name||'=BLANKS)', 
+                             'DECIMAL EXTERNAL NULLIF ('||
+                             COLUMN_NAME||'=BLANKS)')), 
+                 'DATE',     'DATE "' || V_DFORMAT || '" NULLIF ('||COLUMN_NAME||'=BLANKS)', null)
+      ) as ctext 
+    from
+       user_tab_columns 
+    where 
+       table_name = upper (v_table_name) 
+    order by
+       column_id
+  )
+  LOOP
+    dbms_output.put_line(v_column.ctext);
+  END LOOP;
+
+  dbms_output.put_line(')');
+
+END;
 }}}
