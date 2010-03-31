@@ -30,8 +30,8 @@ import java.sql.*
 import groovy.sql.Sql
 
 /**
- * Utilities für den Umgang mit Oracle. Die Methode <code>purgeRecyclebin</code>
- * wird nur ausgeführt, wenn die System-Eigenschaft
+ * Utilities fuer den Umgang mit Oracle. Die Methode <code>purgeRecyclebin</code>
+ * wird nur ausgefuehrt, wenn die System-Eigenschaft
  * <code>groovy.oracle.purge_recyclebin</code> gesetzt ist.
  *
  * @author  $Author$
@@ -39,33 +39,33 @@ import groovy.sql.Sql
  */
 class OraUtils {
 
-	static final DRIVER_NAME = 'oracle.jdbc.driver.OracleDriver'
+    static final DRIVER_NAME = 'oracle.jdbc.driver.OracleDriver'
 
-	static def dataSource
+    static def dataSource
 
-	static def getConnection(user, password, url) {
-		def conn = null
-		try {
-			if (dataSource == null) {
-				dataSource = new oracle.jdbc.pool.OracleDataSource()
-				dataSource.setURL(url)
-			}
-			conn = dataSource.getConnection(user, password)
-			conn.setAutoCommit(false)
-		} catch (SQLException ex) {
-		    // I´m not able to establish a connection, so i reset them all.
-		    try {
-		        dataSource?.close()
-		    } catch (Exception closeException) {
-			    // ok
-		    }
-		    dataSource = null
-		    conn = null
-		
-		    throw ex
+    static def getConnection(user, password, url) {
+        def conn = null
+        try {
+            if (dataSource == null) {
+                dataSource = new oracle.jdbc.pool.OracleDataSource()
+                dataSource.setURL(url)
+            }
+            conn = dataSource.getConnection(user, password)
+            conn.setAutoCommit(false)
+        } catch (SQLException ex) {
+            // I am not able to establish a connection, so i reset them all.
+            try {
+                dataSource?.close()
+            } catch (Exception closeException) {
+                // ok
+            }
+            dataSource = null
+            conn = null
+
+            throw ex
       	}
-		return conn
-	}
+        return conn
+    }
 
     static def createSql(_user, _password, _url, _port, _sid) {
         return createSql(_user, _password, "${_url}:${_port}:${_sid}")
@@ -73,39 +73,39 @@ class OraUtils {
 
     static def createSql(_user, _password, _url) {
         def sql
-    	try {
-    		sql = new Sql(getConnection(
-    			_user, _password, "jdbc:oracle:thin:${_user}/${_password}@${_url}"))
-    	} catch (SQLException ex) {
-    	    println ex.getMessage()
-    		throw ex
-    	}
-    	return sql
+        try {
+            sql = new Sql(getConnection(
+                    _user, _password, "jdbc:oracle:thin:${_user}/${_password}@${_url}"))
+        } catch (SQLException ex) {
+            println ex.getMessage()
+            throw ex
+        }
+        return sql
     }
 
     static def dispose() {
-    	dataSource?.close()
-    	dataSource = null
+        dataSource?.close()
+        dataSource = null
     }
 
     static void purgeRecyclebin(sql) {
-    	if (System.getProperty('groovy.oracle.purge_recyclebin') == 'true') {
-    		sql.execute "purge recyclebin"
-    	}
+        if (System.getProperty('groovy.oracle.purge_recyclebin') == 'true') {
+            sql.execute "purge recyclebin"
+        }
     }
 
     static def checkValidPackages(sql) {
-    	def invalidPackages = []
-    	sql.eachRow(
+        def invalidPackages = []
+        sql.eachRow(
             """
                 SELECT object_name
                 FROM user_objects
                 WHERE status = 'INVALID'
                     AND object_type IN ('PACKAGE', 'PACKAGE BODY')
-    	    """) {
-    		invalidPackages << it.object_name
-    	}
-    	return invalidPackages
+            """) {
+            invalidPackages << it.object_name
+        }
+        return invalidPackages
     }
 
     static def checkValidProcedures(sql) {
@@ -117,7 +117,7 @@ class OraUtils {
                 WHERE status = 'INVALID'
                     AND object_type = 'PROCEDURE'
             """) {
-        	invalidProcedures << it.object_name
+            invalidProcedures << it.object_name
         }
         return invalidProcedures
     }
@@ -132,9 +132,9 @@ class OraUtils {
         def invalidObjects = []
         sql.eachRow(
             """
-    	        SELECT object_name, object_type
-        		FROM user_objects
-        		WHERE status != 'VALID';
+                SELECT object_name, object_type
+                FROM user_objects
+                WHERE status != 'VALID';
             """) {
             invalidObjects << "${it.object_name}:${it.object_type}" 
         }
@@ -145,76 +145,76 @@ class OraUtils {
         sql.call(
             """
                 BEGIN
-	                FOR i IN (SELECT object_name FROM user_objects WHERE object_type = 'PACKAGE')
-	    		    LOOP
-	        		    BEGIN
-	                        EXECUTE IMMEDIATE 'DROP PACKAGE ' || i.object_name; 
-	        		    EXCEPTION
-	        		        WHEN OTHERS THEN
-	        		            NULL;
-	    	            END;
-	        	    END LOOP;
+                    FOR i IN (SELECT object_name FROM user_objects WHERE object_type = 'PACKAGE')
+                    LOOP
+                        BEGIN
+                            EXECUTE IMMEDIATE 'DROP PACKAGE ' || i.object_name;
+                        EXCEPTION
+                            WHEN OTHERS THEN
+                                NULL;
+                        END;
+                    END LOOP;
 
-	                FOR i IN (SELECT object_name FROM user_objects WHERE object_type = 'PROCEDURE')
-	    		    LOOP
-	        		    BEGIN
-	                        EXECUTE IMMEDIATE 'DROP PROCEDURE ' || i.object_name; 
-	        		    EXCEPTION
-	        		        WHEN OTHERS THEN
-	        		            NULL;
-	    	            END;
-	        	    END LOOP;
+                    FOR i IN (SELECT object_name FROM user_objects WHERE object_type = 'PROCEDURE')
+                    LOOP
+                        BEGIN
+                            EXECUTE IMMEDIATE 'DROP PROCEDURE ' || i.object_name;
+                        EXCEPTION
+                            WHEN OTHERS THEN
+                                NULL;
+                        END;
+                    END LOOP;
 
-	                FOR i IN (SELECT object_name FROM user_objects WHERE object_type = 'FUNCTION')
-	    		    LOOP
-	        		    BEGIN
-	                        EXECUTE IMMEDIATE 'DROP FUNCTION ' || i.object_name; 
-	        		    EXCEPTION
-	        		        WHEN OTHERS THEN
-	        		            NULL;
-	    	            END;
-	        	    END LOOP;
+                    FOR i IN (SELECT object_name FROM user_objects WHERE object_type = 'FUNCTION')
+                    LOOP
+                        BEGIN
+                            EXECUTE IMMEDIATE 'DROP FUNCTION ' || i.object_name;
+                        EXCEPTION
+                            WHEN OTHERS THEN
+                                NULL;
+                        END;
+                    END LOOP;
 
-	                FOR i IN (SELECT object_name FROM user_objects WHERE object_type = 'VIEW')
-        		    LOOP
-	        		    BEGIN
-	                        EXECUTE IMMEDIATE 'DROP VIEW ' || i.object_name || ' CASCADE CONSTRAINTS'; 
-	        		    EXCEPTION
-	        		        WHEN OTHERS THEN
-	        		            NULL;
-        	            END;
-	        	    END LOOP;
+                    FOR i IN (SELECT object_name FROM user_objects WHERE object_type = 'VIEW')
+                    LOOP
+                        BEGIN
+                            EXECUTE IMMEDIATE 'DROP VIEW ' || i.object_name || ' CASCADE CONSTRAINTS';
+                        EXCEPTION
+                            WHEN OTHERS THEN
+                                NULL;
+                        END;
+                    END LOOP;
 
-	                FOR i IN (SELECT object_name FROM user_objects WHERE object_type = 'TABLE')
-        		    LOOP
-	        		    BEGIN
-	                        EXECUTE IMMEDIATE 'DROP TABLE ' || i.object_name || ' CASCADE CONSTRAINTS'; 
-	        		    EXCEPTION
-	        		        WHEN OTHERS THEN
-	        		            NULL;
-        	            END;
-	        	    END LOOP;
+                    FOR i IN (SELECT object_name FROM user_objects WHERE object_type = 'TABLE')
+                    LOOP
+                        BEGIN
+                            EXECUTE IMMEDIATE 'DROP TABLE ' || i.object_name || ' CASCADE CONSTRAINTS';
+                        EXCEPTION
+                            WHEN OTHERS THEN
+                                NULL;
+                        END;
+                    END LOOP;
 
-	                FOR i IN (SELECT object_name FROM user_objects WHERE object_type = 'TYPE')
-	    		    LOOP
-	        		    BEGIN
-	                        EXECUTE IMMEDIATE 'DROP TYPE ' || i.object_name; 
-	        		    EXCEPTION
-	        		        WHEN OTHERS THEN
-	        		            NULL;
-	    	            END;
-	        	    END LOOP;
+                    FOR i IN (SELECT object_name FROM user_objects WHERE object_type = 'TYPE')
+                    LOOP
+                        BEGIN
+                            EXECUTE IMMEDIATE 'DROP TYPE ' || i.object_name;
+                        EXCEPTION
+                            WHEN OTHERS THEN
+                                NULL;
+                        END;
+                    END LOOP;
 
-	                FOR i IN (SELECT object_name FROM user_objects WHERE object_type = 'SEQUENCE')
-	    		    LOOP
-	        		    BEGIN
-	                        EXECUTE IMMEDIATE 'DROP SEQUENCE ' || i.object_name; 
-	        		    EXCEPTION
-	        		        WHEN OTHERS THEN
-	        		            NULL;
-	    	            END;
-	        	    END LOOP;
-	        	END;
+                    FOR i IN (SELECT object_name FROM user_objects WHERE object_type = 'SEQUENCE')
+                    LOOP
+                        BEGIN
+                            EXECUTE IMMEDIATE 'DROP SEQUENCE ' || i.object_name;
+                        EXCEPTION
+                            WHEN OTHERS THEN
+                                NULL;
+                        END;
+                    END LOOP;
+                END;
             """
         )
     }
