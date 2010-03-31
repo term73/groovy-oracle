@@ -45,6 +45,12 @@ class Loader {
     def logEnabled = false
     def log
 
+	/**
+	 * Set this property to true, if you want to delete the table before an
+	 * import.
+	 */ 
+	def deleteTableBefore = false
+
     /**
      * Oracle stores the meta data in upper case. So it is a good idea to
      * define all table/column names in upper case.
@@ -63,6 +69,13 @@ class Loader {
         def omdf = new OracleMetaDataFactory()
         def tableMetaData = omdf.createOracleTable(sql, data.tableName.toUpperCase())
         sql.getConnection().setAutoCommit(false)
+
+        if (deleteTableBefore) {
+			if (logEnabled) {
+			    log += "DELETE FROM ${data.tableName}"
+			}
+			sql.call('DELETE FROM ' + data.tableName)
+		}
 
         data.rows.each { row ->
             def columnNames = row.keySet().join(', ') 
