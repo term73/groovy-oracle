@@ -49,9 +49,27 @@ class SqlFileImporter {
      * import.
      */ 
     def deleteTableBefore
-
+	
+	/**
+	 * The file name for the import.
+	 */
 	def fileName
+	
+	/**
+	 * The default column seperator. If you need another one, change it here.
+	 */
 	def columnSeperator = '|'
+
+	/**
+	 * If you do not want to loose leading and trailing spaces, then set this
+	 * property to false.
+	 */
+	def trim = true
+
+	/**
+	 * Set this property to true, if you do not want any database change (or
+	 * a dry run).
+	 */
 	def logOnly = false
     
     /** After #commitLimit INSERTS, i will execute a commit. */
@@ -110,14 +128,17 @@ class SqlFileImporter {
 	            def columns = tableMetaData.columnMetaData.size()
 	            tableMetaData.columnMetaData.eachWithIndex { column, index ->
 					if (index < values.size()) {
-		                if (!values.getAt(index)) {
+		                if (!values.getAt(index).trim()) {
 		                	insert += "NULL"
 		                } else if (column.isNumber()) {
-		                	insert += "${values.getAt(index)}".replace(",", ".")
+		                	insert += "${values.getAt(index).trim()}".replace(",", ".")
 		                } else if (column.isDate()) {
-		                	insert += "to_date('${values.getAt(index)}', '${dateFormat}')"
+		                	insert += "to_date('${values.getAt(index).trim()}', '${dateFormat}')"
 		                } else {
 		                	def value = values.getAt(index)?.replaceAll("'", "''")
+							if (trim) {
+								value = value.trim()
+							}
 		                	insert += "'${value}'"
 		                }
 					} else {

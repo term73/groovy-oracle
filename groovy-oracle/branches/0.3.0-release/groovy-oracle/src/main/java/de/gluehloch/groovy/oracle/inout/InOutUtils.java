@@ -318,9 +318,9 @@ public class InOutUtils {
 	 * Splits a text String into pieces. Example:
 	 * 
 	 * <pre>
-	 * Groovy: def expected = [&quot;&quot;, &quot;a&quot;, &quot;b&quot;,
-	 * &quot;c&quot;, &quot;&quot;] assert expected ==
-	 * InOutUtils.split(&quot;|a|b|c|&quot;, &quot;|&quot;)
+	 * Groovy:
+	 * def expected = [&quot;&quot;, &quot;a&quot;, &quot;b&quot;, &quot;c&quot;, &quot;&quot;]
+	 * assert expected == InOutUtils.split(&quot;|a|b|c|&quot;, &quot;|&quot;)
 	 * </pre>
 	 * 
 	 * @param _text
