@@ -33,12 +33,12 @@ import org.apache.commons.lang.StringUtils;
  * 'ALTER TABLE...' Befehle werden ohne abschließendes Semikolon generiert.
  */
 class OracleConstraint {
-
+    
     String tableName;
-
+    
     def primaryKey;
     def foreignKeys = [];
-
+    
     /**
      * Kopiert die Eigenschaften von diesem Objekt in ein neu erstelltes
      * Objekt 'OracleConstraint'
@@ -46,18 +46,18 @@ class OracleConstraint {
      * @return Ein geclonter OracleConstraint.
      */
     def copy() {
-    	def copyOfprimaryKey = (primaryKey == null) ? null : primaryKey.copy()
-
+        def copyOfprimaryKey = (primaryKey == null) ? null : primaryKey.copy()
+        
         def clone = new OracleConstraint(tableName: tableName,
-        		primaryKey: copyOfprimaryKey)
-
+                primaryKey: copyOfprimaryKey)
+        
         foreignKeys.each {
-        	clone.foreignKeys << it.copy()
+            clone.foreignKeys << it.copy()
         }
-
+        
         return clone
     }
-
+    
     /**
      * Liefert ein 'ALTER TABLE...' Befehl zur Anlage eines Primary-Keys.
      *
@@ -73,7 +73,7 @@ class OracleConstraint {
         }
         return snippet;
     }
-
+    
     /**
      * Liefert 'ALTER TABLE...' Befehle zur Anlage eines Foreign-Keys.
      *
@@ -93,17 +93,17 @@ class OracleConstraint {
         }
         return snippets;
     }
-
-     boolean equals(def object) {
-         if (!(object instanceof OracleConstraint)) {
-             return false
-         }
-
-         def result = true
-         result = result && (primaryKey == object.primaryKey)
-         result = result && (foreignKeys == object.foreignKeys)
-
-         return result
-     }
-
+    
+    boolean equals(def object) {
+        if (!(object instanceof OracleConstraint)) {
+            return false
+        }
+        
+        def result = true
+        result = result && (primaryKey == object.primaryKey)
+        result = result && (foreignKeys == object.foreignKeys)
+        
+        return result
+    }
+    
 }
