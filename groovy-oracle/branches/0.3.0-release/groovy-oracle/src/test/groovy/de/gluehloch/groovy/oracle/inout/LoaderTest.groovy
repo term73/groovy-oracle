@@ -37,19 +37,19 @@ import de.gluehloch.groovy.oracle.meta.TestDatabaseUtility
  * Test of class Data.
  */
 class LoaderTest {
-
+    
     static Sql sql
-
+    
     @Test
     void testDataBuilder() {
         def data = createData('tableName', {
             [
-                [col_1: 'value_1', col_2: 'value_2'],
-                [col_1: 'value_3', col_2: 'value_4'],
-                [col_1: 'value_5', col_2: 'value_6']
+            [col_1: 'value_1', col_2: 'value_2'],
+            [col_1: 'value_3', col_2: 'value_4'],
+            [col_1: 'value_5', col_2: 'value_6']
             ]
         })
-
+        
         assert 'tableName' == data.tableName
         assert 'value_1' == data.rows[0].col_1
         assert 'value_2' == data.rows[0].col_2
@@ -58,24 +58,24 @@ class LoaderTest {
         assert 'value_5' == data.rows[2].col_1
         assert 'value_6' == data.rows[2].col_2
     }
-
+    
     @Test
-	void testDataInsertStatement() {
-    	def data = createData('testtablename', {
-    		[
-    		    [col_1: 'value_col11', col_2: 'value_col12', col_3:  10.2, col_4: '1971-03-24 17:05:05'],
-    		    [col_1: 'value_col21', col_2: 'value_col22', col_3: 123.5, col_4: '1971-03-24 17:05:05'],
-    		    [col_1: 'value_col31', col_2: 'value_col32', col_3: 0,     col_4: '1971-03-24 17:05:05'],
-    		    [col_1: 'value_col41', col_2: '',            col_3: 123.5, col_4: '1971-03-24 17:05:05'],
-    		    [col_1: 'value_col51', col_2: 'value_co52'],
-    		    [col_1: null,          col_2: 'value_co62' , col_3: 123.5, col_4: '1971-03-24 17:05:05']
-    		]
+    void testDataInsertStatement() {
+        def data = createData('testtablename', {
+            [
+            [col_1: 'value_col11', col_2: 'value_col12', col_3:  10.2, col_4: '1971-03-24 17:05:05'],
+            [col_1: 'value_col21', col_2: 'value_col22', col_3: 123.5, col_4: '1971-03-24 17:05:05'],
+            [col_1: 'value_col31', col_2: 'value_col32', col_3: 0,     col_4: '1971-03-24 17:05:05'],
+            [col_1: 'value_col41', col_2: '',            col_3: 123.5, col_4: '1971-03-24 17:05:05'],
+            [col_1: 'value_col51', col_2: 'value_co52'],
+            [col_1: null,          col_2: 'value_co62' , col_3: 123.5, col_4: '1971-03-24 17:05:05']
+            ]
         })
-
-    	def loader = new Loader(sql: sql)
-    	loader.logEnabled = true
-    	loader.load(data)
-    	println loader.log
+        
+        def loader = new Loader(sql: sql)
+        loader.logEnabled = true
+        loader.load(data)
+        println loader.log
         sql.commit()
 
         //
@@ -84,23 +84,23 @@ class LoaderTest {
         data.rows.each { it.remove('col_4')}
         assertRowEquals sql, data, "select * from testtablename order by COL_1"
     }
-
+    
     @BeforeClass
     static void setUp() {
-    	sql = TestDatabaseUtility.createConnection()
-    	sql.execute('''create table testtablename(
+        sql = TestDatabaseUtility.createConnection()
+        sql.execute('''create table testtablename(
                           col_1 varchar2(20)
                          ,col_2 varchar2(20)
                          ,col_3 number(10,2)
                          ,col_4 DATE
                        )''')
     }
-
+    
     @AfterClass
     static void tearDown() {
-    	sql.execute('drop table testtablename')
-    	sql?.close()
+        sql.execute('drop table testtablename')
+        sql?.close()
         sql = null
     }
-
+    
 }
