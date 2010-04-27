@@ -9,15 +9,15 @@
          description="New features and fixes">
       <action dev="andrewinkler" type="add" date="2010-03-31">
         The loader accepts a new property 'deleteTableBefore' to delete
-        the table before loading.  
+        the table before loading.
       </action>
       <action dev="andrewinkler" type="fix" date="2010-02-22">
         SqlFileImporter supports mutiple import table data. From now you
-        can import to many tables from one import file.  
+        can import to many tables from one import file.
       </action>
       <action dev="andrewinkler" type="fix" date="2010-02-18">
         A problem with SqlFileExporter and '0' values. A Groovy comparison
-        returns false if you test on 0 aka zero.  
+        returns false if you test on 0 aka zero.
       </action>
       <action dev="andrewinkler" type="update" date="2010-02-03">
         The SqlFileImporter is able to read the first line of the data file
