@@ -27,6 +27,8 @@ package de.gluehloch.groovy.oracle.meta
 
 import org.junit.Test
 
+import de.gluehloch.groovy.oracle.OraUtils;
+
 class OracleMetaDataFactoryTest extends TestDatabaseUtility {
 
     @Test
@@ -44,6 +46,12 @@ class OracleMetaDataFactoryTest extends TestDatabaseUtility {
         assert oracleTable.find { it.tableName == 'XXX_TEST_RUN' }.tableName == 'XXX_TEST_RUN'
         assert oracleTable.find { it.tableName == 'XXX_HIERARCHIE' }.tableName == 'XXX_HIERARCHIE'
         assert oracleTable.find { it.tableName == 'XXX_KUNDE' }.tableName == 'XXX_KUNDE'
+    }
+
+    @Test
+    void testOraUtilsCreateOracleSchema() {
+    	def schema = OraUtils.createOracleSchema(sql);
+    	def ot = schema.tables.find { tableName, table -> tableName == 'XXX_HIERARCHIE' }
     }
 
     @Test

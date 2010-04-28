@@ -25,6 +25,8 @@
 
 package de.gluehloch.groovy.oracle
 
+import de.gluehloch.groovy.oracle.meta.OracleMetaDataFactory
+
 import java.sql.*
 
 import groovy.sql.Sql
@@ -92,6 +94,11 @@ class OraUtils {
         if (System.getProperty('groovy.oracle.purge_recyclebin') == 'true') {
             sql.execute "purge recyclebin"
         }
+    }
+
+    static def createOracleSchema(sql) {
+    	def factory = new OracleMetaDataFactory() 
+    	return factory.createOracleSchema(sql) 
     }
 
     static def checkValidPackages(sql) {
