@@ -34,7 +34,7 @@ import org.apache.commons.lang.StringUtils;
  * Schema-Tabellen abgelegt.
  */
 class OracleColumn {
-
+    
     String columnName;
     String dataType;
     Integer dataLength;
@@ -43,7 +43,7 @@ class OracleColumn {
     boolean nullable;
     Integer columnId;
     String dataDefault;
-
+    
     /**
      * Kopiert die Eigenschaften von diesem Objekt in ein neu erstelltes
      * Objekt 'OracleColumn'
@@ -51,68 +51,68 @@ class OracleColumn {
      * @return Ein geclonter OracleColumn.
      */
     def copy() {
-    	def clone = new OracleColumn(columnName: columnName,
-    			dataType: dataType, dataLength: dataLength,
-    			dataPrecision: dataPrecision, dataScale: dataScale,
-    			nullable: nullable, columnId: columnId,
-    			dataDefault: dataDefault)
-    	return clone
+        def clone = new OracleColumn(columnName: columnName,
+            dataType: dataType, dataLength: dataLength,
+            dataPrecision: dataPrecision, dataScale: dataScale,
+            nullable: nullable, columnId: columnId,
+            dataDefault: dataDefault)
+        return clone
     }
-
+    
     /**
      * Liefert den SQL Typ dieser Spalte.
      *
      * @return Der SQL Typ der Spalte.
      */
     def toType() {
-    	def snippet = ''
+        def snippet = ''
         if (dataType.startsWith("TIMESTAMP")) {
             dataType = "TIMESTAMP"
         }
 
         switch (dataType) {
-        case 'VARCHAR2':
-            snippet += dataType + "(${dataLength} BYTE)"
-            break
-        case 'CHAR':
-            snippet += dataType + "(${dataLength} BYTE)"
-            break
-        case 'DATE':
-            snippet += dataType
-            break
-        case 'TIMESTAMP':
-            snippet += dataType + "(${dataScale})"
-            break
-        case 'NUMBER':
-            snippet += dataType
-            if (dataPrecision != null && dataScale != null) {
-                snippet += "(${dataPrecision},${dataScale})"
-            }
-            break
-        case 'UROWID':
-            snippet += dataType + "(${dataLength})"
-            break
-        default:
-            throw new RuntimeException("Unknown datatype: ${dataType}.")
+            case 'VARCHAR2':
+                snippet += dataType + "(${dataLength} BYTE)"
+                break
+            case 'CHAR':
+                snippet += dataType + "(${dataLength} BYTE)"
+                break
+            case 'DATE':
+                snippet += dataType
+                break
+            case 'TIMESTAMP':
+                snippet += dataType + "(${dataScale})"
+                break
+            case 'NUMBER':
+                snippet += dataType
+                if (dataPrecision != null && dataScale != null) {
+                    snippet += "(${dataPrecision},${dataScale})"
+                }
+                break
+            case 'UROWID':
+                snippet += dataType + "(${dataLength})"
+                break
+            default:
+                throw new RuntimeException("Unknown datatype: ${dataType}.")
         }
         return snippet
     }
 
     def isNumber() {
-    	def number = false
+        def number = false
         if (dataType.startsWith("TIMESTAMP")) {
             dataType = "TIMESTAMP"
         }
-   
+
         return (dataType == 'NUMBER' || dataType == 'UROWID')
     }
-
+    
     def isDate() {
-    	return (dataType == 'DATE' || dataType == 'TIMESTAMP')
+        return (dataType == 'DATE' || dataType == 'TIMESTAMP')
     }
 
     def isString() {
-    	return (dataType == 'VARCHAR2' || dataType == 'CHAR')
+        return (dataType == 'VARCHAR2' || dataType == 'CHAR')
     }
 
     /**
@@ -124,18 +124,18 @@ class OracleColumn {
     def toScript() {
         if (!columnName)
             throw new IllegalArgumentException("ColumnName not specified!")
-
+        
         def snippet = "\"${columnName}\" "
         snippet += toType()
-
+        
         if (dataDefault != null) {
             snippet = snippet + " DEFAULT " + dataDefault
         }
-
+        
         if (!nullable) {
             snippet = snippet + " NOT NULL ENABLE"
         }
-
+        
         return snippet;
     }
 
@@ -147,7 +147,7 @@ class OracleColumn {
         if (!(object instanceof OracleColumn)) {
             return false
         }
-
+        
         def result = true
         result = result && (columnName == object.columnName)
         result = result && (dataType == object.dataType)
@@ -156,8 +156,8 @@ class OracleColumn {
         result = result && (nullable == object.nullable)
         result = result && (columnId == object.columnId)
         result = result && (dataDefault == object.dataDefault)
-
+        
         return result
     }
-
+    
 }

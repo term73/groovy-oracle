@@ -9,7 +9,7 @@
   <groupId>de.gluehloch.groovy.oracle</groupId>
   <artifactId>groovy-oracle</artifactId>
   <packaging>jar</packaging>
-  <version>0.3.0-dev2</version>
+  <version>0.3.0-dev3</version>
   <name>groovy-oracle</name>
   <description>Groovier Oracle Meta-Programming.</description>
   <scm>
@@ -64,20 +64,6 @@
               <goal>generateTestStubs</goal>
               <goal>testCompile</goal>
             </goals>
-          </execution>
-          <execution>
-            <id>install</id>
-            <phase>install</phase>
-            <goals>
-              <goal>execute</goal>
-            </goals>
-            <configuration>
-              <source> def dir = new
-                File(System.getProperty('user.home') + "/.groovy/lib")
-                ant.copy(todir: dir) { fileset(dir: new
-                File(project.basedir, "target")) { include(name:
-                '*.jar') } } </source>
-            </configuration>
           </execution>
         </executions>
       </plugin>
@@ -143,7 +129,7 @@
     <dependency>
       <groupId>org.codehaus.groovy</groupId>
       <artifactId>groovy-all</artifactId>
-      <version>1.6.1</version>
+      <version>1.7.0</version>
       <scope>compile</scope>
     </dependency>
     <dependency>

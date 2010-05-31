@@ -2,7 +2,7 @@
  * $Id$
  * ============================================================================
  * Project groovy-oracle
- * Copyright (c) 2008-2009 by Andre Winkler. All rights reserved.
+ * Copyright (c) 2008-2010 by Andre Winkler. All rights reserved.
  * ============================================================================
  *          GNU LESSER GENERAL PUBLIC LICENSE
  *  TERMS AND CONDITIONS FOR COPYING, DISTRIBUTION AND MODIFICATION
@@ -69,6 +69,15 @@ class Data {
 
     // ------------------------------------------------------------------------
 
+    /*
+     * data = """
+          TAB CPBANKRESULT
+          BANKCODE|PRODUCTID|STICHMON|CALC_MODE|REVENUE|EXPECTEDLOSS|ECAPCOST|DIRECTCOST|OPRISKCOST|     VCM|   CVAR|LOSSATDEFAULT|LIQUICOST|BASESURPLUS|     EAD
+            ASYATR|        0|  200912|        0|118,219|     0,40119| 0,12486|40,81254  |1,38976   |89,49065|1,04049|      5,19434|       31|         45|15,53395
+            ASYATR|        0|  200912|        0|118,219|     0,40119| 0,12486|40,81254  |1,38976   |89,49065|1,04049|      5,19434|       31|         45|15,53395
+              """
+     */
+
     /**
      * Exports a representation of this object to a data file.
      *
@@ -85,7 +94,7 @@ class Data {
     def export(filename) {
         def fw = new GFileWriter(filename)
         try {
-            fw.writeln("### ${tableName} ###")
+            fw.writeln("### TAB ${tableName} ###")
             rows.each { row ->
                 fw.writeln(toText(row))
             }

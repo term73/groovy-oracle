@@ -31,9 +31,9 @@ import groovy.sql.Sql
  * Factory für das Erstellen von OracleTable Objekten.
  */
 class OracleMetaDataFactory {
-
+    
     private final OracleColumnFinder ocf = new OracleColumnFinder()
-
+    
     /**
      * Liefert ein OracleSchema Objekt.
      * 
@@ -41,13 +41,13 @@ class OracleMetaDataFactory {
      * @return Ein OracleSchema.
      */
     def createOracleSchema(Sql sql) {
-    	def os = new OracleSchema()
-    	createOracleTables(sql).each { table ->
-    		os.tables[table.tableName] = table
-    	}
-    	return os
+        def os = new OracleSchema()
+        createOracleTables(sql).each { table ->
+            os.tables[table.tableName] = table
+        }
+        return os
     }
-
+    
     /**
      * Liefert die Tabellenbeschreibungen für ein Schema. Die Methode liefert
      * eine Liste von OracleTable Objekten zurück.
@@ -56,11 +56,11 @@ class OracleMetaDataFactory {
      * @return Ein Liste von OracleTables.
      */
     def createOracleTables(Sql sql) {
-    	def oracleTables = createOracleTables(
-    			sql, new OracleTableFinder().getTables(sql))
-    	return oracleTables
+        def oracleTables = createOracleTables(
+        sql, new OracleTableFinder().getTables(sql))
+        return oracleTables
     }
-
+    
     /**
      * Liefert die Tabellenbeschreibungen für ein Schema.
      *
@@ -69,11 +69,11 @@ class OracleMetaDataFactory {
      * @return Eine Liste von OracleTables.
      */
     def createOracleTablesWithIgnore(Sql sql, List ignores) {
-    	def tableNames = new OracleTableFinder().getTables(sql) - ignores
+        def tableNames = new OracleTableFinder().getTables(sql) - ignores
         def oracleTables = createOracleTables(sql, tableNames)
         return oracleTables
     }
-
+    
     /**
      * Liefert die Tabellenbeschreibungen für eine Liste von Tabellennamen.
      *
@@ -88,7 +88,7 @@ class OracleMetaDataFactory {
         }
         return oracleTables
     }
-
+    
     /**
      * Liefert eine Tabellenbeschreibung.
      *
@@ -99,7 +99,7 @@ class OracleMetaDataFactory {
     OracleTable createOracleTable(Sql sql, String tableName) {
         def columnData = ocf.getColumns(sql, tableName)
         if (columnData == null || columnData.size() == 0) {
-        	throw new IllegalArgumentException("Unknown table ${tableName}")
+            throw new IllegalArgumentException("Unknown table ${tableName}")
         }
 
         def constraint = ocf.getConstraint(sql, tableName)
@@ -107,5 +107,5 @@ class OracleMetaDataFactory {
                 columnMetaData: columnData, constraint: constraint)
         return ot
     }
-
+    
 }

@@ -35,46 +35,46 @@ import org.junit.Test
  * @version $Revision$ $Date$
  */
 class DataTest {
-
-	 @Test
-	 void testDataToText() {
-		 def data = new Data()
-		 assert 'value_1|value_2' == data.toText(['col_1': 'value_1', 'col_2': 'value_2'])
-		 assert "value_1||value_3" == data.toText([col_1: 'value_1', col_2: null, col_3: 'value_3'])
-		 assert "value_1|value_2|" == data.toText([col_1: 'value_1', col_2: 'value_2', col_3: null])
-		 assert "|value_2|value_3" == data.toText([col_1: null, col_2: 'value_2', col_3: 'value_3'])
-	 }
-
-	 @Test
-	 void testDataExport() {
-         def data = Data.createData('tableName', {
-	         [
-	             [col_1: 'value_1',  col_2: 'value_2'],
-	             [col_1: 'value_3',  col_2: 'value_4'],
-	             [col_1: 'value_5',  col_2: 'value_6'],
-	             [col_1: 'value_7',  col_2: 'value_8',  col3: 'value9'],
-	             [col_1: 'value_7',  col_2: null,       col3: 'value9'],
-	             [col_1: 'value_10', col_2: 'value_11', col3: null],
-	             [col_1: null, col_2: 'value_12', col3: 'value_13'],
-	             [col_1: 'value_10', col_2: null, col3: null],
-	             [col_1: null, col_2: null, col3: null]
-	         ]
-	     })
-
-         data.export('testexport.txt')
-	 }
-
-	 @Test
-	 void testDataSplitText() {
-		 assert StringUtils.splitPreserveAllTokens('|a|b|c|', '|') == ['', 'a', 'b', 'c', '']
-	     assert StringUtils.splitPreserveAllTokens('a|b|c|', '|') == ['a', 'b', 'c', '']
-	 }
-
-	 @Test
-	 void testDataToData() {
-		 def data = new Data()
-		 def dataMap = data.toData('a|b|c', ['col_a', 'col_b', 'col_c'])
-		 assert dataMap == ['col_a': 'a', 'col_b': 'b', 'col_c': 'c']
-	 }
-
+    
+    @Test
+    void testDataToText() {
+        def data = new Data()
+        assert 'value_1|value_2' == data.toText(['col_1': 'value_1', 'col_2': 'value_2'])
+        assert "value_1||value_3" == data.toText([col_1: 'value_1', col_2: null, col_3: 'value_3'])
+        assert "value_1|value_2|" == data.toText([col_1: 'value_1', col_2: 'value_2', col_3: null])
+        assert "|value_2|value_3" == data.toText([col_1: null, col_2: 'value_2', col_3: 'value_3'])
+    }
+    
+    @Test
+    void testDataExport() {
+        def data = Data.createData('tableName', {
+            [
+            [col_1: 'value_1',  col_2: 'value_2'],
+            [col_1: 'value_3',  col_2: 'value_4'],
+            [col_1: 'value_5',  col_2: 'value_6'],
+            [col_1: 'value_7',  col_2: 'value_8',  col3: 'value9'],
+            [col_1: 'value_7',  col_2: null,       col3: 'value9'],
+            [col_1: 'value_10', col_2: 'value_11', col3: null],
+            [col_1: null, col_2: 'value_12', col3: 'value_13'],
+            [col_1: 'value_10', col_2: null, col3: null],
+            [col_1: null, col_2: null, col3: null]
+            ]
+        })
+        
+        data.export('testexport.txt')
+    }
+    
+    @Test
+    void testDataSplitText() {
+        assert StringUtils.splitPreserveAllTokens('|a|b|c|', '|') == ['', 'a', 'b', 'c', '']
+        assert StringUtils.splitPreserveAllTokens('a|b|c|', '|') == ['a', 'b', 'c', '']
+    }
+    
+    @Test
+    void testDataToData() {
+        def data = new Data()
+        def dataMap = data.toData('a|b|c', ['col_a', 'col_b', 'col_c'])
+        assert dataMap == ['col_a': 'a', 'col_b': 'b', 'col_c': 'c']
+    }
+    
 }

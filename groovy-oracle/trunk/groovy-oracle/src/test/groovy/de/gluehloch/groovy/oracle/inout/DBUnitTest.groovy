@@ -39,30 +39,30 @@ import de.gluehloch.groovy.oracle.meta.*
  * @version $Revision$ $Date$
  */
 class DBUnitTest extends TestDatabaseUtility {
+    
+    @Test
+    void testDBUnit() {
+        DBUnit.xmlExport(OraUtils.dataSource, user,
+            ['XXX_TEST_RUN_2'] as String[], new File('dbunit.xml'))
+        sql.execute("DELETE FROM XXX_TEST_RUN_2")
+        sql.commit()
 
-	 @Test
-	 void testDBUnit() {
-		 DBUnit.xmlExport(OraUtils.dataSource, user,
-			 ['XXX_TEST_RUN_2'] as String[], new File('dbunit.xml'))
-	     sql.execute("DELETE FROM XXX_TEST_RUN_2")
-	     sql.commit()
-
-         DBUnit.xmlImport(OraUtils.dataSource, user, new File('dbunit.xml'),
-        	 DBUnit.DBUnitOperation.INSERT)
-         def counter = sql.firstRow("SELECT COUNT(*) as counter FROM XXX_TEST_RUN_2").counter
-         assert counter == 6
-	 }
-
-     @Before
-     void setUp() {
-         sql = TestDatabaseUtility.createConnection()
-         new SqlFileImporter(sql: sql, tableName: 'XXX_TEST_RUN_2',
-        	 fileName: 'XXX_TEST_RUN.dat').load()
-         sql.commit()
-     }
-
-     @After
-     void tearDown() {
-     }
-	
+        DBUnit.xmlImport(OraUtils.dataSource, user, new File('dbunit.xml'),
+                DBUnit.DBUnitOperation.INSERT)
+        def counter = sql.firstRow("SELECT COUNT(*) as counter FROM XXX_TEST_RUN_2").counter
+        assert counter == 6
+    }
+    
+    @Before
+    void setUp() {
+        sql = TestDatabaseUtility.createConnection()
+        new SqlFileImporter(sql: sql, tableName: 'XXX_TEST_RUN_2',
+                fileName: 'XXX_TEST_RUN.dat').load()
+        sql.commit()
+    }
+    
+    @After
+    void tearDown() {
+    }
+    
 }

@@ -48,6 +48,8 @@ class TestDatabaseUtility { // extends GroovyTestCase {
         def pwd = System.getProperty('groovy.oracle.test.password')
         def url = System.getProperty('groovy.oracle.test.url')
 
+        println "The test runner is using Oracle: ${user}/${pwd}@${url}"
+
         if (!user || !pwd || !url) {
             println """
 Check your maven .settings.xml or update your system properties: 

@@ -23,21 +23,38 @@
  *
  */
 
-package de.gluehloch.groovy.oracle.meta
+package de.gluehloch.groovy.oracle.inout;
 
-import org.junit.Test/**
- * Test für die Klasse OracleSequenceFinder.
+import org.junit.Before;
+import org.junit.Test;
+
+import de.gluehloch.groovy.oracle.meta.TestDatabaseUtility;
+
+/**
+ * Testcase for the SqlFileImporter and the multiple table import function.
  * 
- * @author  $Author$
- * @version $Revision$ $Date$
+ * @author  $Author: andre.winkler@web.de $
+ * @version $Revision: 103 $ $Date: 2010-02-03 16:03:09 +0100 (Mi, 03 Feb 2010) $
  */
-class OracleSequenceFinderTest extends TestDatabaseUtility {
-
+class MultipleSqlFileImportTest extends TestDatabaseUtility {
+   
     @Test
-    void testOracleSequenceFinder() {
-    	def oracleSequenceFinder = new OracleSequenceFinder()
-    	def sequences = oracleSequenceFinder.getSequences(sql)
-    	assert sequences.contains('XXX_SQ')
+    void testMultipleSqlFileImport() {
+        new SqlFileImporter(
+                sql: sql,
+                deleteTableBefore: true,
+                fileName: './src/test/resources/de/gluehloch/groovy/oracle/inout/more_than_one_table_import.dat',
+                createInsertFile: './target/tmp_insert.log').load()
+		assert 2 == sql.firstRow(
+                "SELECT COUNT(*) as counter FROM XXX_TEST_RUN").counter
+        assert 2 == sql.firstRow(
+                "SELECT COUNT(*) as counter FROM XXX_HIERARCHIE").counter
+    }
+    
+    @Before
+    void setUp() {
+        sql.execute("DELETE FROM XXX_HIERARCHIE")
+        sql.execute("DELETE FROM XXX_TEST_RUN")
     }
 
 }
