@@ -5,7 +5,15 @@
     <author email="andre.winkler@web.de">Andre Winkler</author>
   </properties>
   <body>
-    <release version="groovy-oracle-0.3.0-dev3" date="2010-??-??"
+    <release version="groovy-oracle-0.4.0" date="2010-??-??"
+         description="New features and fixes">
+      <action dev="andrewinkler" type="update" date="2010-06-24">
+        Changed the package structure from de.gluehloch.groovy.oracle to
+        de.awtools.grooocle (groo(vy)o(ra)cle.
+      </action>
+    </release>
+
+    <release version="groovy-oracle-0.3.0-dev3" date="2010-03-31"
          description="New features and fixes">
       <action dev="andrewinkler" type="add" date="2010-03-31">
         The loader accepts a new property 'deleteTableBefore' to delete
