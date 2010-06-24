@@ -1,7 +1,7 @@
 /*
  * $Id$
  * ============================================================================
- * Project groovy-oracle
+ * Project grooocle
  * Copyright (c) 2008-2009 by Andre Winkler. All rights reserved.
  * ============================================================================
  *          GNU LESSER GENERAL PUBLIC LICENSE
@@ -31,7 +31,7 @@ import static de.gluehloch.groovy.oracle.inout.Data.createData
 import groovy.sql.Sql
 
 import org.junit.Test
-import org.junit.AfterClassimport org.junit.BeforeClass
+import org.junit.AfterClassimport org.junit.BeforeClass
 import de.gluehloch.groovy.oracle.meta.TestDatabaseUtility
 /**
  * Test of class Data.

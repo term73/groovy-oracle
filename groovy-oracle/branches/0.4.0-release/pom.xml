@@ -1,23 +1,28 @@
 <project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
   xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
   <modelVersion>4.0.0</modelVersion>
+
   <parent>
     <groupId>de.gluehloch</groupId>
     <artifactId>gluehloch-maven-parent</artifactId>
     <version>10</version>
   </parent>
-  <groupId>de.gluehloch.groovy.oracle</groupId>
-  <artifactId>groovy-oracle</artifactId>
+
+  <groupId>de.awtools</groupId>
+  <artifactId>grooocle</artifactId>
   <packaging>jar</packaging>
   <version>0.4.0-SNAPSHOT</version>
-  <name>groovy-oracle</name>
+
+  <name>grooocle</name>
   <description>Groovier Oracle Meta-Programming.</description>
+
   <scm>
     <!-- The developer connection starts with https. -->
     <connection>scm:svn:http://groovy-oracle.googlecode.com/svn/groovy-oracle/trunk/groovy-oracle</connection>
     <developerConnection>scm:svn:http://groovy-oracle.googlecode.com/svn/groovy-oracle/trunk/groovy-oracle</developerConnection>
     <url>http://code.google.com/p/groovy-oracle/source/browse/</url>
   </scm>
+
   <licenses>
     <license>
       <name>LGPL Version 2</name>

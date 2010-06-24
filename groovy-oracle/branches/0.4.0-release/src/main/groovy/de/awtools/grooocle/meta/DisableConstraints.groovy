@@ -1,7 +1,7 @@
 /*
  * $Id$
  * ============================================================================
- * Project groovy-oracle
+ * Project grooocle
  * Copyright (c) 2008 by Andre Winkler. All rights reserved.
  * ============================================================================
  *          GNU LESSER GENERAL PUBLIC LICENSE

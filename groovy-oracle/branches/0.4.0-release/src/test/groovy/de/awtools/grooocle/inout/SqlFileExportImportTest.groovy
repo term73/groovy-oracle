@@ -1,7 +1,7 @@
 /*
  * $Id$
  * ============================================================================
- * Project groovy-oracle
+ * Project grooocle
  * Copyright (c) 2008-2009 by Andre Winkler. All rights reserved.
  * ============================================================================
  *          GNU LESSER GENERAL PUBLIC LICENSE
@@ -26,7 +26,7 @@
 package de.awtools.grooocle.inout
 
 import org.junit.Test
-import org.junit.Afterimport org.junit.Before
+import org.junit.Afterimport org.junit.Before
 import de.gluehloch.groovy.oracle.OraUtils
 import de.gluehloch.groovy.oracle.meta.*
 /**
