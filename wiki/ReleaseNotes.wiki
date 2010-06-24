@@ -3,7 +3,7 @@
 == Release Notes ==
 
 === grooocle-0.4.0 ===
- * Package renaming: {{{de.gluehloch.groovy.oracle}}} becomes {{{de.awtools.grooocl}}}
+ * Package renaming: {{{de.gluehloch.groovy.oracle}}} becomes {{{de.awtools.grooocle}}}
 
 === groovy-oracle-0.3.0 ===
  * The old and first offical release.
