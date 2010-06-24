@@ -5,7 +5,7 @@
   <parent>
     <groupId>de.gluehloch</groupId>
     <artifactId>gluehloch-maven-parent</artifactId>
-    <version>10</version>
+    <version>14</version>
   </parent>
 
   <groupId>de.awtools</groupId>
