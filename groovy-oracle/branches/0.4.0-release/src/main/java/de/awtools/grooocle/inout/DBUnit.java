@@ -23,7 +23,7 @@
  *
  */
 
-package de.gluehloch.groovy.oracle.inout;
+package de.awtools.grooocle.inout;
 
 import java.io.File;
 import java.io.FileInputStream;

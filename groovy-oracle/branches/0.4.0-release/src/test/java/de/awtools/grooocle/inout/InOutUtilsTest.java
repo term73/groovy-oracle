@@ -23,7 +23,7 @@
  *
  */
 
-package de.gluehloch.groovy.oracle.inout;
+package de.awtools.grooocle.inout;
 
 import static org.junit.Assert.assertArrayEquals;
 import static org.junit.Assert.assertEquals;

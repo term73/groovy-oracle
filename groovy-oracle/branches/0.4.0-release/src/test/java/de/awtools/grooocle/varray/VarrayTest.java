@@ -23,7 +23,7 @@
  *
  */
 
-package de.gluehloch.groovy.oracle.varray;
+package de.awtools.grooocle.varray;
 
 import static org.junit.Assert.assertEquals;
 
