@@ -2,7 +2,7 @@
  * $Id$
  * ============================================================================
  * Project grooocle
- * Copyright (c) 2008-2009 by Andre Winkler. All rights reserved.
+ * Copyright (c) 2008-2010 by Andre Winkler. All rights reserved.
  * ============================================================================
  *          GNU LESSER GENERAL PUBLIC LICENSE
  *  TERMS AND CONDITIONS FOR COPYING, DISTRIBUTION AND MODIFICATION
@@ -27,8 +27,8 @@ package de.awtools.grooocle.inout
 
 import org.junit.Test
 import org.junit.Afterimport org.junit.Before
-import de.gluehloch.groovy.oracle.OraUtils
-import de.gluehloch.groovy.oracle.meta.*
+import de.awtools.grooocle.OraUtils
+import de.awtools.grooocle.meta.*
 /**
  * Testcase for the classes SqlFileExporter and SqlFileImporter.
  * 

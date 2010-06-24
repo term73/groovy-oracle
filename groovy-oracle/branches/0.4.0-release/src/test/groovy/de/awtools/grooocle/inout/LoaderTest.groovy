@@ -2,7 +2,7 @@
  * $Id$
  * ============================================================================
  * Project grooocle
- * Copyright (c) 2008-2009 by Andre Winkler. All rights reserved.
+ * Copyright (c) 2008-2010 by Andre Winkler. All rights reserved.
  * ============================================================================
  *          GNU LESSER GENERAL PUBLIC LICENSE
  *  TERMS AND CONDITIONS FOR COPYING, DISTRIBUTION AND MODIFICATION
@@ -25,14 +25,15 @@
 
 package de.awtools.grooocle.inout
 
-import static de.gluehloch.groovy.oracle.inout.Assertion.assertRowEquals
-import static de.gluehloch.groovy.oracle.inout.Data.createData
+import static de.awtools.grooocle.inout.Assertion.assertRowEquals
+import static de.awtools.grooocle.inout.Data.createData
 
 import groovy.sql.Sql
 
 import org.junit.Test
 import org.junit.AfterClassimport org.junit.BeforeClass
-import de.gluehloch.groovy.oracle.meta.TestDatabaseUtility
+
+import de.awtools.grooocle.meta.TestDatabaseUtility
 /**
  * Test of class Data.
  */

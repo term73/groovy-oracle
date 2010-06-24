@@ -2,7 +2,7 @@
  * $Id$
  * ============================================================================
  * Project grooocle
- * Copyright (c) 2008-2009 by Andre Winkler. All rights reserved.
+ * Copyright (c) 2008-2010 by Andre Winkler. All rights reserved.
  * ============================================================================
  *          GNU LESSER GENERAL PUBLIC LICENSE
  *  TERMS AND CONDITIONS FOR COPYING, DISTRIBUTION AND MODIFICATION
@@ -29,9 +29,8 @@ import java.sql.*
 
 import groovy.sql.Sql
 
-import de.gluehloch.groovy.oracle.*
-
-import de.gluehloch.groovy.oracle.meta.*
+import de.awtools.grooocle.*
+import de.awtools.grooocle.meta.*
 
 /**
  * Uploads data to the database.

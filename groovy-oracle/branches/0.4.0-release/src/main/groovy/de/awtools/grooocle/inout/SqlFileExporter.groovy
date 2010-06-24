@@ -29,8 +29,8 @@ import groovy.sql.Sql
 
 import oracle.sql.*
 
-import de.gluehloch.groovy.oracle.*
-import de.gluehloch.groovy.oracle.meta.*
+import de.awtools.grooocle.*
+import de.awtools.grooocle.meta.*
 
 /**
  * Exports the result set of a sql statement to the file system. The property

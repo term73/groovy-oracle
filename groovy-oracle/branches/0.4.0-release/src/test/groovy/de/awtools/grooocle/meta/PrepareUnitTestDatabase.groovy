@@ -2,7 +2,7 @@
  * $Id$
  * ============================================================================
  * Project grooocle
- * Copyright (c) 2008 by Andre Winkler. All rights reserved.
+ * Copyright (c) 2008-2010 by Andre Winkler. All rights reserved.
  * ============================================================================
  *          GNU LESSER GENERAL PUBLIC LICENSE
  *  TERMS AND CONDITIONS FOR COPYING, DISTRIBUTION AND MODIFICATION
@@ -25,7 +25,7 @@
 
 package de.awtools.grooocle.meta
 
-import de.gluehloch.groovy.oracle.OraUtils
+import de.awtools.grooocle.OraUtils
 
 import groovy.sql.Sql
 
@@ -33,6 +33,9 @@ import groovy.sql.Sql
  * Präpariert die Datenbank zur Ausführung von Unit-Tests. Vorausgesetzt
  * wird ein Account TOOLBOXTEST auf der TITICACA. Wird das Skript mit dem
  * Parameter 'clean' aufgerufen, werden die Tabellen des Benutzers gelöscht.
+ *
+ * @author  $Author$
+ * @version $Revision$ $Date$
  */
 class PrepareUnitTestDatabase {
 

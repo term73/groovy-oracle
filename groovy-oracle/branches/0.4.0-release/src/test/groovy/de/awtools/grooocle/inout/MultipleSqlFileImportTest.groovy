@@ -28,7 +28,7 @@ package de.awtools.grooocle.inout;
 import org.junit.Before;
 import org.junit.Test;
 
-import de.gluehloch.groovy.oracle.meta.TestDatabaseUtility;
+import de.awtools.grooocle.meta.TestDatabaseUtility;
 
 /**
  * Testcase for the SqlFileImporter and the multiple table import function.

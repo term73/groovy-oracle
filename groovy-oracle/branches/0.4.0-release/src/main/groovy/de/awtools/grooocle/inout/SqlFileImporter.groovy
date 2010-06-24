@@ -27,9 +27,8 @@ package de.awtools.grooocle.inout
 
 import groovy.sql.Sql
 
-import de.gluehloch.groovy.oracle.*
-
-import de.gluehloch.groovy.oracle.meta.*
+import de.awtools.grooocle.*
+import de.awtools.grooocle.meta.*
 
 /**
  * Imports data from the file system to the database.

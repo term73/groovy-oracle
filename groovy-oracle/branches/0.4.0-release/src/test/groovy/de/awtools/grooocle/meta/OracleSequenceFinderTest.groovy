@@ -25,7 +25,8 @@
 
 package de.awtools.grooocle.meta
 
-import org.junit.Test/**
+import org.junit.Test
+/**
  * Test für die Klasse OracleSequenceFinder.
  * 
  * @author  $Author$

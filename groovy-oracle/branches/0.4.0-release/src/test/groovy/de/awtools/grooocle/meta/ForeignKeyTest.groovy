@@ -2,7 +2,7 @@
  * $Id$
  * ============================================================================
  * Project grooocle
- * Copyright (c) 2008 by Andre Winkler. All rights reserved.
+ * Copyright (c) 2008-2010 by Andre Winkler. All rights reserved.
  * ============================================================================
  *          GNU LESSER GENERAL PUBLIC LICENSE
  *  TERMS AND CONDITIONS FOR COPYING, DISTRIBUTION AND MODIFICATION
@@ -27,6 +27,12 @@ package de.awtools.grooocle.meta
 
 import org.junit.Test
 
+/**
+ * TODO.
+ *
+ * @author  $Author$
+ * @version $Revision$ $Date$
+ */
 class ForeignKeyTest {
 
 	@Test

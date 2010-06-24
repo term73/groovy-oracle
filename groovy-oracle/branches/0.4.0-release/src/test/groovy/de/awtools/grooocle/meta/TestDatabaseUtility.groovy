@@ -2,7 +2,7 @@
  * $Id$
  * ============================================================================
  * Project grooocle
- * Copyright (c) 2008 by Andre Winkler. All rights reserved.
+ * Copyright (c) 2008-2010 by Andre Winkler. All rights reserved.
  * ============================================================================
  *          GNU LESSER GENERAL PUBLIC LICENSE
  *  TERMS AND CONDITIONS FOR COPYING, DISTRIBUTION AND MODIFICATION
@@ -25,7 +25,8 @@
 
 package de.awtools.grooocle.meta
 
-import de.gluehloch.groovy.oracle.OraUtils
+import de.awtools.grooocle.OraUtils
+
 import org.junit.Ignore
 import groovy.sql.Sql
 
@@ -33,7 +34,13 @@ import org.junit.AfterClass
 import org.junit.BeforeClass
 import org.junit.Test
 
-class TestDatabaseUtility { // extends GroovyTestCase {
+/**
+ * TODO
+ * 
+ * @author  $Author$
+ * @version $Revision$ $Date$
+ */
+class TestDatabaseUtility {
 
     static def sql
     static def user

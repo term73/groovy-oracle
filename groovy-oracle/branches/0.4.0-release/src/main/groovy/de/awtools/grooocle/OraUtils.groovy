@@ -25,7 +25,7 @@
 
 package de.awtools.grooocle
 
-import de.gluehloch.groovy.oracle.meta.OracleMetaDataFactory
+import de.awtools.grooocle.meta.OracleMetaDataFactory
 
 import java.sql.*
 
