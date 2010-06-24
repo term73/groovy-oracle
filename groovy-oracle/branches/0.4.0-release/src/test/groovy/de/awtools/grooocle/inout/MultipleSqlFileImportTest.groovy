@@ -43,7 +43,7 @@ class MultipleSqlFileImportTest extends TestDatabaseUtility {
         new SqlFileImporter(
                 sql: sql,
                 deleteTableBefore: true,
-                fileName: './src/test/resources/de/gluehloch/groovy/oracle/inout/more_than_one_table_import.dat',
+                fileName: './src/test/resources/de/awtools/grooocle/inout/more_than_one_table_import.dat',
                 createInsertFile: './target/tmp_insert.log').load()
 		assert 2 == sql.firstRow(
                 "SELECT COUNT(*) as counter FROM XXX_TEST_RUN").counter
