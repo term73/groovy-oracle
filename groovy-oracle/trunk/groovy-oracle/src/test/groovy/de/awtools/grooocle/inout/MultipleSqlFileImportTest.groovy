@@ -33,8 +33,8 @@ import de.awtools.grooocle.meta.TestDatabaseUtility;
 /**
  * Testcase for the SqlFileImporter and the multiple table import function.
  * 
- * @author  $Author: andre.winkler@web.de $
- * @version $Revision: 103 $ $Date: 2010-02-03 16:03:09 +0100 (Mi, 03 Feb 2010) $
+ * @author  $Author$
+ * @version $Revision$ $Date$
  */
 class MultipleSqlFileImportTest extends TestDatabaseUtility {
    

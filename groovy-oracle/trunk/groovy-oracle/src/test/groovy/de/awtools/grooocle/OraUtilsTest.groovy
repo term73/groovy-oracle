@@ -1,5 +1,5 @@
 /*
- * $Id: OraUtilsTest.groovy 137 2010-06-24 10:59:10Z andre.winkler@web.de $
+ * $Id$
  * ============================================================================
  * Project grooocle
  * Copyright (c) 2008-2010 by Andre Winkler. All rights reserved.
@@ -31,8 +31,8 @@ import org.junit.Before
 /**
  * Testet die Klasse OraUtils.
  *
- * @author  $Author: andre.winkler@web.de $
- * @version $Revision: 137 $ $Date: 2010-06-24 12:59:10 +0200 (Do, 24 Jun 2010) $
+ * @author  $Author$
+ * @version $Revision$ $Date$
  */
 class OraUtilsTest {
 
