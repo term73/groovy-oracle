@@ -25,6 +25,7 @@
 
 package de.awtools.grooocle.inout
 
+import org.junit.Ignore;
 import org.junit.Test
 import org.junit.Afterimport org.junit.Before
 import de.awtools.grooocle.OraUtils
@@ -69,7 +70,7 @@ class SqlFileExportImportTest extends TestDatabaseUtility {
         ex.export()
     }
     
-    @Test
+    @Test @Ignore
     void testDatabaseImportWithTableHasMoreColumnsThanFileRows() {
         new SqlFileImporter(
         sql: sql,
@@ -81,7 +82,7 @@ class SqlFileExportImportTest extends TestDatabaseUtility {
             "SELECT COUNT(*) as counter FROM XXX_TEST_RUN_3").counter
     }
     
-    @Test
+    @Test @Ignore
     void testDatabaseImportWithSeparatorAtEndOfLine() {
         new SqlFileImporter(
             sql: sql,
@@ -94,7 +95,7 @@ class SqlFileExportImportTest extends TestDatabaseUtility {
         
     }
     
-    @Test
+    @Test @Ignore
     void testDatabaseImportWithoutTableName() {
         new SqlFileImporter(
             sql: sql,

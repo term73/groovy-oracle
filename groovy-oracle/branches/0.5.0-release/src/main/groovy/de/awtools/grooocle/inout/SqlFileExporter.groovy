@@ -50,7 +50,7 @@ class SqlFileExporter {
     def where
     
     /** If you need a special data formatter, than set it here. */
-    def dateFormat = InOutUtils.ORACLE_DATE_FORMAT
+    def dateFormat = InOutUtils.DATE_FORMAT
     
     def export() {
         if (!query) {
@@ -69,11 +69,7 @@ class SqlFileExporter {
             def oracleTable = omdf.createOracleTable(sql, query)
             
             oracleTable.columnMetaData.each { column ->
-                if (column.isDate()) {
-                    columns << "TO_CHAR(${column.columnName}, '${dateFormat}') as ${column.columnName}"
-                } else {
-                    columns << column.columnName
-                }
+                columns << column.columnName
             }
             
             fileWriter.writeln("### TAB ${query}")
@@ -95,12 +91,12 @@ class SqlFileExporter {
                 switch (columnType) {
                     case java.sql.Types.DATE:
                         if (tmp != null) {
-                            string += InOutUtils.toString(tmp)
+                            string += InOutUtils.toString(tmp, dateFormat)
                         }
                         break
                     case java.sql.Types.TIMESTAMP:
                         if (tmp != null) {
-                            string += InOutUtils.toString(tmp)
+                            string += InOutUtils.toString(tmp, dateFormat)
                         }
                         break
                     default:

@@ -89,8 +89,12 @@ public class InOutUtilsTest {
 
 	@Test
 	public void testInOutUtilsToDateAndToString() {
-		Date date = InOutUtils.toDate("2008-03-24 05:05:05");
-		assertEquals("2008-03-24 05:05:05", InOutUtils.toString(date));
+        Date date = InOutUtils.toDate("2008-03-24 05:05:05");
+        assertEquals("2008-03-24 05:05:05", InOutUtils.toString(date));
+
+        date = InOutUtils.toDate("2008-03-24 17:05:05");
+		assertEquals("2008-03-24 17:05:05", InOutUtils.toString(date));
+		assertEquals("20080324 170505", InOutUtils.toString(date, "yyyyMMdd HHmmss"));
 
 		date = InOutUtils.toDate("2008-03-24 05:05:05", "yyyy-MM-dd HH:mm:ss");
 		assertEquals("2008-03-24 05:05:05", InOutUtils.toString(date, "yyyy-MM-dd HH:mm:ss"));

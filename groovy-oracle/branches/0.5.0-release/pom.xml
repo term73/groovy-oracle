@@ -223,7 +223,7 @@
 
    <properties>
      <gmaven.version>1.2</gmaven.version>
-     <groovy.version>1.7.3</groovy.version>
+     <groovy.version>1.7.0</groovy.version>
    </properties>
 
 </project>

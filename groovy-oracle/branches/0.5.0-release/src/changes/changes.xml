@@ -7,6 +7,10 @@
   <body>
     <release version="groovy-oracle-0.5.0" date="2010-??-??"
          description="New features and fixes">
+      <action dev="andrewinkler" type="fix" date="2010-07-12">
+        The SqlFileExporter supports the dateFormat property for all queries.
+        The old code had a problem with user defined queries.
+      </action>
       <action dev="andrewinkler" type="update" date="2010-07-12">
         Updated the groovy maven plugin to version 1.2.
       </action>
