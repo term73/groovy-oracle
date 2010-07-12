@@ -1,5 +1,7 @@
 #summary Present some helpful SQL scripts for Oracle.
 
+<wiki:toc max_depth="2" />
+
 = Helpful Scripts =
 
 == Drop all user tables ==
