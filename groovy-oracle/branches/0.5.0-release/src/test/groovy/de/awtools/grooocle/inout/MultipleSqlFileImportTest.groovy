@@ -25,7 +25,9 @@
 
 package de.awtools.grooocle.inout;
 
+import org.junit.AfterClass;
 import org.junit.Before;
+import org.junit.BeforeClass;
 import org.junit.Test;
 
 import de.awtools.grooocle.meta.TestDatabaseUtility;
@@ -56,5 +58,15 @@ class MultipleSqlFileImportTest extends TestDatabaseUtility {
         sql.execute("DELETE FROM XXX_HIERARCHIE")
         sql.execute("DELETE FROM XXX_TEST_RUN")
     }
+
+	@BeforeClass
+	static void beforeClass() {
+		TestDatabaseUtility.beforeClass()
+	}
+
+	@AfterClass
+	static void afterClass() {
+		TestDatabaseUtility.afterClass()
+	}
 
 }

@@ -25,6 +25,8 @@
 
 package de.awtools.grooocle.meta
 
+import org.junit.AfterClass;
+import org.junit.BeforeClass;
 import org.junit.Test
 
 /**
@@ -41,6 +43,16 @@ import org.junit.Test
 		assert otf.getTables(sql).contains('XXX_TEST_RUN')
 		assert otf.getTables(sql).contains('XXX_HIERARCHIE')
 		assert otf.getTables(sql).contains('XXX_KUNDE')
+	}
+
+	@BeforeClass
+	static void beforeClass() {
+		TestDatabaseUtility.beforeClass()
+	}
+
+	@AfterClass
+	static void afterClass() {
+		TestDatabaseUtility.afterClass()
 	}
 
 }

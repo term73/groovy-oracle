@@ -25,6 +25,8 @@
 
 package de.awtools.grooocle.meta
 
+import org.junit.AfterClass;
+import org.junit.BeforeClass;
 import org.junit.Test
 
 import de.awtools.grooocle.OraUtils;
@@ -107,5 +109,15 @@ class OracleMetaDataFactoryTest extends TestDatabaseUtility {
         	// Ok
         }
     }
+
+	@BeforeClass
+	static void beforeClass() {
+		TestDatabaseUtility.beforeClass()
+	}
+
+	@AfterClass
+	static void afterClass() {
+		TestDatabaseUtility.afterClass()
+	}
 
 }

@@ -27,12 +27,7 @@ package de.awtools.grooocle.meta
 
 import de.awtools.grooocle.OraUtils
 
-import org.junit.Ignore
 import groovy.sql.Sql
-
-import org.junit.AfterClass
-import org.junit.BeforeClass
-import org.junit.Test
 
 /**
  * TODO
@@ -86,18 +81,11 @@ or define the following VM arguments:
         OraUtils.createSql(user, pwd, url)
     }
 
-    @Test @Ignore
-    void testIrgendwas() {
-    	// Der doofe Testrunner...
-    }
- 
-    @BeforeClass
     static void beforeClass() {
     	sql = createConnection()
     	new PrepareUnitTestDatabase(sql: sql).setUp()
     }
 
-    @AfterClass
     static void afterClass() {
     	new PrepareUnitTestDatabase(sql: sql).cleanUp()
         sql?.close()

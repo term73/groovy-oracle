@@ -25,6 +25,8 @@
 
 package de.awtools.grooocle.inout
 
+import org.junit.AfterClass;
+import org.junit.BeforeClass;
 import org.junit.Test
 import org.junit.After
 import org.junit.Before
@@ -64,5 +66,15 @@ class DBUnitTest extends TestDatabaseUtility {
     @After
     void tearDown() {
     }
-    
+
+	@BeforeClass
+	static void beforeClass() {
+		TestDatabaseUtility.beforeClass()
+	}
+
+	@AfterClass
+	static void afterClass() {
+		TestDatabaseUtility.afterClass()
+	}
+
 }

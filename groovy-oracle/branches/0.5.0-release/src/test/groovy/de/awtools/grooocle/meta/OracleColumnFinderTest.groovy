@@ -25,6 +25,8 @@
 
 package de.awtools.grooocle.meta
 
+import org.junit.AfterClass;
+import org.junit.BeforeClass;
 import org.junit.Test
 
 /**
@@ -103,5 +105,15 @@ class OracleColumnFinderTest extends TestDatabaseUtility {
         oracleConstraints = ocf.getConstraint(sql, "not_available")
         assert oracleConstraints != null
     }
+
+	@BeforeClass
+	static void beforeClass() {
+		TestDatabaseUtility.beforeClass()
+	}
+
+	@AfterClass
+	static void afterClass() {
+		TestDatabaseUtility.afterClass()
+	}
 
 }
