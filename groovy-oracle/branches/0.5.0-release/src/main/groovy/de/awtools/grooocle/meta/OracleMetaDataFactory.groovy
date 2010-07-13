@@ -56,9 +56,7 @@ class OracleMetaDataFactory {
      * @return Ein Liste von OracleTables.
      */
     def createOracleTables(Sql sql) {
-        def oracleTables = createOracleTables(
-        sql, new OracleTableFinder().getTables(sql))
-        return oracleTables
+        createOracleTables(sql, new OracleTableFinder().getTables(sql))
     }
     
     /**
@@ -70,8 +68,7 @@ class OracleMetaDataFactory {
      */
     def createOracleTablesWithIgnore(Sql sql, List ignores) {
         def tableNames = new OracleTableFinder().getTables(sql) - ignores
-        def oracleTables = createOracleTables(sql, tableNames)
-        return oracleTables
+        createOracleTables(sql, tableNames)
     }
     
     /**
