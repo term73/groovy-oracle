@@ -3,6 +3,8 @@
 = Release Notes =
 
 == grooocle-0.5.0 (in development) ==
+ * TODO: Decoupling of some Oracle dependencies. MySQL support would be nice.
+ * TODO: Some performance enhancements for the meta data support.
  * Fix for the class {{{SqlFileExporter}}}. Now the {{{dateFormat}}} property is also supported for user defined queries.
 
 == grooocle-0.4.0 ==
