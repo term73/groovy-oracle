@@ -1,5 +1,7 @@
 #summary Release Notes.
 
+<wiki:toc max_depth="2" />
+
 = Release Notes =
 
 == grooocle-0.5.0 (in development) ==
