@@ -42,13 +42,13 @@ class OracleSequenceFinder {
 	def getSequences(def sql) {
 		def sequences = []
 		sql.eachRow("""
-            select
+            SELECT
                 object_name as name
-            from
+            FROM
                 user_objects
-            where
+            WHERE
                 object_type = 'SEQUENCE'
-            order by
+            ORDER BY
                 object_name
         """) {
 			sequences << it.name

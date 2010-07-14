@@ -26,9 +26,72 @@
 package de.awtools.grooocle.meta
 
 /**
- * Ermittelt die Spalten und Constraints einer Datenbanktabelle.
+ * Find all columns and constraints of an Oracle schema.
+ *
+ * @author  $Author$
+ * @version $Revision$ $Date$
  */
 class OracleColumnFinder {
+
+    /**
+     * Find all tables and columns of an Oracle schema. 
+     *
+     * @param sql
+     * @return A map with tablenames and associated OracleTable objects.
+     */
+    def getTables(def sql) {
+        def tables = [:]
+        def currentTable
+
+        sql.eachRow(
+            """
+            SELECT
+                t.table_name,
+                c.column_name,
+                c.data_type,
+                c.data_length,
+                c.data_precision,
+                c.data_scale,
+                c.nullable,
+                c.column_id,
+                c.data_default
+            FROM
+                user_tab_columns c,
+                user_tables t
+            WHERE
+                t.table_name = c.table_name
+            ORDER BY
+                t.table_name,
+                c.column_id
+            """) {
+     
+            if (!tables.containsKey(it.table_name)) {       
+                currentTable = new OracleTable(tableName: it.table_name)
+                tables[it.table_name] = currentTable
+            }
+
+            if (!currentTable) throw new IllegalStateException('I don´t have a current table!')
+
+            def oc = new OracleColumn(
+                columnName: it.column_name,
+                dataType: it.data_type,
+                dataLength: it.data_length,
+                dataPrecision: it.data_precision,
+                dataScale: it.data_scale,
+                nullable: it.nullable,
+                columnId: it.column_id,
+                dataDefault: it.data_default
+            )
+            currentTable.columnMetaData << oc            
+        }
+
+        tables.each { tableName, oracleTable ->
+            def constraint = getConstraint(sql, tableName)
+            oracleTable.constraint = constraint 
+        }
+
+        return tables
+    }
 
     /**
      * Liefert eine Liste aller Spaltenbeschreibungen einer Oracle Datenbank
@@ -43,7 +106,16 @@ class OracleColumnFinder {
         def columns = []
         sql.eachRow(
 		"""
-            SELECT *
+            SELECT
+                table_name,
+                column_name,
+                data_type,
+                data_length,
+                data_precision,
+                data_scale,
+                nullable,
+                column_id,
+                data_default
     		FROM
                 user_tab_columns
             WHERE
@@ -51,11 +123,16 @@ class OracleColumnFinder {
             ORDER BY
                 column_id
         """) {
-            def oc = new OracleColumn(columnName: it.column_name,
-                    dataType: it.data_type, dataLength: it.data_length,
-                    dataPrecision: it.data_precision, dataScale: it.data_scale,
-                    nullable: it.nullable, columnId: it.column_id,
-                    dataDefault: it.data_default);
+            def oc = new OracleColumn(
+                columnName: it.column_name,
+                dataType: it.data_type,
+                dataLength: it.data_length,
+                dataPrecision: it.data_precision,
+                dataScale: it.data_scale,
+                nullable: it.nullable,
+                columnId: it.column_id,
+                dataDefault: it.data_default
+            )
             columns << oc;
         }
         return columns
@@ -72,10 +149,15 @@ class OracleColumnFinder {
         def query =
 		"""
             SELECT
-                a.constraint_name, a.constraint_type, a.table_name,
-                a.search_condition, a.r_constraint_name,
-                b.position, b.column_name,
-                c.constraint_name as ref_constraint, c.table_name as ref_table
+                a.constraint_name,
+                a.constraint_type,
+                a.table_name,
+                a.search_condition,
+                a.r_constraint_name,
+                b.position,
+                b.column_name,
+                c.constraint_name as ref_constraint,
+                c.table_name as ref_table
             FROM
                 user_cons_columns b,
                 user_constraints a
@@ -104,11 +186,15 @@ class OracleColumnFinder {
                 ForeignKey foreignKey = constraint.foreignKeys.find { fk -> fk.name == constraintName }
 
                 if (!foreignKey) {
-                    foreignKey = new ForeignKey(name: it.constraint_name,
-                    		tableName: it.table_name,
-                            rConstraintName: it.r_constraint_name,
-                            referencedTableName: it.ref_table);
-                    constraint.foreignKeys.add(foreignKey);
+                    foreignKey = new ForeignKey(
+                        name: it.constraint_name,
+                    	tableName: it.table_name,
+                        rConstraintName: it.r_constraint_name,
+                        referencedTableName: it.ref_table
+                    )
+                    constraint.foreignKeys.add(foreignKey)
+
+                    foreignKey.referencedPrimaryKey = constraint.primaryKey
                 }
 
                 foreignKey.columnNames.add(it.column_name);
@@ -120,14 +206,20 @@ class OracleColumnFinder {
             def pkQuery =
 			"""
                 SELECT
-                    a.constraint_name, a.constraint_type, a.table_name,
-                    b.column_name, a.search_condition, a.r_constraint_name
+                    a.constraint_name,
+                    a.constraint_type,
+                    a.table_name,
+                    b.column_name,
+                    a.search_condition,
+                    a.r_constraint_name
                 FROM
-                    user_constraints a, user_cons_columns b
+                    user_constraints a,
+                    user_cons_columns b
                 WHERE
-                      a.constraint_name = b.constraint_name 
-                  AND b.constraint_name = ${foreignKey.rConstraintName}
-                ORDER BY position
+                    a.constraint_name = b.constraint_name 
+                    AND b.constraint_name = ${foreignKey.rConstraintName}
+                ORDER BY
+                    position
             """
             sql.eachRow(pkQuery) { row ->
                 foreignKey.referencedColumnNames.add(row.column_name);

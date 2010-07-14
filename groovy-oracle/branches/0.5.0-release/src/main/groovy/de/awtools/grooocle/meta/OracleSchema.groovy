@@ -25,13 +25,25 @@
  
 package de.awtools.grooocle.meta
 
+import groovy.sql.Sql;
+
 /**
- * Verwaltet das Schema eines Oracle Users. 
+ * Holds the meta informations of a database schema.
+ *
+ * @author  $Author$
+ * @version $Revision$ $Date$
  */
-public class OracleSchema {
+class OracleSchema {
 
     /**
-     * Oracle table informations.
+     * The Groovy SQL connection to the database. This connection was used to
+     * collect the meta data.
+     */
+    Sql sql
+
+    /**
+     * Oracle table informations. The table name is the key and the object
+     * {@link OracleTable} is the value.
      */
 	def tables = [:]
 
@@ -39,5 +51,11 @@ public class OracleSchema {
      * Oracle sequences.
      */
     def sequences = []
+
+    /**
+     * Holds all primary keys of the schema. The key is the name of the
+     * primary key and the object {@link PrimaryKey} is the value.
+     */
+    def primaryKeys = [:]
 
 }

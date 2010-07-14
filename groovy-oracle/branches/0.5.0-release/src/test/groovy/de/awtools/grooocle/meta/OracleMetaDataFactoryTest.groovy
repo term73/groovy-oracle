@@ -40,37 +40,40 @@ import de.awtools.grooocle.OraUtils;
 class OracleMetaDataFactoryTest extends TestDatabaseUtility {
 
     @Test
-    void testOracleMetaDataFactoryWithIgnores() {
+    void testCreateOracleSchema() {
         def omdf = new OracleMetaDataFactory()
-        def oracleTable = omdf.createOracleTablesWithIgnore(sql, ["XXX_TEST_RUN"])
+        def schema = omdf.createOracleSchema(sql)
 
-        def ot = oracleTable.find { it.tableName == 'XXX_HIERARCHIE' }
+        def ot = schema.tables['XXX_HIERARCHIE']
         assert ot.tableName == 'XXX_HIERARCHIE'
 
-        ot = oracleTable.find { it.tableName == 'XXX_KUNDE' }
+        ot = schema.tables['XXX_KUNDE']
         assert ot.tableName == 'XXX_KUNDE'
 
-        oracleTable = omdf.createOracleTablesWithIgnore(sql, [])
-        assert oracleTable.find { it.tableName == 'XXX_TEST_RUN' }.tableName == 'XXX_TEST_RUN'
-        assert oracleTable.find { it.tableName == 'XXX_HIERARCHIE' }.tableName == 'XXX_HIERARCHIE'
-        assert oracleTable.find { it.tableName == 'XXX_KUNDE' }.tableName == 'XXX_KUNDE'
+        assert schema.tables['XXX_TEST_RUN'].tableName == 'XXX_TEST_RUN'
+        assert schema.tables['XXX_HIERARCHIE'].tableName == 'XXX_HIERARCHIE'
+        assert schema.tables['XXX_KUNDE'].tableName == 'XXX_KUNDE'
     }
 
     @Test
     void testOraUtilsCreateOracleSchema() {
     	def schema = OraUtils.createOracleSchema(sql);
     	def ot = schema.tables.find { tableName, table -> tableName == 'XXX_HIERARCHIE' }
+        assert ot != null
+        assert schema.sql != null
+        assert schema.sql == sql
     }
 
     @Test
     void testOracleMetaDataFactory() {
         def omdf = new OracleMetaDataFactory()
-        def oracleTable = omdf.createOracleTables(sql)
-        assert oracleTable.find { it.tableName == 'XXX_TEST_RUN' }.tableName == 'XXX_TEST_RUN'
-        assert oracleTable.find { it.tableName == 'XXX_HIERARCHIE' }.tableName == 'XXX_HIERARCHIE'
-        assert oracleTable.find { it.tableName == 'XXX_KUNDE' }.tableName == 'XXX_KUNDE'
+        def schema = omdf.createOracleSchema(sql)
 
-        oracleTable = omdf.createOracleTable(sql, "XXX_TEST_RUN")
+        assert schema.tables['XXX_TEST_RUN'].tableName == 'XXX_TEST_RUN'
+        assert schema.tables['XXX_HIERARCHIE'].tableName == 'XXX_HIERARCHIE'
+        assert schema.tables['XXX_KUNDE'].tableName == 'XXX_KUNDE'
+
+        def oracleTable = omdf.createOracleTable(sql, "XXX_TEST_RUN")
         assert "XXX_TEST_RUN" == oracleTable.tableName
         assert "PK_XXX_TEST_RUN" == oracleTable.constraint.primaryKey.name
         assert oracleTable.constraint.primaryKey.name == oracleTable.primaryKey().name 

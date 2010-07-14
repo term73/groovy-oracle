@@ -29,46 +29,26 @@ import groovy.sql.Sql
 
 /**
  * Factory für das Erstellen von OracleTable Objekten.
+ *
+ * @author  $Author$
+ * @version $Revision$ $Date$
  */
 class OracleMetaDataFactory {
     
     private final OracleColumnFinder ocf = new OracleColumnFinder()
     
     /**
-     * Liefert ein OracleSchema Objekt.
+     * Create an OracleSchema object.
      * 
-     * @param sql Verbindung zur Datenbank.
-     * @return Ein OracleSchema.
+     * @param sql The database connection.
+     * @return An oracle schema.
      */
     def createOracleSchema(Sql sql) {
-        def os = new OracleSchema()
-        createOracleTables(sql).each { table ->
-            os.tables[table.tableName] = table
-        }
+        def os = new OracleSchema(
+            sql: sql,
+            tables: new OracleColumnFinder().getTables(sql)
+        )
         return os
-    }
-    
-    /**
-     * Liefert die Tabellenbeschreibungen für ein Schema. Die Methode liefert
-     * eine Liste von OracleTable Objekten zurück.
-     *
-     * @param sql Verbindung zur Datenbank.
-     * @return Ein Liste von OracleTables.
-     */
-    def createOracleTables(Sql sql) {
-        createOracleTables(sql, new OracleTableFinder().getTables(sql))
-    }
-    
-    /**
-     * Liefert die Tabellenbeschreibungen für ein Schema.
-     *
-     * @param sql Verbindung zur Datenbank.
-     * @param ignores Die zu ignorierenden Tabellennamen.
-     * @return Eine Liste von OracleTables.
-     */
-    def createOracleTablesWithIgnore(Sql sql, List ignores) {
-        def tableNames = new OracleTableFinder().getTables(sql) - ignores
-        createOracleTables(sql, tableNames)
     }
     
     /**

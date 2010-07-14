@@ -92,6 +92,12 @@ class OracleColumn {
             case 'UROWID':
                 snippet += dataType + "(${dataLength})"
                 break
+            case 'XMLTYPE':
+                snippet += dataType
+                break
+            case 'BLOB':
+                snippet += dataType
+                break;
             default:
                 throw new RuntimeException("Unknown datatype: ${dataType}.")
         }
