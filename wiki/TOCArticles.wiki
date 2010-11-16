@@ -4,4 +4,3 @@
  * [OracleInstantTools Oracle Instant Tools]
  * [OracleSqlTimestamp Oracle Timestamp]
  * [OracleSchemaInfos Oracle Schema Infos]
- * [UML object definition]
