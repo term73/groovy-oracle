@@ -193,8 +193,6 @@ class OracleColumnFinder {
                         referencedTableName: it.ref_table
                     )
                     constraint.foreignKeys.add(foreignKey)
-
-                    foreignKey.referencedPrimaryKey = constraint.primaryKey
                 }
 
                 foreignKey.columnNames.add(it.column_name);

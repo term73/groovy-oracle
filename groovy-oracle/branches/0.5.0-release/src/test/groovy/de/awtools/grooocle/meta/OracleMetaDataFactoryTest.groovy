@@ -100,6 +100,8 @@ class OracleMetaDataFactoryTest extends TestDatabaseUtility {
         foreignKey = oracleTable.constraint.foreignKeys.find { it.name == 'FK_XXX_KUNDE' }
         assert 'FK_XXX_KUNDE' == foreignKey.name
         assert 'XXX_TEST_RUN' == foreignKey.referencedTableName
+        
+        //assert foreignKey.referencedPrimaryKey
     }
 
     @Test

@@ -36,7 +36,6 @@ class ForeignKey {
     String tableName
     String referencedTableName
     def referencedColumnNames = []
-    def referencedPrimaryKey
 
     /**
      * Kopiert die Eigenschaften von diesem Objekt in ein neue erstelltes
