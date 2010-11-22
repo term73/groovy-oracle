@@ -1,10 +1,7 @@
 #summary Description to Oracle instant tools.
 
-= Introduction =
+= Oracle Instant Client =
 
-Add your content here.
-
-
-= Details =
+Oracle supports a copy installation of it´s client tools like OCI and sql*plus. You find a manual here:
 
 [http://www.ioncannon.net/system-administration/114/using-oracle-instant-client-and-sqlplus Short tutorial]
