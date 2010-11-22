@@ -1,5 +1,5 @@
  * [ReleaseNotes Release Notes]
- * [w/list Wiki Seiten]
+ * [http://code.google.com/p/groovy-oracle/w/list Wiki Seiten]
  * [HelpfulSqlScripts Helpful SQL Scripts]
  * [OracleIndexTable Oracle Index Table]
  * [OracleInstantTools Oracle Instant Tools]
