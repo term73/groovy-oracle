@@ -1,5 +1,5 @@
  * [ReleaseNotes Release Notes]
- * [list Wiki Seiten]
+ * [w/list Wiki Seiten]
  * [HelpfulSqlScripts Helpful SQL Scripts]
  * [OracleIndexTable Oracle Index Table]
  * [OracleInstantTools Oracle Instant Tools]
