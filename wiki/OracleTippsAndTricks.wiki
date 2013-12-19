@@ -397,6 +397,7 @@ In addition there are equivalent views prefixed "USER_" which show only the obje
 
 == Example 1: finding tables ==
 Find all Tables that have PATTERN in the table name
+<pre>
    SELECT
       TABLE_NAME
    FROM
@@ -405,10 +406,11 @@ Find all Tables that have PATTERN in the table name
       TABLE_NAME LIKE '%PATTERN%'
    ORDER
       BY TABLE_NAME;
+</pre>
 
 == Example 2: finding columns ==
 Find all tables that have at least one column that matches a specific PATTERN in the column name
-
+<pre>
    SELECT
       TABLE_NAME,
       COLUMN_NAME
@@ -416,9 +418,11 @@ Find all tables that have at least one column that matches a specific PATTERN in
       ALL_TAB_COLUMNS
    WHERE
       COLUMN_NAME LIKE '%PATTERN%';
+</pre>
 
 == Example 3: counting rows of columns ==
 Estimate a total number of rows in all tables containing a column name that matches PATTERN (this is SQL*Plus specific script)
+<pre>
    COLUMN DUMMY NOPRINT
    COMPUTE SUM OF NUM_ROWS ON DUMMY
    BREAK ON DUMMY
@@ -434,6 +438,7 @@ Estimate a total number of rows in all tables containing a column name that matc
       T.TABLE_NAME = C.TABLE_NAME
       AND C.COLUMN_NAME LIKE '%PATTERN%'
    ORDER BY T.TABLE_NAME;
+</pre>
 
 Note that NUM_ROWS records the number of rows which were in a table when (and if) it was last analyzed. This will most likely deviate from the actual number of rows currently in the table.
 
